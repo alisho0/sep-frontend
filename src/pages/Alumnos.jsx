@@ -1,9 +1,47 @@
-import React from 'react'
+import { EyeIcon } from "@heroicons/react/20/solid";
+import { FiltrosAlumnos } from "../components/Alumnos/FiltrosAlumnos";
+import { useAlumnos } from "../hooks/useAlumnos";
 
 export const Alumnos = () => {
+  const token = localStorage.getItem("token");
+  const { alumnos, loading } = useAlumnos(token);
+
   return (
     <>
-        
+      <div className="container mx-auto md:px-28 px-4 pt-9">
+        <div className="bg-white p-6 rounded-lg shadow-md border-gray-300">
+          <h4>Listado de Alumnos</h4>
+          <FiltrosAlumnos />
+          <div>
+            {/* Aquí iría la tabla o lista de alumnos */}
+            {loading ? (
+              <p>Cargando alumnos</p>
+            ) : alumnos.map((alumno, idx) => (
+              (
+              <div className="border border-gray-400 rounded-xl px-4 py-4 bg-white mt-6 grid md:grid-cols-2" key={idx}>
+                <div>
+                  <p className="mb-2.5 font-semibold">{`${alumno.nombre} ${alumno.apellido}`}</p>
+                  <div className="flex gap-1 mb-4">
+                    <span className="text-sm text-gray-600 border-r pr-1.5">
+                      Grado: {`${alumno.ultGrado}° ${alumno.seccionGrado}`}
+                    </span>
+                    <span className="text-sm text-gray-600 border-r px-1.5">
+                      Turno: {alumno.turno}
+                    </span>
+                    <span className="text-sm text-gray-600 border-r px-1.5 last:border-r-0">
+                      DNI: {alumno.dni}
+                    </span>
+                  </div>
+                </div>
+                <button className="self-center md:justify-self-end w-full bg-indigo-500 p-2 rounded-lg cursor-pointer hover:bg-indigo-300 transition duration-150 flex justify-center md:w-auto">
+                  <EyeIcon className="h-5 w-5 text-white" />
+                </button>
+            </div>
+            )
+            ))}
+          </div>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};

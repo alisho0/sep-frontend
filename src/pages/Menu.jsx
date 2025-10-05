@@ -41,7 +41,7 @@ export const Menu = () => {
 
   return (
     <>
-      <div className='container mx-auto px-48 pt-9'>
+      <div className='container mx-auto px-28 pt-9'>
         <h2 className='text-3xl font-bold mb-2'>Panel de Control</h2>
         <p className='text-sm mb-6'>Bienvenido, usuario</p>
         <div className='grid grid-cols-2 gap-4'>

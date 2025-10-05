@@ -1,5 +1,6 @@
 import { UserIcon } from '@heroicons/react/20/solid'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 export const Navbar = () => {
 
@@ -17,8 +18,8 @@ export const Navbar = () => {
             <div className="text-indigo-600 font-bold text-xl">EduGestión</div>
             
             <ul className="flex space-x-6 text-gray-800 font-medium">
-                <li><a href="#" className="hover:text-indigo-600 transition duration-200">Inicio</a></li>
-                <li><a href="#" className="hover:text-indigo-600">Alumnos</a></li>
+                <li><Link to="/menu" className="hover:text-indigo-600 transition duration-200">Inicio</Link></li>
+                <li><Link to="/alumnos" className="hover:text-indigo-600">Alumnos</Link></li>
                 <li><a href="#" className="hover:text-indigo-600">Grados</a></li>
             </ul>
 
