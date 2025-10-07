@@ -4,6 +4,7 @@ import { useAlumnos } from "../hooks/useAlumnos";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { traerAlumnos } from "../reducers/alumnosSlice";
+import { Link } from "react-router-dom";
 
 export const Alumnos = () => {
   const token = localStorage.getItem("token");
@@ -41,9 +42,12 @@ export const Alumnos = () => {
                     </span>
                   </div>
                 </div>
-                <button className="self-center md:justify-self-end w-full bg-indigo-500 p-2 rounded-lg cursor-pointer hover:bg-indigo-300 transition duration-150 flex justify-center md:w-auto">
-                  <EyeIcon className="h-5 w-5 text-white" />
-                </button>
+<Link
+  to={`/alumnos/${alumno.id}`}
+  className="self-center md:justify-self-end w-full bg-indigo-500 p-2 rounded-lg cursor-pointer hover:bg-indigo-300 transition duration-150 flex justify-center md:w-auto"
+>
+  <EyeIcon className="h-5 w-5 text-white" />
+</Link>
             </div>
             )
             ))}

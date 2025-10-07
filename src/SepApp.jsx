@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Navbar } from './components/Navbar'
 import { Layout } from './routes/Layout'
 import { Alumnos } from './pages/Alumnos'
+import { DetalleAlumno } from './pages/DetalleAlumno'
 
 function SepApp() {
   return (
@@ -15,6 +16,7 @@ function SepApp() {
           <Route element={<Layout />}>
             <Route path='/menu' element={<Menu/>}/>
             <Route path='/alumnos' element={<Alumnos />} /> 
+            <Route path='alumnos/:id' element={<DetalleAlumno />} />
           </Route>
         </Routes>
       </BrowserRouter>
