@@ -1,10 +1,18 @@
 import { EyeIcon } from "@heroicons/react/20/solid";
 import { FiltrosAlumnos } from "../components/Alumnos/FiltrosAlumnos";
 import { useAlumnos } from "../hooks/useAlumnos";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { traerAlumnos } from "../reducers/alumnosSlice";
 
 export const Alumnos = () => {
   const token = localStorage.getItem("token");
-  const { alumnos, loading } = useAlumnos(token);
+  const dispatch = useDispatch();
+  const { alumnos, loading } = useSelector((state) => state.alumnos);
+
+  useEffect(() => {
+    dispatch(traerAlumnos(token));
+  }, [])
 
   return (
     <>
