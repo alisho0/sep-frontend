@@ -1,11 +1,11 @@
-import { useState } from 'react'
+
 import { Menu } from './pages/Menu'
 import { Login } from './pages/Login'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Navbar } from './components/Navbar'
 import { Layout } from './routes/Layout'
 import { Alumnos } from './pages/Alumnos'
 import { DetalleAlumno } from './pages/DetalleAlumno'
+import { ModalGlobal } from './components/Modales/ModalGlobal'
 
 function SepApp() {
   return (
@@ -20,6 +20,7 @@ function SepApp() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <ModalGlobal />
     </>
   )
 }

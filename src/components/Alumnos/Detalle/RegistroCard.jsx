@@ -1,11 +1,14 @@
 import React from "react";
 import { CalendarIcon } from "@heroicons/react/20/solid";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PlusIcon } from "@heroicons/react/16/solid";
+import { abrirModal } from "../../../reducers/uiSlice";
 
 export const RegistroCard = () => {
 
     const { aniosDisponibles, registro } = useSelector((state) => state.registros);
+    const { alumno } = useSelector((state) => state.alumnos);
+    const dispatch = useDispatch();
 
 
   return (
@@ -17,7 +20,7 @@ export const RegistroCard = () => {
             Historial de observaciones por año lectivo
             </p>
         </div>
-        <button className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors font-medium hover:cursor-pointer flex items-center gap-1">
+        <button className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors font-medium hover:cursor-pointer flex items-center gap-1" onClick={() => dispatch(abrirModal({ modalAbierto: true, tipo: 'detalleAlumno', data: alumno }))}>
             <PlusIcon className="h-5 w-5" />
             Nuevo Registro
         </button>
