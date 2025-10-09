@@ -3,14 +3,11 @@ import { aniosConRegistros, traerRegistro } from "../apis/registrosApi";
 
 export const aniosRegistros = createAsyncThunk('registros/aniosDisponibles', async ({token, id}) => {
     const data = await aniosConRegistros(token, id);
-    console.log(data);
-    console.log("año disponible: ", data[0]?.id);
     return data;
 }) 
 
 export const detalleRegistro = createAsyncThunk('registros/observaciones', async ({token, id}) => {
     const data = await traerRegistro(token, id);
-    console.log(data);
     return data;
 })
 
