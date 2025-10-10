@@ -64,7 +64,7 @@ export const RegistroCard = () => {
             );
             })}
         </div>
-        <button className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors font-medium hover:cursor-pointer flex items-center gap-1">
+        <button className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors font-medium hover:cursor-pointer flex items-center gap-1" onClick={() => dispatch(abrirModal({ modalAbierto: true, tipo: 'agregarObservacion', data: alumno }))} >
             <PlusIcon className="h-5 w-5" />
             Nueva Observación
         </button>
