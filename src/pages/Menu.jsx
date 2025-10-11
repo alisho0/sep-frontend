@@ -47,7 +47,7 @@ export const Menu = () => {
         <div className='grid grid-cols-2 gap-4'>
           <div className='grid sm:grid-cols-2 md:grid-cols-4 gap-1.5 col-span-2'>
             {cards.map((card, idx) => (
-              <div className='border border-gray-500 rounded-2xl px-4 py-4 grid bg-white' key={idx}>
+              <div className='bg-white p-6 rounded-lg shadow-md border-gray-300 border  px-4 py-4 grid ' key={idx}>
                 <div className='flex justify-between self-center'>
                   <span className='text-sm'>{card.titulo}</span>
                   <UsersIcon className='w-3.5' />
@@ -57,7 +57,7 @@ export const Menu = () => {
             ))}
           </div>
 
-          <div className='border border-gray-500 rounded-2xl p-4 bg-white'>
+          <div className='bg-white p-6 rounded-lg shadow-md border-gray-300'>
             <div >
               <h4 className='font-semibold'>Actividad Reciente</h4>
               <p className='text-sm text-gray-900'>Últimos eventos en el sistema</p>
@@ -73,7 +73,7 @@ export const Menu = () => {
             </div>
           </div>
 
-          <div className='border border-gray-500 rounded-2xl p-4'>
+          <div className='bg-white p-6 rounded-lg shadow-md border-gray-300'>
             <div >
               <h4 className='font-semibold'>Actividad Reciente</h4>
               <p className='text-sm text-gray-900'>Últimos eventos en el sistema</p>

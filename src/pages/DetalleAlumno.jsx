@@ -6,12 +6,16 @@ import { traerPorAlumnoId } from "../reducers/alumnosSlice";
 import { aniosRegistros, detalleRegistro } from "../reducers/registrosSlice";
 import { InfoPersonalCard } from "../components/Alumnos/Detalle/InfoPersonalCard";
 import { RegistroCard } from "../components/Alumnos/Detalle/RegistroCard";
+import { UserPlusIcon } from "@heroicons/react/16/solid";
+import { abrirModal } from "../reducers/uiSlice";
+import { listarTutores } from "../reducers/tutoresSlice";
 
 export const DetalleAlumno = () => {
   const { id } = useParams();
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const { alumno, loading } = useSelector((state) => state.alumnos);
+  const { tutores } = useSelector((state) => state.tutores);
   const { aniosDisponibles, registro } = useSelector(
     (state) => state.registros
   );
@@ -19,6 +23,7 @@ export const DetalleAlumno = () => {
   useEffect(() => {
     dispatch(traerPorAlumnoId({ id, token }));
     dispatch(aniosRegistros({ id, token }));
+    dispatch(listarTutores({token}))
   }, []);
 
   useEffect(() => {
@@ -37,7 +42,12 @@ export const DetalleAlumno = () => {
             <InfoPersonalCard />
             <div className="bg-white p-6 rounded-lg shadow-md border-gray-300">
               <div>
-                <h3 className="text-md font-semibold">Tutores</h3>
+                <div className="flex justify-between">
+                  <h3 className="text-md font-semibold">Tutores</h3>
+                  <button className="bg-indigo-600 rounded-lg px-2 py-1 hover:bg-indigo-700 transition-colors hover:cursor-pointer" onClick={() => dispatch(abrirModal({ modalAbierto: true, tipo: 'agregarTutor', data: tutores }))}>
+                    <UserPlusIcon className="h-4 w-4 text-white"/>
+                  </button>
+                </div>
                 <p className="text-gray-600 text-sm">
                   1 tutor(es) registrado(s)
                 </p>

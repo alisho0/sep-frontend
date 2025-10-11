@@ -3,6 +3,7 @@ import { CalendarIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { PlusIcon } from "@heroicons/react/16/solid";
 import { abrirModal } from "../../../reducers/uiSlice";
+import { RegistroDatos } from "./RegistroDatos";
 
 export const RegistroCard = () => {
 
@@ -25,30 +26,9 @@ export const RegistroCard = () => {
             Nuevo Registro
         </button>
       </div>
-      <div className="grid md:grid-cols-4 grid-cols-2 gap-6 mt-4">
-        <div>
-          <label className="text-sm font-medium text-gray-600">Grado</label>
-          <p className="font-medium ">{`${registro?.nroGrado || "-"}° ${
-            registro?.seccion || "-"
-          }`}</p>
-        </div>
-        <div>
-          <label className="text-sm font-medium text-gray-600">Turno</label>
-          <p className="font-medium">{`${registro?.turno || "-"}`}</p>
-        </div>
-        <div>
-          <label className="text-sm font-medium text-gray-600">
-            Año lectivo
-          </label>
-          <p className="font-medium">{`${registro?.anioCiclo || "-"}`}</p>
-        </div>
-        <div>
-          <label className="text-sm font-medium text-gray-600 py-1">
-            Fecha de registro
-          </label>
-          <p className="font-medium">{`${registro.fechaInicio || "-"}`}</p>
-        </div>
-      </div>
+
+      <RegistroDatos registro={registro} />
+
       <div className="flex justify-between items-center mt-6">
         <div className="flex bg-indigo-600 w-fit rounded-lg p-1">
             {aniosDisponibles.map((anio) => {
@@ -64,6 +44,7 @@ export const RegistroCard = () => {
             );
             })}
         </div>
+        
         <button className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors font-medium hover:cursor-pointer flex items-center gap-1" onClick={() => dispatch(abrirModal({ modalAbierto: true, tipo: 'agregarObservacion', data: alumno }))} >
             <PlusIcon className="h-5 w-5" />
             Nueva Observación
@@ -73,7 +54,7 @@ export const RegistroCard = () => {
       {registro?.observaciones?.length > 0 &&
         registro.observaciones.map((obs, idx) => (
           <div
-            className="mt-6  border border-gray-400 p-4 rounded-lg bg-gray-100"
+            className="mt-6  border border-gray-400 p-4 rounded-lg bg-gray-100 hover:bg-gray-300 transition-colors"
             key={idx}
           >
             <div className="flex justify-between mb-4">

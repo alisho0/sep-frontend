@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { cerrarModal } from '../../reducers/uiSlice';
 import { ModalAgregarObservacion } from './ModalAgregarObservacion' 
 import { XMarkIcon } from '@heroicons/react/16/solid';
+import { ModalAgregarTutor } from './ModalAgregarTutor';
 export const ModalGlobal = () => {
     const dispatch = useDispatch();
 
@@ -19,7 +20,7 @@ export const ModalGlobal = () => {
                 <XMarkIcon className='h-6 w-6 text-gray-500' />
               </button>
               {modalTipo === "agregarObservacion" && <ModalAgregarObservacion /> }
-              {modalTipo === "confirmacion" && <p>¿Seguro que querés continuar?</p>}
+              {modalTipo === "agregarTutor" && <ModalAgregarTutor tutores={modalData} />}
           </div>
         </div>
     </>
