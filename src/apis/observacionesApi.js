@@ -19,9 +19,10 @@ export const agregarObservacion = async (observacion, token) => {
             headers: {
                 Authorization: `Bearer ${token}`
             }
-        })
-        return response.data
+        });
+        return response.data;
     } catch (error) {
-        console.log(error);
+        console.error('Error en agregarObservacion:', error);
+        throw error; // Propagamos el error para que pueda ser manejado por el slice
     }
 }

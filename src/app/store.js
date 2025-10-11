@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import alumnosReducer from '../reducers/alumnosSlice'
 import registrosReducer from '../reducers/registrosSlice'
 import uiReducer from '../reducers/uiSlice'
+import observacionesReducer from '../reducers/observacionesSlice'
 
 export const store = configureStore({
     reducer: {
@@ -9,5 +10,6 @@ export const store = configureStore({
         alumnos: alumnosReducer,
         registros: registrosReducer,
         ui: uiReducer,
+        observaciones: observacionesReducer
     }
 })

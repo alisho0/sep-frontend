@@ -2,12 +2,16 @@ import { jwtDecode } from 'jwt-decode';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux'
+import { crearObservacion } from '../../reducers/observacionesSlice';
+import { showAlert } from '../../utils/alert';
+import { cerrarModal } from '../../reducers/uiSlice';
 
 export const ModalAgregarObservacion = () => {
 
     const dispatch = useDispatch();
     const { modalData } = useSelector((state) => state.ui);
     const { registro } = useSelector((state) => state.registros);
+    const { observacion, loading, error } = useSelector((state) => state.observaciones)
     const {
         register,
         handleSubmit,
@@ -15,11 +19,33 @@ export const ModalAgregarObservacion = () => {
         formState: {errors},
     } = useForm();
 
-    const onSubmit = (data) => console.log(data);
-    console.log(watch("descripcion"))
-
     const token = localStorage.getItem('token');
     const payload = jwtDecode(token); 
+
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+
+    const onSubmit = async (data) => {
+        try {
+            const resultAction = await dispatch(crearObservacion({obs: data, token, registroId: registro.id}));
+            if (crearObservacion.fulfilled.match(resultAction)) {
+                showAlert({
+                    title: 'Observación creada',
+                    text: 'La observación fue creada correctamente',
+                    icon: 'success'
+                });
+                dispatch(cerrarModal())
+            } else if (crearObservacion.rejected.match(resultAction)) {
+                throw new Error(resultAction.error.message);
+            }
+        } catch (error) {
+            showAlert({
+                title: 'Error',
+                text: 'Ocurrió un error al crear la observación',
+                icon: 'error'
+            });
+        }
+    };
   return (
     <>
         <div>
@@ -31,11 +57,22 @@ export const ModalAgregarObservacion = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='flex flex-col gap-1 my-4'>
                     <label htmlFor="observacion">Descripción:</label>
-                    <textarea className='border border-gray-300 rounded-md p-2' id="observacion" rows="4" {...register("descripcion")} />
+                    <textarea className='border border-gray-300 rounded-md p-2' id="observacion" rows="4" {...register("contenido", {required: true})} />
+                    {errors.contenido && <span className='text-xs text-red-700'>Este campo es obligatorio</span> }
                     <input
                         type="hidden"
-                        value={new Date().toLocaleDateString()}
+                        value={formattedDate}
                         {...register("fecha")}
+                    />
+                    <input
+                        type="hidden"
+                        value={payload.sub}
+                        {...register("nombreUsuario")}
+                    />
+                    <input
+                        type="hidden"
+                        value={registro.id}
+                        {...register("idRegistro")}
                     />
                 </div>
                 <div>

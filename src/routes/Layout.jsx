@@ -6,7 +6,7 @@ export const Layout = () => {
   return (
     <>
         <Navbar/>
-        <main className='w-full h-screen bg-gray-200 space-y-4'>
+        <main className='w-full min-h-screen bg-gray-200 space-y-4 pb-8'>
           <Outlet/>
         </main>
     </>
