@@ -15,7 +15,7 @@ export const ModalGlobal = () => {
   return (
     <>
         <div className="fixed inset-0 flex items-center justify-center bg-black/40">
-          <div className="bg-white p-6 rounded-lg shadow-lg relative">
+          <div className="bg-white p-6 rounded-lg shadow-lg relative ">
               <button className='absolute right-4 hover:cursor-pointer' onClick={() => dispatch(cerrarModal())}>
                 <XMarkIcon className='h-6 w-6 text-gray-500' />
               </button>
