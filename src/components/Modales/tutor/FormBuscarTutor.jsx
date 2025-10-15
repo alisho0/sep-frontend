@@ -1,10 +1,16 @@
 import React, { useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { asignarTutor } from "../../../reducers/alumnosSlice";
 
-export const FormBuscarTutor = ({tutores}) => {
-  const [searchTerm, setSearchTerm] = useState('');
+export const FormBuscarTutor = ({ tutores }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const token = localStorage.getItem("token");
+  const { alumno } = useSelector((state) => state.alumnos);
+  const {tutoresAlumno} = useSelector((state) => state)
+  const dispatch = useDispatch();
 
   const filteredTutores = useMemo(() => {
-    return tutores.filter(tutor => {
+    return tutores.filter((tutor) => {
       const searchTermLower = searchTerm.toLowerCase();
       return (
         tutor.nombre.toLowerCase().includes(searchTermLower) ||
@@ -13,6 +19,31 @@ export const FormBuscarTutor = ({tutores}) => {
       );
     });
   }, [tutores, searchTerm]);
+
+  const onAgregarTutor = async (idTutor) => {
+    const existeTutor = tutoresAlumno.filter(tutor => tutor.id == idTutor)
+    console.log(existeTutor);
+    // try {
+    //   const asignar = await dispatch(
+    //     asignarTutor({ token, idTutor, idAlumno: alumno.id })
+    //   );
+
+    //   if (asignarTutor.fulfilled.match(asignar)) {
+    //     showAlert({
+    //       title: "Éxito",
+    //       text: "El tutor fue creado y agregado correctamente al alumno",
+    //       icon: "success",
+    //     });
+    //     dispatch(cerrarModal());
+    //   }
+    // } catch (error) {
+    //   showAlert({
+    //     title: "Error",
+    //     text: error.message || "Ocurrió un error al asignar el tutor",
+    //     icon: "error",
+    //   });
+    // }
+  };
 
   return (
     <>
@@ -59,7 +90,10 @@ export const FormBuscarTutor = ({tutores}) => {
                   )}
                 </div>
                 <div>
-                  <button className="bg-indigo-600 rounded-lg shadow-md text-white py-1.5 px-2 hover:cursor-pointer hover:bg-indigo-700 transition-colors font-semibold md:w-fit w-full">
+                  <button
+                    className="bg-indigo-600 rounded-lg shadow-md text-white py-1.5 px-2 hover:cursor-pointer hover:bg-indigo-700 transition-colors font-semibold md:w-fit w-full"
+                    onClick={() => onAgregarTutor(tutor.id)}
+                  >
                     Seleccionar
                   </button>
                 </div>

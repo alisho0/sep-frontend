@@ -17,7 +17,6 @@ export const TutoresCard = ({id}) => {
       icon: 'warning'
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log('hola')
         dispatch(desvincularTutorDeAlumno({token, idTutor, idAlumno: alumno.id}))
       }
     })
