@@ -16,6 +16,20 @@ export const traerTutores = async (token) => {
     }
 }
 
+export const traerTutoresPorAlumno = async (token, id) => {
+    try {
+        const res = await axios.get(`${url}/listar/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return res.data
+    } catch (error) {
+        console.error("Error al traer los tutores:", error.response?.data || error);
+        throw new Error(error.response?.data?.message || 'Error al crear al traer tutores.');
+    }
+}
+
 export const nuevoTutorConAlumno = async (token, tutor) => {
     try {
         const res = await axios.post(`${url}/crearConAlumno`, tutor, {
@@ -30,5 +44,19 @@ export const nuevoTutorConAlumno = async (token, tutor) => {
             throw new Error('El tutor ya existe con ese DNI');
         }
         throw new Error(error.response?.data?.message || 'Error al crear el tutor. Por favor, intente nuevamente');
+    }
+}
+
+export const desvincularTutor = async (token, idTutor, idAlumno) => {
+    try {
+        const res = await axios.delete(`${url}/desvincular/${idTutor}/${idAlumno}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return {idTutor};
+    } catch (error) {
+        console.error("Error al eliminar el tutor", error.response?.data || error);
+        throw new Error(error.response?.data?.message || "Error al desvincular el tutor. Por favor, intente nuevamente");
     }
 }

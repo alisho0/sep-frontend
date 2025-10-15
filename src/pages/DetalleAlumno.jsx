@@ -8,14 +8,14 @@ import { InfoPersonalCard } from "../components/Alumnos/Detalle/InfoPersonalCard
 import { RegistroCard } from "../components/Alumnos/Detalle/RegistroCard";
 import { UserPlusIcon } from "@heroicons/react/16/solid";
 import { abrirModal } from "../reducers/uiSlice";
-import { listarTutores } from "../reducers/tutoresSlice";
+import { listarTutores, listarTutoresPorAlumno } from "../reducers/tutoresSlice";
 
 export const DetalleAlumno = () => {
   const { id } = useParams();
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const { alumno, loading } = useSelector((state) => state.alumnos);
-  const { tutores } = useSelector((state) => state.tutores);
+  const { tutores, tutoresAlumno, tutoresAlumnoCount } = useSelector((state) => state.tutores);
   const { aniosDisponibles, registro } = useSelector(
     (state) => state.registros
   );
@@ -23,7 +23,8 @@ export const DetalleAlumno = () => {
   useEffect(() => {
     dispatch(traerPorAlumnoId({ id, token }));
     dispatch(aniosRegistros({ id, token }));
-    dispatch(listarTutores({token}))
+    dispatch(listarTutores({token}));
+    dispatch(listarTutoresPorAlumno({token, id}));
   }, []);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export const DetalleAlumno = () => {
                   </button>
                 </div>
                 <p className="text-gray-600 text-sm">
-                  1 tutor(es) registrado(s)
+                  {tutoresAlumnoCount} tutor(es) registrado(s)
                 </p>
               </div>
               <div className="overflow-y-auto max-h-48">
