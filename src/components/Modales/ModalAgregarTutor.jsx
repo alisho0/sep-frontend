@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { FormNuevoTutor } from "./tutor/FormNuevoTutor";
 import { FormBuscarTutor } from "./tutor/FormBuscarTutor";
+import { FormCrearAgregarTutor } from "./tutor/FormCrearAgregarTutor";
 
 export const ModalAgregarTutor = ({ tutores }) => {
   const [vista, setVista] = useState("buscar");
@@ -37,7 +37,7 @@ export const ModalAgregarTutor = ({ tutores }) => {
         <FormBuscarTutor tutores={tutores} />
       )}
       {vista == "crear" && (
-        <FormNuevoTutor />
+        <FormCrearAgregarTutor />
       )}
     </>
   );

@@ -23,7 +23,8 @@ const alumnosSlice = createSlice({
     initialState: {
         alumnos: [],
         loading: false,
-        alumno: null
+        alumno: null,
+        countAlumnos: 0
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -34,6 +35,7 @@ const alumnosSlice = createSlice({
             .addCase(traerAlumnos.fulfilled, (state, action) => {
                 state.loading = false;
                 state.alumnos = action.payload;
+                state.countAlumnos = action.payload.length;
             })
             .addCase(traerAlumnos.rejected, (state) => {
                 state.loading = false;

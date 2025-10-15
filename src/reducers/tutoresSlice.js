@@ -49,6 +49,7 @@ const tutoresSlice = createSlice({
             })
             .addCase(crearTutorConAlumno.fulfilled, (state, action) => {
                 state.loading = false;
+                state.tutoresAlumno.push(action.payload)
             })
             .addCase(crearTutorConAlumno.rejected, (state, action) => {
                 state.error = action.error.message;

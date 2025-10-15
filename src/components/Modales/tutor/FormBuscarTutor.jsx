@@ -1,12 +1,15 @@
 import React, { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { asignarTutor } from "../../../reducers/alumnosSlice";
+import { showAlert } from "../../../utils/alert";
+import { cerrarModal } from "../../../reducers/uiSlice";
+import { CardSelectTutor } from "../../tutores/CardSelectTutor";
 
 export const FormBuscarTutor = ({ tutores }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const token = localStorage.getItem("token");
   const { alumno } = useSelector((state) => state.alumnos);
-  const {tutoresAlumno} = useSelector((state) => state)
+  const {tutoresAlumno} = useSelector((state) => state.tutores)
   const dispatch = useDispatch();
 
   const filteredTutores = useMemo(() => {
@@ -17,32 +20,42 @@ export const FormBuscarTutor = ({ tutores }) => {
         tutor.apellido.toLowerCase().includes(searchTermLower) ||
         tutor.dni.toLowerCase().includes(searchTermLower)
       );
+    })
+    .filter((tutor) => {
+      return !tutoresAlumno.some(t => t.id === tutor.id);
     });
   }, [tutores, searchTerm]);
 
-  const onAgregarTutor = async (idTutor) => {
-    const existeTutor = tutoresAlumno.filter(tutor => tutor.id == idTutor)
-    console.log(existeTutor);
-    // try {
-    //   const asignar = await dispatch(
-    //     asignarTutor({ token, idTutor, idAlumno: alumno.id })
-    //   );
+  const onAgregarTutor = async (e, idTutor) => {
+    e.preventDefault();
+    const existeTutor = tutoresAlumno.some(t => t.id === idTutor);
+    if (existeTutor) {
+      showAlert({
+        title: 'Error',
+        text: 'Este tutor ya está vinculado al alumno',
+        icon: 'error',
+      })
+    }
+    try {
+      const asignar = await dispatch(
+        asignarTutor({ token, idTutor, idAlumno: alumno.id })
+      );
 
-    //   if (asignarTutor.fulfilled.match(asignar)) {
-    //     showAlert({
-    //       title: "Éxito",
-    //       text: "El tutor fue creado y agregado correctamente al alumno",
-    //       icon: "success",
-    //     });
-    //     dispatch(cerrarModal());
-    //   }
-    // } catch (error) {
-    //   showAlert({
-    //     title: "Error",
-    //     text: error.message || "Ocurrió un error al asignar el tutor",
-    //     icon: "error",
-    //   });
-    // }
+      if (asignarTutor.fulfilled.match(asignar)) {
+        showAlert({
+          title: "Éxito",
+          text: "El tutor fue asignado correctamente al alumno",
+          icon: "success",
+        });
+        dispatch(cerrarModal());
+      }
+    } catch (error) {
+      showAlert({
+        title: "Error",
+        text: error.message || "Ocurrió un error al asignar el tutor",
+        icon: "error",
+      });
+    }
   };
 
   return (
@@ -63,42 +76,7 @@ export const FormBuscarTutor = ({ tutores }) => {
       <div className="h-96 overflow-y-scroll">
         {filteredTutores.length > 0 ? (
           filteredTutores.map((tutor, idx) => (
-            <div
-              className="mt-6 border border-gray-400 p-4 rounded-lg bg-gray-100 hover:bg-gray-300 transition-colors"
-              key={idx}
-            >
-              <div className="flex flex-col md:flex-row justify-between gap-4">
-                <div>
-                  <h3 className="text-md font-medium mb-2">{`${tutor.nombre} ${tutor.apellido}`}</h3>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold">DNI: </span>
-                    {tutor.dni}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold">Domicilio: </span>
-                    {tutor.domicilio}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold">Teléfono: </span>
-                    {tutor.telefono}
-                  </p>
-                  {tutor.telAux && (
-                    <p className="text-sm text-gray-600">
-                      <span className="font-semibold">Tel. Aux: </span>
-                      {tutor.telAux}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <button
-                    className="bg-indigo-600 rounded-lg shadow-md text-white py-1.5 px-2 hover:cursor-pointer hover:bg-indigo-700 transition-colors font-semibold md:w-fit w-full"
-                    onClick={() => onAgregarTutor(tutor.id)}
-                  >
-                    Seleccionar
-                  </button>
-                </div>
-              </div>
-            </div>
+            <CardSelectTutor tutor={tutor} key={idx} onAgregarTutor={onAgregarTutor} />
           ))
         ) : (
           <div className="text-center mt-6 text-gray-500">

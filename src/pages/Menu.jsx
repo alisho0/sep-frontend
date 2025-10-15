@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Navbar } from '../components/Navbar'
 import { UsersIcon } from '@heroicons/react/16/solid'
+import { useDispatch, useSelector } from 'react-redux'
+import { traerAlumnos } from '../reducers/alumnosSlice'
 
 export const Menu = () => {
 
@@ -38,6 +40,9 @@ export const Menu = () => {
       tiempo: "Hace 7 horas"
     },
   ]
+  const token = localStorage.getItem('token')
+  const dispatch = useDispatch();
+  const { countAlumnos } = useSelector((state) => state.alumnos);
 
   return (
     <>
