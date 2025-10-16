@@ -4,6 +4,7 @@ import registrosReducer from '../reducers/registrosSlice'
 import uiReducer from '../reducers/uiSlice'
 import observacionesReducer from '../reducers/observacionesSlice'
 import tutoresReducer from '../reducers/tutoresSlice'
+import metricasReducer from '../reducers/metricasSlice'
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         registros: registrosReducer,
         ui: uiReducer,
         observaciones: observacionesReducer,
-        tutores: tutoresReducer
+        tutores: tutoresReducer,
+        metricas: metricasReducer,
     }
 })
