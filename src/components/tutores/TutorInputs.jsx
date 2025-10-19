@@ -1,22 +1,14 @@
 import { PlusIcon } from '@heroicons/react/16/solid';
 import React from 'react'
-import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useFormContext } from 'react-hook-form';
 
-export const FormCrearTutor = ({onSubmit}) => {
+export const TutorInputs = () => {
   const {
     register,
-    handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm();
-  const { alumno } = useSelector((state) => state.alumnos);
+  } = useFormContext();
   return (
     <>
-      <form
-        className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"
-        onSubmit={handleSubmit(onSubmit)}
-      >
         {/* Nombre */}
         <div className="flex flex-col">
           <label htmlFor="nombre" className="text-sm font-medium text-gray-700">
@@ -144,13 +136,11 @@ export const FormCrearTutor = ({onSubmit}) => {
               Este campo es obligatorio
             </span>
           )}
-          <input type="hidden" value={alumno.id} {...register("idAlumno", {valueAsNumber: true})} />
         </div>
-        <button className="flex bg-indigo-600 px-2 py-1 rounded-lg text-white w-full gap-2 font-semibold col-span-2 justify-center items-center hover:cursor-pointer hover:bg-indigo-700 transition-colors">
+        <button className="flex bg-indigo-600 px-2 py-1 rounded-lg text-white w-full gap-2 font-semibold col-span-2 justify-center items-center hover:cursor-pointer hover:bg-indigo-700 transition-colors mt-3">
           <PlusIcon className="w-5 h-5" />
           <p>Crear y Agregar Tutor</p>
         </button>
-      </form>
     </>
   )
 }

@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { traerAlumnos } from "../reducers/alumnosSlice";
 import { Link } from "react-router-dom";
+import { UserPlusIcon } from "@heroicons/react/16/solid";
+import { abrirModal } from "../reducers/uiSlice";
 
 export const Alumnos = () => {
   const token = localStorage.getItem("token");
@@ -21,6 +23,14 @@ export const Alumnos = () => {
         <div className="bg-white p-6 rounded-lg shadow-md border-gray-300">
           <h4>Listado de Alumnos</h4>
           <FiltrosAlumnos />
+          <button className="flex gap-2 justify-center items-center bg-indigo-600 mt-5 w-full py-1 px-2 rounded-lg shadow-md text-white font-semibold hover:cursor-pointer hover:bg-indigo-700 transition-colors" onClick={() => dispatch(
+            abrirModal({
+              modalAbierto: true, 
+              tipo: 'crearAlumno', 
+              modalData: null}))}>
+            <UserPlusIcon className="h-5 w-5" />
+            Nuevo Alumno
+          </button>
           <div>
             {/* Aquí iría la tabla o lista de alumnos */}
             {loading ? (
@@ -42,12 +52,12 @@ export const Alumnos = () => {
                     </span>
                   </div>
                 </div>
-<Link
-  to={`/alumnos/${alumno.id}`}
-  className="self-center md:justify-self-end w-full bg-indigo-500 p-2 rounded-lg cursor-pointer hover:bg-indigo-300 transition duration-150 flex justify-center md:w-auto"
->
-  <EyeIcon className="h-5 w-5 text-white" />
-</Link>
+              <Link
+                to={`/alumnos/${alumno.id}`}
+                className="self-center md:justify-self-end w-full bg-indigo-500 p-2 rounded-lg cursor-pointer hover:bg-indigo-300 transition duration-150 flex justify-center md:w-auto"
+              >
+                <EyeIcon className="h-5 w-5 text-white" />
+              </Link>
             </div>
             )
             ))}

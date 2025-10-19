@@ -1,16 +1,17 @@
-import { PlusIcon } from "@heroicons/react/16/solid";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useFormContext } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { crearTutorConAlumno } from "../../../reducers/tutoresSlice";
-import { crearObservacion } from "../../../reducers/observacionesSlice";
 import { showAlert } from "../../../utils/alert";
 import { cerrarModal } from "../../../reducers/uiSlice";
-import { FormCrearTutor } from "../../tutores/FormCrearTutor";
+import { TutorInputs } from "../../tutores/TutorInputs";
 
 export const FormCrearAgregarTutor = () => {
   const token = localStorage.getItem("token")
   const dispatch = useDispatch();
+  const {
+    handleSubmit
+  } = useFormContext();
 
   const onSubmit = async (data) => {
     try {
@@ -36,7 +37,12 @@ export const FormCrearAgregarTutor = () => {
 
   return (
     <>
-     <FormCrearTutor onSubmit={onSubmit}  />
+      <form
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <TutorInputs />
+      </form>
     </>
   );
 };

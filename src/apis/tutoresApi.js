@@ -60,3 +60,16 @@ export const desvincularTutor = async (token, idTutor, idAlumno) => {
         throw new Error(error.response?.data?.message || "Error al desvincular el tutor. Por favor, intente nuevamente");
     }
 }
+
+export const nuevoTutorVacio = async (token, tutor) => {
+    try {
+        const res = await axios.post(`${url}/crear`, tutor, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    } catch (error) {
+        console.error("Error al eliminar el tutor", error.response?.data || error)
+        throw new Error(error.response?.data?.message || 'Error al crear el tutor. Por favor, intente nuevamente');
+    }
+}

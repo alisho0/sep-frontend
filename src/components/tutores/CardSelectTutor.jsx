@@ -1,5 +1,3 @@
-import React from "react";
-
 export const CardSelectTutor = ({tutor, onAgregarTutor}) => {
   return (
     <>
