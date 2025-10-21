@@ -1,5 +1,4 @@
 import axios from "axios"
-import { data } from "react-router-dom";
 
 const url = `${import.meta.env.VITE_BASE_URL}/tutor`;
 
@@ -68,6 +67,7 @@ export const nuevoTutorVacio = async (token, tutor) => {
                 Authorization: `Bearer ${token}`
             }
         });
+        return res.data;
     } catch (error) {
         console.error("Error al eliminar el tutor", error.response?.data || error)
         throw new Error(error.response?.data?.message || 'Error al crear el tutor. Por favor, intente nuevamente');

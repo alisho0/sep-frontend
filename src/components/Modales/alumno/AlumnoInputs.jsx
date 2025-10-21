@@ -2,7 +2,7 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 
 export const AlumnoInputs = () => {
-    const { register } = useFormContext();
+    const { register, formState: { errors } } = useFormContext();
   return (
     <>
       <div className="flex flex-col col-span-2 md:col-span-1">
@@ -17,6 +17,7 @@ export const AlumnoInputs = () => {
           name="nombre"
           {...register("nombre", { required: true })}
         />
+        {errors?.nombre && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)}
       </div>
       <div className="flex flex-col col-span-2 md:col-span-1">
         <label htmlFor="apellido" className="text-sm font-medium text-gray-700">
@@ -30,6 +31,7 @@ export const AlumnoInputs = () => {
           name="apellido"
           {...register("apellido", { required: true })}
         />
+        {errors?.apellido && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)}
       </div>
       <div className="flex flex-col col-span-2 md:col-span-1">
         <label htmlFor="dni" className="text-sm font-medium text-gray-700">
@@ -43,6 +45,7 @@ export const AlumnoInputs = () => {
           name="dni"
           {...register("dni", { required: true })}
         />
+        {errors?.dni && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)}
       </div>
       <div className="flex flex-col col-span-2 md:col-span-1">
         <label
@@ -59,6 +62,7 @@ export const AlumnoInputs = () => {
           name="domicilio"
           {...register("domicilio", { required: true })}
         />
+        {errors?.domicilio && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)}
       </div>
     </>
   );

@@ -45,11 +45,7 @@ export const TutorInputs = () => {
             className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             {...register("apellido", { required: true })}
           />
-          {errors.apellido && (
-            <span className="text-xs text-red-700">
-              Este campo es obligatorio
-            </span>
-          )}
+          {errors.apellido && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)}
         </div>
 
         {/* DNI */}

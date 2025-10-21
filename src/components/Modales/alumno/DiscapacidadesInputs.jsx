@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 export const DiscapacidadesInputs = () => {
-  const { register, watch, setValue } = useFormContext();
+  const { register, watch, setValue, formState: {errors} } = useFormContext();
   const [discapacidadesSeleccionadas, setDiscapacidadesSeleccionadas] = useState([]);
   const discapacidadActual = watch("discapacidades");
   const isDiscapacidad = watch("discapacidad");
@@ -125,8 +125,11 @@ export const DiscapacidadesInputs = () => {
                     name="detalle_discapacidad"
                     id="detalle"
                     rows={2}
-                    placeholder="Escribe detalles aquí (opcional)"
+                    placeholder="Escribe detalles aquí (opcional)" {...register('detalleDiscap', {required: true})}
                   ></textarea>
+                  {errors?.detalleDiscap && (
+                    <span className="text-xs text-red-700">Este campo es obligatorio</span>
+                  )}
                 </div>
               </div>
 

@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 
 export const InfoGradoInputs = () => {
 
-    const { register } = useFormContext();
+    const { register, formState: {errors} } = useFormContext();
 
   return (
     <section className="col-span-2">
@@ -26,6 +26,7 @@ export const InfoGradoInputs = () => {
             <option value="2024">2024</option>
             <option value="2023">2023</option>
           </select>
+          {errors?.anioCicloGrado && <span className="text-xs text-red-700">Este campo es obligatorio</span>}
         </div>
         <div className="flex flex-col">
           <label
@@ -44,6 +45,7 @@ export const InfoGradoInputs = () => {
             <option value="2">2°</option>
             <option value="3">3°</option>
           </select>
+          {errors?.nroGrado && <span className="text-xs text-red-700">Este campo es obligatorio</span>}
         </div>
         <div className="flex flex-col">
           <label
@@ -62,6 +64,7 @@ export const InfoGradoInputs = () => {
             <option value="B">B</option>
             <option value="C">C</option>
           </select>
+          {errors?.seccionGrado && <span className="text-xs text-red-700">Este campo es obligatorio</span>}
         </div>
         <div className="flex flex-col">
           <label
@@ -79,6 +82,7 @@ export const InfoGradoInputs = () => {
             <option value="mañana">Mañana</option>
             <option value="tarde">Tarde</option>
           </select>
+          {errors?.turnoGrado && <span className="text-xs text-red-700">Este campo es obligatorio</span>}
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { desvincularTutor, nuevoTutorConAlumno, traerTutores, traerTutoresPorAlumno } from "../apis/tutoresApi";
+import { desvincularTutor, nuevoTutorConAlumno, nuevoTutorVacio, traerTutores, traerTutoresPorAlumno } from "../apis/tutoresApi";
 
 export const listarTutores = createAsyncThunk('tutores/listar', async ({token}) => {
     const data = await traerTutores(token);
@@ -19,6 +19,12 @@ export const crearTutorConAlumno = createAsyncThunk('tutores/crear', async ({tok
 
 export const desvincularTutorDeAlumno = createAsyncThunk('tutores/desvincular', async ({token, idTutor, idAlumno}) => {
     const data = await desvincularTutor(token, idTutor, idAlumno);
+    return data;
+})
+
+export const crearTutorVacio = createAsyncThunk('tutores/crearVacio', async({token, tutor}, {dispatch}) => {
+    const data = await nuevoTutorVacio(token, tutor);
+    dispatch(listarTutores({token}));
     return data;
 })
 
@@ -81,6 +87,13 @@ const tutoresSlice = createSlice({
             .addCase(desvincularTutorDeAlumno.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
+            })
+            .addCase(crearTutorVacio.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(crearTutorVacio.fulfilled, (state, action) => {
+                state.loading = false;
+                state.tutores.push(action.payload);
             })
     }
 })
