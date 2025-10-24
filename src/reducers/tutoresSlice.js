@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { desvincularTutor, nuevoTutorConAlumno, nuevoTutorVacio, traerTutores, traerTutoresPorAlumno } from "../apis/tutoresApi";
 
 export const listarTutores = createAsyncThunk('tutores/listar', async () => {
-    const data = await traerTutores(token);
+    const data = await traerTutores();
     return data;
 });
 
@@ -13,7 +13,7 @@ export const listarTutoresPorAlumno = createAsyncThunk('tutores/listarPorAlumno'
 
 export const crearTutorConAlumno = createAsyncThunk('tutores/crear', async ({tutor}, {dispatch}) => {
     const data = await nuevoTutorConAlumno(tutor);
-    dispatch(listarTutores({token}))
+    dispatch(listarTutores())
     return data;
 })
 

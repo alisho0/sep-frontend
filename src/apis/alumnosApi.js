@@ -32,3 +32,12 @@ export const asignarTutorAlumno = async (idAlumno, idTutor) => {
         throw new Error(error.response?.data?.message || "Error al asignar el tutor. Por favor, intente nuevamente");
     }
 }
+
+export const postAlumno = async (alumno) => {
+    try {
+        const res = await api.post(`${url}/crear`, alumno);
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al crear un alumno, intentalo de nuevo.")
+    }
+}

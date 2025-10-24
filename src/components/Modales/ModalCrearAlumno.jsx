@@ -9,6 +9,8 @@ import { listarTutores } from "../../reducers/tutoresSlice";
 import { CardsTutor } from "./tutor/CardsTutor";
 import { showAlert } from "../../utils/alert";
 import { TutorCrearConId } from "./alumno/TutorCrearConId";
+import { crearAlumno } from "../../reducers/alumnosSlice";
+import { cerrarModal } from "../../reducers/uiSlice";
 
 export const ModalCrearAlumno = () => {
   const { tutores } = useSelector((state) => state.tutores);
@@ -61,7 +63,28 @@ export const ModalCrearAlumno = () => {
       return;
     }
 
-    console.log(data);
+    try {
+      const result = await dispatch(crearAlumno({ alumno: data }));
+      if (crearAlumno.fulfilled.match(result)) {
+        showAlert({
+          title: "Creado",
+          text: "Alumno creado correctamente",
+          icon: "success",
+        });
+        dispatch(cerrarModal());
+      } else if (crearAlumno.rejected.match(result)) {
+        throw new Error(result.error.message);
+      }
+    } catch (error) {
+      showAlert({
+        title: "Error",
+        text:
+          error.message ||
+          "Hubo un error al guardar el alumno, inténtalo nuevamente.",
+        icon: "error",
+      });
+    }
+    console.log(data)
   };
   return (
     <>
@@ -102,7 +125,11 @@ export const ModalCrearAlumno = () => {
               {vista === "buscar" && (
                 <CardsTutor onAgregarTutor={onAgregarTutor} />
               )}
-              {vista === "crear" && <TutorCrearConId setTutoresSeleccionados={setTutoresSeleccionados} />}
+              {vista === "crear" && (
+                <TutorCrearConId
+                  setTutoresSeleccionados={setTutoresSeleccionados}
+                />
+              )}
             </div>
 
             <div className="flex flex-wrap gap-2 col-span-2">

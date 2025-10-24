@@ -86,8 +86,8 @@ export const InfoGradoInputs = () => {
             className="w-full outline-none text-gray-700 bg-white border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-indigo-500" {...register('turnoGrado', {required: true})} defaultValue=""
           >
             <option value="" disabled>Selecciona un turno</option>
-            <option value="mañana">Mañana</option>
-            <option value="tarde">Tarde</option>
+            <option value="M">Mañana</option>
+            <option value="T">Tarde</option>
           </select>
           {errors?.turnoGrado && <span className="text-xs text-red-700">Este campo es obligatorio</span>}
         </div>
