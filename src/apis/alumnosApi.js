@@ -1,41 +1,30 @@
 import axios from 'axios';
 import React from 'react'
+import api from '../utils/interceptor';
 
 const url = `${import.meta.env.VITE_BASE_URL}/alumnos`;
 
-export const getAlumnos = async (token) => {
+export const getAlumnos = async () => {
     try {
-        const response = await axios.get(`${url}/listar`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        const response = await api.get(`${url}/listar`);
         return response.data;
     } catch (error) {
         console.log(error);
     }
 }
 
-export const getAlumnoById = async (id, token) => {
+export const getAlumnoById = async (id) => {
     try {
-        const response = await axios.get(`${url}/detalle/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        const response = await api.get(`${url}/detalle/${id}`);
         return response.data;
     } catch (error) {
         console.log(error);
     }
 }
 
-export const asignarTutorAlumno = async (token, idAlumno, idTutor) => {
+export const asignarTutorAlumno = async (idAlumno, idTutor) => {
     try {
-        const response = await axios.put(`${url}/asignarTutor/${idAlumno}/${idTutor}`, {}, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
+        const response = await api.put(`${url}/asignarTutor/${idAlumno}/${idTutor}`, {})
 
         return response.data;
     } catch (error) {

@@ -7,7 +7,6 @@ import { cerrarModal } from "../../../reducers/uiSlice";
 import { TutorInputs } from "../../tutores/TutorInputs";
 
 export const FormCrearAgregarTutor = () => {
-  const token = localStorage.getItem("token")
   const dispatch = useDispatch();
   const {
     handleSubmit
@@ -15,7 +14,7 @@ export const FormCrearAgregarTutor = () => {
 
   const onSubmit = async (data) => {
     try {
-      const resultAction = await dispatch(crearTutorConAlumno({ token, tutor: data }));
+      const resultAction = await dispatch(crearTutorConAlumno({ tutor: data }));
       if (crearTutorConAlumno.fulfilled.match(resultAction)) {
         showAlert({
           title: "Éxito",

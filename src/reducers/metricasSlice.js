@@ -2,11 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getObsRecientes, getTotalAlumnos } from "../apis/metricasApi";
 import { actividadReciente } from "../apis/actividadesApi";
 
-export const traerMetricas = createAsyncThunk('metricas/traerMetricas', async (token) => {
+export const traerMetricas = createAsyncThunk('metricas/traerMetricas', async () => {
     try {
         const [alumnosTotales, observacionesRecientes] = await Promise.all([
-            getTotalAlumnos(token),
-            getObsRecientes(token)
+            getTotalAlumnos(),
+            getObsRecientes()
         ]);
         return {
             alumnosTotales,
@@ -18,9 +18,9 @@ export const traerMetricas = createAsyncThunk('metricas/traerMetricas', async (t
     }
 });
 
-export const ultimasActividades = createAsyncThunk('metricas/ultimasActividades', async (token) => {
+export const ultimasActividades = createAsyncThunk('metricas/ultimasActividades', async () => {
     try {
-        const data = actividadReciente(token);
+        const data = actividadReciente();
         return data;
     } catch (error) {
         console.error("Error al traer actividades", error);

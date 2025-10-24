@@ -6,7 +6,6 @@ import { showAlert } from "../../../utils/alert";
 import { useDispatch } from "react-redux";
 
 export const TutorCrearConId = ({ setTutoresSeleccionados }) => {
-  const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const { setValue, getValues } = useFormContext();
   const methods = useForm();
@@ -18,7 +17,7 @@ export const TutorCrearConId = ({ setTutoresSeleccionados }) => {
 
   const onSubmit = async (data) => {
     try {
-      const result = await dispatch(crearTutorVacio({ token, tutor: data }));
+      const result = await dispatch(crearTutorVacio({ tutor: data }));
       if (crearTutorVacio.fulfilled.match(result)) {
         const nuevoTutor = result.payload;
         const nuevoId = nuevoTutor.id;

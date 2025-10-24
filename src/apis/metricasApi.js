@@ -1,14 +1,11 @@
 import axios from "axios"
+import api from "../utils/interceptor";
 
 const url = `${import.meta.env.VITE_BASE_URL}/metrica`;
 
-export const getObsRecientes = async (token) => {
+export const getObsRecientes = async () => {
     try {
-        const response = await axios.get(`${url}/observacionesRecientes`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
+        const response = await api.get(`${url}/observacionesRecientes`)
         return response.data;
     } catch (error) {
         console.error("Error al obtener las métricas", error.response?.data || error);
@@ -16,13 +13,9 @@ export const getObsRecientes = async (token) => {
     }
 }
 
-export const getTotalAlumnos = async (token) => {
+export const getTotalAlumnos = async () => {
     try {
-        const response = await axios.get(`${url}/alumnosTotales`, {
-            headers: {
-                Authorization:  `Bearer ${token}`
-            }
-        });
+        const response = await api.get(`${url}/alumnosTotales`);
         return response.data;
     } catch (error) {
         console.error("Error al obtener las métricas", error.response?.data || error);

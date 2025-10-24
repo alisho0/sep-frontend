@@ -7,7 +7,6 @@ import { CardSelectTutor } from "../../tutores/CardSelectTutor";
 import { CardsTutor } from "./CardsTutor";
 
 export const FormBuscarTutor = ({ tutores }) => {
-  const token = localStorage.getItem("token");
   const { alumno } = useSelector((state) => state.alumnos);
   const {tutoresAlumno } = useSelector((state) => state.tutores)
   const dispatch = useDispatch();
@@ -24,7 +23,7 @@ export const FormBuscarTutor = ({ tutores }) => {
     }
     try {
       const asignar = await dispatch(
-        asignarTutor({ token, idTutor, idAlumno: alumno.id })
+        asignarTutor({ idTutor, idAlumno: alumno.id })
       );
 
       if (asignarTutor.fulfilled.match(asignar)) {

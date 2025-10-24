@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { listarGradosDisponibles, listarSeccionesDisponibles } from "../../../reducers/gradosSlice";
 
 export const InfoGradoInputs = () => {
-
+    const dispatch = useDispatch();
     const { register, formState: {errors} } = useFormContext();
+    const { gradosDisponibles, seccionesDisponibles } = useSelector((state) => state.grados);
 
+    useEffect(() => {
+      dispatch(listarSeccionesDisponibles());
+      dispatch(listarGradosDisponibles());
+    }, [])
   return (
     <section className="col-span-2">
       <h3 className="font-semibold text-sm mb-3">Información del Grado</h3>
@@ -41,9 +48,9 @@ export const InfoGradoInputs = () => {
             className="w-full outline-none text-gray-700 bg-white border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-indigo-500" {...register('nroGrado', {required: true, valueAsNumber: true})} defaultValue=""
           >
             <option value="" disabled>Selecciona un grado</option>
-            <option value="1">1°</option>
-            <option value="2">2°</option>
-            <option value="3">3°</option>
+            {gradosDisponibles.map((grado, idx) => (
+              <option value={grado} key={idx}>{`${grado}°`}</option>
+            ))}
           </select>
           {errors?.nroGrado && <span className="text-xs text-red-700">Este campo es obligatorio</span>}
         </div>
@@ -60,9 +67,9 @@ export const InfoGradoInputs = () => {
             className="w-full outline-none text-gray-700 bg-white border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-indigo-500" {...register('seccionGrado', {required: true})} defaultValue=""
           >
             <option value="" disabled>Selecciona una sección</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
+            {seccionesDisponibles.map((seccion, idx) => (
+              <option value={seccion} key={idx}>{seccion}</option>
+            ))}
           </select>
           {errors?.seccionGrado && <span className="text-xs text-red-700">Este campo es obligatorio</span>}
         </div>

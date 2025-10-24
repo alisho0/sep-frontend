@@ -9,12 +9,11 @@ import { UserPlusIcon } from "@heroicons/react/16/solid";
 import { abrirModal } from "../reducers/uiSlice";
 
 export const Alumnos = () => {
-  const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const { alumnos, loading } = useSelector((state) => state.alumnos);
 
   useEffect(() => {
-    dispatch(traerAlumnos(token));
+    dispatch(traerAlumnos());
   }, [])
 
   return (

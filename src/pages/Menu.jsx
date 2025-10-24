@@ -7,12 +7,11 @@ import { traerMetricas, ultimasActividades } from '../reducers/metricasSlice'
 
 export const Menu = () => {
 
-  const token = localStorage.getItem('token')
   const dispatch = useDispatch();
   const { metricas, observaciones } = useSelector((state) => state.metricas);
   useEffect(() => {
-    dispatch(traerMetricas(token));
-    dispatch(ultimasActividades(token));
+    dispatch(traerMetricas());
+    dispatch(ultimasActividades());
   }, [])
 
   const formatearFecha = (fechaRaw) => {

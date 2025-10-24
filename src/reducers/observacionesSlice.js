@@ -2,9 +2,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { agregarObservacion } from "../apis/observacionesApi";
 import { detalleRegistro } from "./registrosSlice";
 
-export const crearObservacion = createAsyncThunk('observaciones/crear', async ({obs, token, registroId}, {dispatch}) => {
-    const data = await agregarObservacion(obs, token);
-    await dispatch(detalleRegistro({token, id: registroId}))
+export const crearObservacion = createAsyncThunk('observaciones/crear', async ({obs, registroId}, {dispatch}) => {
+    const data = await agregarObservacion(obs);
+    await dispatch(detalleRegistro({id: registroId}))
     return data;
 })
 

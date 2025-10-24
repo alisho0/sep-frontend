@@ -27,7 +27,7 @@ export const ModalAgregarObservacion = () => {
 
     const onSubmit = async (data) => {
         try {
-            const resultAction = await dispatch(crearObservacion({obs: data, token, registroId: registro.id}));
+            const resultAction = await dispatch(crearObservacion({obs: data, registroId: registro.id}));
             if (crearObservacion.fulfilled.match(resultAction)) {
                 showAlert({
                     title: 'Observación creada',

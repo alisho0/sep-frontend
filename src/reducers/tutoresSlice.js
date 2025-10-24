@@ -1,30 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { desvincularTutor, nuevoTutorConAlumno, nuevoTutorVacio, traerTutores, traerTutoresPorAlumno } from "../apis/tutoresApi";
 
-export const listarTutores = createAsyncThunk('tutores/listar', async ({token}) => {
+export const listarTutores = createAsyncThunk('tutores/listar', async () => {
     const data = await traerTutores(token);
     return data;
 });
 
-export const listarTutoresPorAlumno = createAsyncThunk('tutores/listarPorAlumno', async ({token, id}) => {
-    const data = await traerTutoresPorAlumno(token, id);
+export const listarTutoresPorAlumno = createAsyncThunk('tutores/listarPorAlumno', async ({id}) => {
+    const data = await traerTutoresPorAlumno(id);
     return data;
 })
 
-export const crearTutorConAlumno = createAsyncThunk('tutores/crear', async ({token, tutor}, {dispatch}) => {
-    const data = await nuevoTutorConAlumno(token, tutor);
+export const crearTutorConAlumno = createAsyncThunk('tutores/crear', async ({tutor}, {dispatch}) => {
+    const data = await nuevoTutorConAlumno(tutor);
     dispatch(listarTutores({token}))
     return data;
 })
 
-export const desvincularTutorDeAlumno = createAsyncThunk('tutores/desvincular', async ({token, idTutor, idAlumno}) => {
-    const data = await desvincularTutor(token, idTutor, idAlumno);
+export const desvincularTutorDeAlumno = createAsyncThunk('tutores/desvincular', async ({idTutor, idAlumno}) => {
+    const data = await desvincularTutor(idTutor, idAlumno);
     return data;
 })
 
-export const crearTutorVacio = createAsyncThunk('tutores/crearVacio', async({token, tutor}, {dispatch}) => {
-    const data = await nuevoTutorVacio(token, tutor);
-    dispatch(listarTutores({token}));
+export const crearTutorVacio = createAsyncThunk('tutores/crearVacio', async({tutor}, {dispatch}) => {
+    const data = await nuevoTutorVacio(tutor);
+    dispatch(listarTutores());
     return data;
 })
 

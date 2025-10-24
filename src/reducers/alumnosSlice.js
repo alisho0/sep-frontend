@@ -2,19 +2,19 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { asignarTutorAlumno, getAlumnoById, getAlumnos } from "../apis/alumnosApi"
 import { listarTutoresPorAlumno } from "./tutoresSlice";
 
-export const traerAlumnos = createAsyncThunk('alumnos/getAlumnos', async (token) => {
- const data = await getAlumnos(token);
+export const traerAlumnos = createAsyncThunk('alumnos/getAlumnos', async () => {
+ const data = await getAlumnos();
  return data;
 })
 
-export const traerPorAlumnoId = createAsyncThunk('alumnos/detalle', async ({id, token}) => {
-    const data = await getAlumnoById(id, token);
+export const traerPorAlumnoId = createAsyncThunk('alumnos/detalle', async ({id}) => {
+    const data = await getAlumnoById(id);
     return data;
 })
 
-export const asignarTutor = createAsyncThunk('alumnos/asignarTutor', async ({token, idAlumno, idTutor}, {dispatch}) => {
-    const data = await asignarTutorAlumno(token, idAlumno, idTutor);
-    dispatch(listarTutoresPorAlumno({token, id: idAlumno}));
+export const asignarTutor = createAsyncThunk('alumnos/asignarTutor', async ({idAlumno, idTutor}, {dispatch}) => {
+    const data = await asignarTutorAlumno(idAlumno, idTutor);
+    dispatch(listarTutoresPorAlumno({id: idAlumno}));
     return data;
 })
 

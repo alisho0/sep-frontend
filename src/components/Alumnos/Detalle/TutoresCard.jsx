@@ -8,7 +8,6 @@ export const TutoresCard = ({id}) => {
   const dispatch = useDispatch();
   const {tutoresAlumno} = useSelector((state) => state.tutores);
   const { alumno } = useSelector((state) => state.alumnos);
-  const token = localStorage.getItem('token');
 
   const onEliminar = (idTutor) => {
     confirmationAlert({
@@ -17,7 +16,7 @@ export const TutoresCard = ({id}) => {
       icon: 'warning'
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(desvincularTutorDeAlumno({token, idTutor, idAlumno: alumno.id}))
+        dispatch(desvincularTutorDeAlumno({idTutor, idAlumno: alumno.id}))
       }
     })
   }

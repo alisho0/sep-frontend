@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { aniosConRegistros, traerRegistro } from "../apis/registrosApi";
 
-export const aniosRegistros = createAsyncThunk('registros/aniosDisponibles', async ({token, id}) => {
-    const data = await aniosConRegistros(token, id);
+export const aniosRegistros = createAsyncThunk('registros/aniosDisponibles', async ({id}) => {
+    const data = await aniosConRegistros(id);
     return data;
 }) 
 
-export const detalleRegistro = createAsyncThunk('registros/observaciones', async ({token, id}) => {
-    const data = await traerRegistro(token, id);
+export const detalleRegistro = createAsyncThunk('registros/observaciones', async ({id}) => {
+    const data = await traerRegistro(id);
     return data;
 })
 

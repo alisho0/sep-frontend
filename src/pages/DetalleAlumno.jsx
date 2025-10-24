@@ -12,7 +12,6 @@ import { listarTutores, listarTutoresPorAlumno } from "../reducers/tutoresSlice"
 
 export const DetalleAlumno = () => {
   const { id } = useParams();
-  const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const { alumno, loading } = useSelector((state) => state.alumnos);
   const { tutores, tutoresAlumno, tutoresAlumnoCount } = useSelector((state) => state.tutores);
@@ -21,17 +20,17 @@ export const DetalleAlumno = () => {
   );
 
   useEffect(() => {
-    dispatch(traerPorAlumnoId({ id, token }));
-    dispatch(aniosRegistros({ id, token }));
-    dispatch(listarTutores({token}));
-    dispatch(listarTutoresPorAlumno({token, id}));
+    dispatch(traerPorAlumnoId({ id }));
+    dispatch(aniosRegistros({ id }));
+    dispatch(listarTutores());
+    dispatch(listarTutoresPorAlumno({id}));
   }, []);
 
   useEffect(() => {
     if (aniosDisponibles && aniosDisponibles.length > 0) {
-      dispatch(detalleRegistro({ token, id: aniosDisponibles[0].id }));
+      dispatch(detalleRegistro({ id: aniosDisponibles[0].id }));
     }
-  }, [aniosDisponibles, token]);
+  }, [aniosDisponibles]);
 
   return (
     <>

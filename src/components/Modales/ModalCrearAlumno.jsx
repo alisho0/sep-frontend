@@ -13,7 +13,6 @@ import { TutorCrearConId } from "./alumno/TutorCrearConId";
 export const ModalCrearAlumno = () => {
   const { tutores } = useSelector((state) => state.tutores);
   const [tutoresSeleccionados, setTutoresSeleccionados] = useState([]);
-  const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const [vista, setVista] = useState("");
   const methods = useForm();
@@ -26,7 +25,7 @@ export const ModalCrearAlumno = () => {
   } = methods;
 
   useEffect(() => {
-    dispatch(listarTutores({ token }));
+    dispatch(listarTutores());
   }, []);
   useEffect(() => {
     setValue("tutoresIds", tutoresSeleccionados);
