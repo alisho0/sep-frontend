@@ -1,14 +1,14 @@
 import { useParams } from "react-router-dom";
-import { TutoresCard } from "../components/Alumnos/Detalle/TutoresCard";
+import { TutoresCard } from "../components/detalle/TutoresCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { traerPorAlumnoId } from "../reducers/alumnosSlice";
-import { aniosRegistros, detalleRegistro } from "../reducers/registrosSlice";
-import { InfoPersonalCard } from "../components/Alumnos/Detalle/InfoPersonalCard";
-import { RegistroCard } from "../components/Alumnos/Detalle/RegistroCard";
+import { traerPorAlumnoId } from "../../../reducers/alumnosSlice";
+import { aniosRegistros, detalleRegistro } from "../../../reducers/registrosSlice";
+import { InfoPersonalCard } from "../components/detalle/InfoPersonalCard";
+import { RegistroCard } from "../components/detalle/RegistroCard";
 import { UserPlusIcon } from "@heroicons/react/16/solid";
-import { abrirModal } from "../reducers/uiSlice";
-import { listarTutores, listarTutoresPorAlumno } from "../reducers/tutoresSlice";
+import { abrirModal } from "../../../reducers/uiSlice";
+import { listarTutores, listarTutoresPorAlumno } from "../../../reducers/tutoresSlice";
 
 export const DetalleAlumno = () => {
   const { id } = useParams();

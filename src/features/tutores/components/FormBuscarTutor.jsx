@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { asignarTutor } from "../../../reducers/alumnosSlice";
 import { showAlert } from "../../../utils/alert";
 import { cerrarModal } from "../../../reducers/uiSlice";
-import { CardSelectTutor } from "../../tutores/CardSelectTutor";
+import { CardSelectTutor } from "./CardSelectTutor";
 import { CardsTutor } from "./CardsTutor";
 
 export const FormBuscarTutor = ({ tutores }) => {

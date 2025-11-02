@@ -1,12 +1,12 @@
 import { EyeIcon } from "@heroicons/react/20/solid";
-import { FiltrosAlumnos } from "../components/Alumnos/FiltrosAlumnos";
-import { useAlumnos } from "../hooks/useAlumnos";
+import { FiltrosAlumnos } from "../components/detalle/FiltrosAlumnos";
+import { useAlumnos } from "../../../hooks/useAlumnos";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { traerAlumnos } from "../reducers/alumnosSlice";
+import { traerAlumnos } from "../../../reducers/alumnosSlice";
 import { Link } from "react-router-dom";
 import { UserPlusIcon } from "@heroicons/react/16/solid";
-import { abrirModal } from "../reducers/uiSlice";
+import { abrirModal } from "../../../reducers/uiSlice";
 
 export const Alumnos = () => {
   const dispatch = useDispatch();

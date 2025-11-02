@@ -2,9 +2,9 @@ import { jwtDecode } from 'jwt-decode';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux'
-import { crearObservacion } from '../../reducers/observacionesSlice';
-import { showAlert } from '../../utils/alert';
-import { cerrarModal } from '../../reducers/uiSlice';
+import { crearObservacion } from '../../../reducers/observacionesSlice';
+import { showAlert } from '../../../utils/alert';
+import { cerrarModal } from '../../../reducers/uiSlice';
 
 export const ModalAgregarObservacion = () => {
 

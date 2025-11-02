@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { FormBuscarTutor } from "./tutor/FormBuscarTutor";
-import { FormCrearAgregarTutor } from "./tutor/FormCrearAgregarTutor";
+import { FormBuscarTutor } from "../components/FormBuscarTutor";
+import { FormCrearAgregarTutor } from "../components/FormCrearAgregarTutor";
 import { useSelector } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 

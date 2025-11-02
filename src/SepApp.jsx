@@ -3,10 +3,9 @@ import { Menu } from './pages/Menu'
 import { Login } from './pages/Login'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from './routes/Layout'
-import { Alumnos } from './pages/Alumnos'
-import { DetalleAlumno } from './pages/DetalleAlumno'
 import { ModalGlobal } from './components/Modales/ModalGlobal'
-
+import { Alumnos } from './features/alumnos/pages/Alumnos'
+import { DetalleAlumno } from './features/alumnos/pages/DetalleAlumno'
 function SepApp() {
   return (
     <>

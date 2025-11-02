@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { CardSelectTutor } from '../../tutores/CardSelectTutor';
+import { CardSelectTutor } from './CardSelectTutor';
 import { useFormContext } from 'react-hook-form';
 
 export const CardsTutor = ({onAgregarTutor}) => {

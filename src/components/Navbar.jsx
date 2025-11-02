@@ -15,7 +15,7 @@ export const Navbar = () => {
   return (
     <>
         <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-            <div className="text-indigo-600 font-bold text-xl">EduGestión</div>
+            <div className="text-indigo-600 font-bold text-xl"></div>
             
             <ul className="flex space-x-6 text-gray-800 font-medium">
                 <li><Link to="/menu" className="hover:text-indigo-600 transition duration-200">Inicio</Link></li>

@@ -2,7 +2,7 @@ import React from "react";
 import { CalendarIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { PlusIcon } from "@heroicons/react/16/solid";
-import { abrirModal } from "../../../reducers/uiSlice";
+import { abrirModal } from "../../../../reducers/uiSlice";
 import { RegistroDatos } from "./RegistroDatos";
 
 export const RegistroCard = () => {

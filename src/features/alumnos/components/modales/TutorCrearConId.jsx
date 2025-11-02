@@ -1,8 +1,8 @@
 import React from "react";
-import { TutorInputs } from "../../tutores/TutorInputs";
+import { TutorInputs } from "../../../tutores/components/TutorInputs";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { crearTutorVacio } from "../../../reducers/tutoresSlice";
-import { showAlert } from "../../../utils/alert";
+import { crearTutorVacio } from "../../../../reducers/tutoresSlice";
+import { showAlert } from "../../../../utils/alert";
 import { useDispatch } from "react-redux";
 
 export const TutorCrearConId = ({ setTutoresSeleccionados }) => {

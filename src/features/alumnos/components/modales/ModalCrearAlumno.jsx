@@ -1,16 +1,16 @@
 import { PlusIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { AlumnoInputs } from "./alumno/AlumnoInputs";
-import { DiscapacidadesInputs } from "./alumno/DiscapacidadesInputs";
-import { InfoGradoInputs } from "./alumno/InfoGradoInputs";
+import { AlumnoInputs } from "./AlumnoInputs";
+import { DiscapacidadesInputs } from "./DiscapacidadesInputs";
+import { InfoGradoInputs } from "./InfoGradoInputs";
 import { useDispatch, useSelector } from "react-redux";
-import { listarTutores } from "../../reducers/tutoresSlice";
-import { CardsTutor } from "./tutor/CardsTutor";
-import { showAlert } from "../../utils/alert";
-import { TutorCrearConId } from "./alumno/TutorCrearConId";
-import { crearAlumno } from "../../reducers/alumnosSlice";
-import { cerrarModal } from "../../reducers/uiSlice";
+import { listarTutores } from "../../../../reducers/tutoresSlice";
+import { CardsTutor } from "../../../tutores/components/CardsTutor";
+import { TutorCrearConId } from "./TutorCrearConId";
+import { crearAlumno } from "../../../../reducers/alumnosSlice";
+import { cerrarModal } from "../../../../reducers/uiSlice";
+import { showAlert } from "../../../../utils/alert";
 
 export const ModalCrearAlumno = () => {
   const { tutores } = useSelector((state) => state.tutores);

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { crearTutorConAlumno } from "../../../reducers/tutoresSlice";
 import { showAlert } from "../../../utils/alert";
 import { cerrarModal } from "../../../reducers/uiSlice";
-import { TutorInputs } from "../../tutores/TutorInputs";
+import { TutorInputs } from "./TutorInputs";
 
 export const FormCrearAgregarTutor = () => {
   const dispatch = useDispatch();

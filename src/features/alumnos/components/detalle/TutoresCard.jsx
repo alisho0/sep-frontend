@@ -1,7 +1,7 @@
 import { MagnifyingGlassIcon, MinusIcon } from '@heroicons/react/16/solid';
 import { useDispatch, useSelector } from 'react-redux';
-import { confirmationAlert, showAlert } from '../../../utils/alert';
-import { desvincularTutorDeAlumno } from '../../../reducers/tutoresSlice';
+import { confirmationAlert, showAlert } from '../../../../utils/alert';
+import { desvincularTutorDeAlumno } from '../../../../reducers/tutoresSlice';
 
 export const TutoresCard = ({id}) => {
 

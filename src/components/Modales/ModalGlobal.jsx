@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { cerrarModal } from '../../reducers/uiSlice';
-import { ModalAgregarObservacion } from './ModalAgregarObservacion' 
+import { ModalAgregarObservacion } from '../../features/tutores/modales/ModalAgregarObservacion' 
 import { XMarkIcon } from '@heroicons/react/16/solid';
-import { ModalAgregarTutor } from './ModalAgregarTutor';
-import { ModalCrearAlumno } from './ModalCrearAlumno';
+import { ModalAgregarTutor } from '../../features/tutores/modales/ModalAgregarTutor';
+import { ModalCrearAlumno } from '../../features/alumnos/components/modales/ModalCrearAlumno';
  
 export const ModalGlobal = () => {
     const dispatch = useDispatch();
