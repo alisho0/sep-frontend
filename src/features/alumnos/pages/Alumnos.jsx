@@ -53,9 +53,12 @@ export const Alumnos = () => {
                 </div>
               <Link
                 to={`/alumnos/${alumno.id}`}
-                className="self-center md:justify-self-end w-full bg-indigo-500 p-2 rounded-lg cursor-pointer hover:bg-indigo-300 transition duration-150 flex justify-center md:w-auto"
+                className="self-center md:justify-self-end w-full bg-indigo-500 p-2 rounded-lg cursor-pointer hover:bg-indigo-700 transition duration-150 flex justify-center md:w-auto"
               >
-                <EyeIcon className="h-5 w-5 text-white" />
+                <div className="flex gap-2 items-center">
+                  <EyeIcon className="h-5 w-5 text-white" />
+                  <span className="font-semibold text-white">Ver Perfil</span>
+                </div>
               </Link>
             </div>
             )

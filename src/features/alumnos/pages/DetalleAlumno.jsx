@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { TutoresCard } from "../components/detalle/TutoresCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -6,13 +6,14 @@ import { traerPorAlumnoId } from "../../../reducers/alumnosSlice";
 import { aniosRegistros, detalleRegistro } from "../../../reducers/registrosSlice";
 import { InfoPersonalCard } from "../components/detalle/InfoPersonalCard";
 import { RegistroCard } from "../components/detalle/RegistroCard";
-import { UserPlusIcon } from "@heroicons/react/16/solid";
+import { ArrowLeftIcon, UserPlusIcon } from "@heroicons/react/16/solid";
 import { abrirModal } from "../../../reducers/uiSlice";
 import { listarTutores, listarTutoresPorAlumno } from "../../../reducers/tutoresSlice";
 
 export const DetalleAlumno = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { alumno, loading } = useSelector((state) => state.alumnos);
   const { tutores, tutoresAlumno, tutoresAlumnoCount } = useSelector((state) => state.tutores);
   const { aniosDisponibles, registro } = useSelector(
@@ -39,6 +40,10 @@ export const DetalleAlumno = () => {
           <p>Cargando...</p>
         ) : (
           <>
+            <button className="col-span-1 md:col-span-3 text-left flex gap-2 items-center hover:bg-indigo-700 hover:text-white w-fit py-1 px-2 rounded-lg transition-colors" onClick={() => navigate(-1)}>
+              <ArrowLeftIcon className="w-5 h-5"/>
+              <span className="font-semibold">Volver a Alumnos</span>
+            </button>
             <InfoPersonalCard />
             <div className="bg-white p-6 rounded-lg shadow-md border-gray-300">
               <div>
