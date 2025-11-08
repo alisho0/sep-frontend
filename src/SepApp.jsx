@@ -6,6 +6,7 @@ import { Layout } from './routes/Layout'
 import { ModalGlobal } from './components/Modales/ModalGlobal'
 import { Alumnos } from './features/alumnos/pages/Alumnos'
 import { DetalleAlumno } from './features/alumnos/pages/DetalleAlumno'
+import { Discapacidades } from './features/discapacidad/pages/Discapacidades'
 function SepApp() {
   return (
     <>
@@ -16,6 +17,7 @@ function SepApp() {
             <Route path='/menu' element={<Menu/>}/>
             <Route path='/alumnos' element={<Alumnos />} /> 
             <Route path='alumnos/:id' element={<DetalleAlumno />} />
+            <Route path='discapacidades' element={<Discapacidades />} />
           </Route>
         </Routes>
       </BrowserRouter>
