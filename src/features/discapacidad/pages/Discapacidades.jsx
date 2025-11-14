@@ -1,8 +1,9 @@
 import { PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listarDiscapacidades } from "../../../reducers/discapacidadesSlice";
+import { eliminarDiscapacidad, listarDiscapacidades } from "../../../reducers/discapacidadesSlice";
 import { abrirModal } from "../../../reducers/uiSlice";
+import { confirmationAlert, showAlert } from "../../../utils/alert";
 
 export const Discapacidades = () => {
   const { discapacidades, loading } = useSelector(
@@ -14,6 +15,36 @@ export const Discapacidades = () => {
   useEffect(() => {
     dispatch(listarDiscapacidades());
   }, []);
+
+  const handleDelete = async (id) => {
+    await confirmationAlert({
+      title: 'Eliminar',
+      text: '¿Estás seguro de eliminar esta discapacidad?',
+      icon: 'warning'
+    }).then((res) => {
+      if (!res.isConfirmed) {
+        return
+      }
+      try {
+        const eliminarDisc = dispatch(eliminarDiscapacidad(id));
+        if (eliminarDiscapacidad.fulfilled.match(eliminarDisc)) {
+          showAlert({
+            title: 'Discapacidad eliminada',
+            text: 'La discapacidad eliminada correctamente',
+            icon: 'success'
+          })
+        } else if(eliminarDiscapacidad.rejected.match(eliminarDisc)) {
+          throw new Error("La discapacidad no pudo ser eliminada correctamente. Intentalo de nuevo.");
+        }
+      } catch(e) {
+        showAlert({
+          title: 'Error al eliminar discapacidad',
+          text: e.message || 'La discapacidad no se pudo eliminar',
+          icon: 'error'
+        });
+      }
+    })
+  }
 
   return (
     <>
@@ -43,7 +74,7 @@ export const Discapacidades = () => {
                   {d.nombre}
                 </h4>
 
-                <button className="flex items-center bg-red-700 py-1 px-2 gap-1 rounded-lg hover:bg-red-800 transition-colors w-full md:w-auto justify-center cursor-pointer">
+                <button className="flex items-center bg-red-700 py-1 px-2 gap-1 rounded-lg hover:bg-red-800 transition-colors w-full md:w-auto justify-center cursor-pointer" onClick={() => handleDelete(d.id)}>
                   <p className="text-white font-semibold">Eliminar</p>
                   <TrashIcon className="w-5 h-5 text-white" />
                 </button>

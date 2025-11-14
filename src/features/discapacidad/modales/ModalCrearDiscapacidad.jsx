@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cerrarModal } from '../../../reducers/uiSlice';
+import { nuevaDiscapacidad } from '../../../reducers/discapacidadesSlice';
+import { showAlert } from '../../../utils/alert';
 
 export const ModalCrearDiscapacidad = () => {
     const dispatch = useDispatch();
@@ -8,9 +10,23 @@ export const ModalCrearDiscapacidad = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const nuevaDiscapacidad = await dispatch(nuevaDiscapacidad(nombre));
+            const nuevaDis = await dispatch(nuevaDiscapacidad(nombre));
+            if (nuevaDiscapacidad.fulfilled.match(nuevaDis)) {
+                showAlert({
+                    title: 'Discapacidad creada',
+                    text: 'La discapacidad fue creada y agregada correctamente',
+                    icon: 'success'
+                });
+                dispatch(cerrarModal());
+            } else if (nuevaDiscapacidad.rejected.match(nuevaDis)) {
+                throw new Error(nuevaDis.error.message);
+            }
         } catch (error) {
-            console.error(error)
+            showAlert({
+                title: 'Creación fallida',
+                text: error.message || 'La discapacidad no pudo ser creada. Intentalo nuevamente.',
+                icon: 'error'
+            });
         }
     }
   return (

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getDiscapacidades } from "../apis/discapacidadesApi";
+import { delDiscapacidad, getDiscapacidades, postDiscapacidad } from "../apis/discapacidadesApi";
 
 export const listarDiscapacidades = createAsyncThunk('discapacidad/listar', async () => {
     try {
@@ -11,7 +11,13 @@ export const listarDiscapacidades = createAsyncThunk('discapacidad/listar', asyn
 })
 
 export const nuevaDiscapacidad = createAsyncThunk('discapacidad/crear', async(nombre) => {
-    // Funcion
+    const data = postDiscapacidad(nombre);
+    return data;
+})
+
+export const eliminarDiscapacidad = createAsyncThunk('discapacidad/borrar', async (id) => {
+    const data = delDiscapacidad(id);
+    return id;
 })
 
 const discapacidadesSlice = createSlice({
@@ -33,6 +39,26 @@ const discapacidadesSlice = createSlice({
             .addCase(listarDiscapacidades.rejected, (state) => {
                 state.loading = true;
             }) 
+            .addCase(nuevaDiscapacidad.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(nuevaDiscapacidad.fulfilled, (state, action) => {
+                state.loading = false;
+                state.discapacidades.push(action.payload);
+            })
+            .addCase(nuevaDiscapacidad.rejected, (state) => {
+                state.loading = false;
+            })
+            .addCase(eliminarDiscapacidad.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(eliminarDiscapacidad.fulfilled, (state, action) => {
+                state.loading = false;
+                state.discapacidades = state.discapacidades.filter(d => d.id != action.payload);
+            })
+            .addCase(eliminarDiscapacidad.rejected, (state) => {
+                state.loading = false;
+            })
     }
 })
 
