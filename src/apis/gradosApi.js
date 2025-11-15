@@ -20,3 +20,12 @@ export const getSeccionesDisponibles = async () => {
         throw new Error(error.response?.data?.message || "Error al asignar al traer las secciones");
     }
 }
+
+export const getGrados = async () => {
+    try {
+        const res = await api.get(`${url}/listar`)
+        return res.data;
+    } catch(error) {
+        throw new Error(error.response?.data?.message || "Error al listar los grados");
+    }
+}

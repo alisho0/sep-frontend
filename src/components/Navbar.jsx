@@ -31,12 +31,12 @@ export const Navbar = () => {
             </Link>
           </li>
           <li>
-            <a href="#" className="hover:text-indigo-600">
+            <Link to="/grados" className="hover:text-indigo-600">
               Grados
-            </a>
+            </Link>
           </li>
           <li>
-            <Link to={"/discapacidades"}>
+            <Link to={"/discapacidades"} className="hover:text-indigo-600">
                 Discapacidades
             </Link>
           </li>
