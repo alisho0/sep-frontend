@@ -9,6 +9,7 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { listarGrados } from "../../../reducers/gradosSlice";
 import { Link } from "react-router-dom";
+import { abrirModal } from "../../../reducers/uiSlice";
 
 export const Grados = () => {
   const { grados } = useSelector((state) => state.grados);
@@ -36,7 +37,7 @@ export const Grados = () => {
             <div className="flex justify-between mb-5">
               <h3 className="font-semibold text-xl">{g.grado} Grado</h3>
               <div className="flex gap-2">
-                <BotonIcono texto={"Nuevo Ciclo"} />
+                <BotonIcono texto={"Nuevo Ciclo"} onClick={() => dispatch(abrirModal( { tipo: "crearCiclo", data: { id: g.id, grado: g.grado }}))} />
                 <BotonIcono
                   Icono={TrashIcon}
                   className="hover:bg-red-700 justify-center"

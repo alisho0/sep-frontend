@@ -5,6 +5,7 @@ import { XMarkIcon } from '@heroicons/react/16/solid';
 import { ModalAgregarTutor } from '../../features/tutores/modales/ModalAgregarTutor';
 import { ModalCrearAlumno } from '../../features/alumnos/components/modales/ModalCrearAlumno';
 import { ModalCrearDiscapacidad } from '../../features/discapacidad/modales/ModalCrearDiscapacidad';
+import { ModalCrearCiclo } from '../../features/grados/modales/ModalCrearCiclo';
  
 export const ModalGlobal = () => {
     const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export const ModalGlobal = () => {
                 {modalTipo === "agregarTutor" && <ModalAgregarTutor tutores={modalData} />}
                 {modalTipo === "crearAlumno" && <ModalCrearAlumno />}
                 {modalTipo === "crearDiscapacidad" && <ModalCrearDiscapacidad/>}
+                {modalTipo === "crearCiclo" && <ModalCrearCiclo />}
               </div>
           </div>
         </div>
