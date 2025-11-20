@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getGrados, getGradosDisponibles, getSeccionesDisponibles } from "../apis/gradosApi";
 import { getCiclosGradoDisponibles } from "../apis/ciclosApi";
+import { postCiclo } from "../apis/cicloApi";
 
 export const listarGradosDisponibles = createAsyncThunk('grados/listarDisponibles', async () => {
     try {
@@ -36,6 +37,11 @@ export const listarGrados = createAsyncThunk('grados/listar', async () => {
     const data = getGrados();
     return data;
 })
+
+export const crearCiclo = createAsyncThunk('grado/crearCiclo', async (ciclo) => {
+    const data = postCiclo(ciclo);
+    return data;
+}) 
 
 const gradosSlice = createSlice({
     name: 'grados',
@@ -87,6 +93,16 @@ const gradosSlice = createSlice({
                 state.grados = action.payload;
             })
             .addCase(listarGrados.rejected, (state) => {
+                state.loading = false;
+            })
+            .addCase(crearCiclo.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(crearCiclo.fulfilled, (state, action) => {
+                state.loading = false;
+                state.ciclosGrado.push(action.payload);
+            })
+            .addCase(crearCiclo.rejected, (state) => {
                 state.loading = false;
             })
     }
