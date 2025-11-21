@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getGrados, getGradosDisponibles, getSeccionesDisponibles } from "../apis/gradosApi";
-import { getCiclosGradoDisponibles } from "../apis/ciclosApi";
-import { postCiclo } from "../apis/cicloApi";
+import { getCiclosGradoDisponibles, postCiclo } from "../apis/ciclosApi";
 
 export const listarGradosDisponibles = createAsyncThunk('grados/listarDisponibles', async () => {
     try {

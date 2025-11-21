@@ -10,3 +10,12 @@ export const getCiclosGradoDisponibles = async () => {
         throw new Error(error.response?.data?.message || "Error al traer los ciclos grado disponibles.");
     }
 }
+
+export const postCiclo = async (ciclo) => {
+    try {
+        const res = await api.post(`${url}/crearCiclo`, ciclo);
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al crear el ciclo");
+    }
+}

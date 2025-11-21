@@ -29,47 +29,42 @@ export const Grados = () => {
           </div>
           <BotonIcono texto={"Nuevo Grado"} />
         </div>
-        {grados.map((g, idx) => (
-          <div
-            className="bg-white p-6 rounded-lg shadow-md border-gray-300 mb-3"
-            key={idx}
-          >
-            <div className="flex justify-between mb-5">
-              <h3 className="font-semibold text-xl">{g.grado} Grado</h3>
-              <div className="flex gap-2">
-                <BotonIcono texto={"Nuevo Ciclo"} onClick={() => dispatch(abrirModal( { tipo: "crearCiclo", data: { id: g.id, grado: g.grado }}))} />
-                <BotonIcono
-                  Icono={TrashIcon}
-                  className="hover:bg-red-700 justify-center"
-                />
-              </div>
-            </div>
-            {/* Aqui van los ciclos */}
-            {g.ciclos.length > 0 ? (
-              <div>
-              <p className="font-semibold mb-1.5 text-gray-700">
-                Ciclos disponibles:
-              </p>
-              <div className="md:flex gap-2">
-              {g.ciclos.map((c, idx) => (
-                  <Link to={`/grados/${c.id}`} className="block w-full" key={idx}>
-                    <div className="border border-gray-500 rounded-lg bg-gray-200 p-3 hover:bg-gray-300 transition-colors mb-2 ">
-                      <div className="flex justify-between mb-2 gap-7">
-                        <h4 className="font-semibold text-lg">Ciclo {c.anio}</h4>
-                        <ChevronRightIcon className="h-6 w-6" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          {grados.map((g, idx) => (
+            <Link to={`/grados/${g.id}`} className="border hover:border-gray-600 bg-white p-6 rounded-lg shadow-md border-gray-300 transition">
+              <div
+                key={idx}
+              >
+                <div className="flex justify-between gap-10 flex-col h-full">
+                  <h3 className="font-semibold text-2xl">{g.grado}° Grado</h3>
+
+                  <div className="flex flex-col gap-4">
+                    <div className="border-b border-gray-700 pb-4">
+                      <p className="text-sm text-gray-700">Secciones</p>
+                      <div className="flex gap-2">
+                        {g.secciones.map((s, idx) => (
+                          <span className="border border-gray-600 shadow-md rounded-lg px-2 py-0.5 text-sm h-fit" key={idx}>
+                            {s}
+                          </span>
+                        ))}
                       </div>
-                      <p className="text-gray-700">{c.cantAlumnos} alumnos</p>
                     </div>
-                  </Link>
-              ))}
+                    <div className="flex justify-between items-center">
+                      <p className="text-gray-700 text-sm">
+                        Alumnos inscriptos
+                      </p>
+                      <span className="font-semibold text-xl ">{g.cantAlumnos}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              </div>
-            ) : (
-              <p className="text-gray-500 italic">No hay ciclos disponibles.</p>
-            )}
-          </div>
-        ))}
+            </Link>
+          ))}
+        </div>
       </section>
     </>
   );
 };
+/* 
+
+*/
