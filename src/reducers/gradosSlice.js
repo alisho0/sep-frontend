@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getGradoDetalle, getGrados, getGradosDisponibles, getSeccionesDisponibles } from "../apis/gradosApi";
-import { getCiclosGradoDisponibles, postCiclo } from "../apis/ciclosApi";
+import { delCiclo, getCiclosGradoDisponibles, postCiclo } from "../apis/ciclosApi";
 
 export const listarGradosDisponibles = createAsyncThunk('grados/listarDisponibles', async () => {
     try {
@@ -45,6 +45,12 @@ export const crearCiclo = createAsyncThunk('grado/crearCiclo', async (ciclo) => 
 export const detalleGrado = createAsyncThunk('grado/detalle', async (id) => {
     const data = getGradoDetalle(id);
     return data;
+})
+
+export const eliminarCiclo = createAsyncThunk('grado/eliminarCiclo', async (id) => {
+    const data = delCiclo(id);
+    console.log(data)
+    return id;
 })
 
 const gradosSlice = createSlice({
@@ -123,6 +129,19 @@ const gradosSlice = createSlice({
                 state.gradoActual = action.payload;
             })
             .addCase(detalleGrado.rejected, (state) => {
+                state.loading = false;
+            })
+            .addCase(eliminarCiclo.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(eliminarCiclo.fulfilled, (state, action) => {
+                state.loading = false;
+                state.gradoActual.seccionCiclos = state.gradoActual.seccionCiclos.map(sc => ({
+                    ...sc,
+                    gradoCiclos: sc.gradoCiclos.filter(c => c.id !== action.payload)
+                }));
+            })
+            .addCase(eliminarCiclo.rejected, (state) => {
                 state.loading = false;
             })
     }

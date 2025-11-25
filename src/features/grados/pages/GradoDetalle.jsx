@@ -3,14 +3,14 @@ import { Link, useParams } from "react-router-dom";
 import { BotonIcono } from "../../../utils/components/BotonIcono";
 import {
   ArrowLeftIcon,
-  ChevronRightIcon,
   EyeIcon,
   TrashIcon,
   UsersIcon,
 } from "@heroicons/react/16/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { detalleGrado } from "../../../reducers/gradosSlice";
+import { detalleGrado, eliminarCiclo } from "../../../reducers/gradosSlice";
 import { CardMetrica } from "../../../utils/components/CardMetrica";
+import { confirmationAlert } from "../../../utils/alert";
 export const GradoDetalle = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -21,6 +21,36 @@ export const GradoDetalle = () => {
   useEffect(() => {
     dispatch(detalleGrado(id));
   }, []);
+
+  const handleDeleteCiclo = async (id) => {
+    await confirmationAlert({
+      title: 'Eliminar',
+      text: '¿Estás seguro de eliminar este ciclo?',
+      icon: 'warning'
+    }).then((res) => {
+      if (!res.isConfirmed) {
+        return
+      }
+      try {
+        const delCiclo = dispatch(eliminarCiclo(id));
+        if (eliminarCiclo.fulfilled.match(delCiclo)) {
+          showAlert({
+            title: 'Ciclo eliminado',
+            text: 'El ciclo fue eliminado correctamente',
+            icon: 'success'
+          })
+        } else if(eliminarCiclo.rejected.match(delCiclo)) {
+          throw new Error("El ciclo no pudo ser eliminado correctamente. Intentalo de nuevo.");
+        }
+      } catch(e) {
+        showAlert({
+          title: 'Error al eliminar ciclo',
+          text: e.message || 'El ciclo no se pudo eliminar',
+          icon: 'error'
+        });
+      }
+    })
+  }
 
   return (
     <>
@@ -70,25 +100,13 @@ export const GradoDetalle = () => {
                         <p className="text-gray-700">{ciclo.cantAlumnos} alumnos</p>
                       </div>
                       <div className="flex gap-2">
-                        <BotonIcono Icono={TrashIcon} className="hover:bg-red-700 justify-center" />
+                        <BotonIcono onClick={() => handleDeleteCiclo(ciclo.id)} Icono={TrashIcon} className="hover:bg-red-700 justify-center" />
                         <BotonIcono Icono={EyeIcon} className="hover:bg-indigo-700 justify-center" />
                       </div>
                     </div>
                   ))}
                 </>
               ) : (<p className="text-gray-500 italic">No hay ciclos disponibles.</p>)}
-              {gradoActual.seccionCiclos[seccionSelected]?.gradoCiclos.map((ciclo) => (
-                <div key={ciclo.id} className="border rounded-lg bg-gray-100 p-3 mb-4 flex justify-between items-center">
-                  <div>
-                    <h4 className="font-semibold text-lg">Ciclo {ciclo.anio}</h4>
-                    <p className="text-gray-700">{ciclo.cantAlumnos} alumnos</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <BotonIcono Icono={TrashIcon} className="hover:bg-red-700 justify-center" />
-                    <BotonIcono Icono={EyeIcon} className="hover:bg-indigo-700 justify-center" />
-                  </div>
-                </div>
-              ))}
           </div>
         </div>
       </div>
