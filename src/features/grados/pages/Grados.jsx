@@ -1,15 +1,8 @@
-import {
-  ChevronDoubleRightIcon,
-  ChevronRightIcon,
-  PlusIcon,
-} from "@heroicons/react/16/solid";
 import React, { useEffect } from "react";
 import { BotonIcono } from "../../../utils/components/BotonIcono";
-import { TrashIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { listarGrados } from "../../../reducers/gradosSlice";
 import { Link } from "react-router-dom";
-import { abrirModal } from "../../../reducers/uiSlice";
 
 export const Grados = () => {
   const { grados } = useSelector((state) => state.grados);
@@ -31,9 +24,8 @@ export const Grados = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {grados.map((g, idx) => (
-            <Link to={`/grados/${g.id}`} className="border hover:border-gray-600 bg-white p-6 rounded-lg shadow-md border-gray-300 transition">
+            <Link key={idx} to={`/grados/${g.id}`} className="border hover:border-gray-600 bg-white p-6 rounded-lg shadow-md hover:shadow-lg border-gray-300 transition">
               <div
-                key={idx}
               >
                 <div className="flex justify-between gap-10 flex-col h-full">
                   <h3 className="font-semibold text-2xl">{g.grado}° Grado</h3>

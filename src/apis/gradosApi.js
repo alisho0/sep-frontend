@@ -29,3 +29,11 @@ export const getGrados = async () => {
         throw new Error(error.response?.data?.message || "Error al listar los grados");
     }
 }
+export const getGradoDetalle = async (id) => {
+    try {
+        const res = await api.get(`${url}/detalle/${id}`)
+        return res.data;
+    } catch(error) {
+        throw new Error(error.response?.data?.message || "Error al cargar el detalle del grado");
+    }
+}

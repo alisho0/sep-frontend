@@ -1,38 +1,97 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { BotonIcono } from "../../../utils/components/BotonIcono";
+import {
+  ArrowLeftIcon,
+  ChevronRightIcon,
+  EyeIcon,
+  TrashIcon,
+  UsersIcon,
+} from "@heroicons/react/16/solid";
+import { useDispatch, useSelector } from "react-redux";
+import { detalleGrado } from "../../../reducers/gradosSlice";
+import { CardMetrica } from "../../../utils/components/CardMetrica";
 export const GradoDetalle = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { gradoActual } = useSelector((state) => state.grados);
+
+  const [seccionSelected, setSeccionSelected] = useState(0);
+
+  useEffect(() => {
+    dispatch(detalleGrado(id));
+  }, []);
+
   return (
     <>
-              <div className="flex gap-2">
-                <BotonIcono texto={"Nuevo Ciclo"} onClick={() => dispatch(abrirModal( { tipo: "crearCiclo", data: { id: g.id, grado: g.grado }}))} />
-                <BotonIcono
-                  Icono={TrashIcon}
-                  className="hover:bg-red-700 justify-center"
-                />
-              </div>
-      {/* Aqui van los ciclos */}
-      {g.ciclos.length > 0 ? (
+      <div className="container mx-auto md:px-28 px-4 pt-9">
+        <div > 
+          <button
+            className="col-span-1 md:col-span-3 text-left flex gap-2 items-center hover:bg-indigo-700 hover:text-white mb-3 w-fit py-1 px-2 rounded-lg transition-colors"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeftIcon className="w-5 h-5" />
+            <span className="font-semibold">Volver</span>
+          </button>
+          <h1 className="font-semibold text-3xl mb-2">{gradoActual.nro}° Grado</h1>
+        </div>
         <div>
-          <p className="font-semibold mb-1.5 text-gray-700">
-            Ciclos disponibles:
-          </p>
-          <div className="md:flex gap-2">
-            {g.ciclos.map((c, idx) => (
-              <Link to={`/grados/${c.id}`} className="block w-full" key={idx}>
-                <div className="border border-gray-500 rounded-lg bg-gray-200 p-3 hover:bg-gray-300 transition-colors mb-2 ">
-                  <div className="flex justify-between mb-2 gap-7">
-                    <h4 className="font-semibold text-lg">Ciclo {c.anio}</h4>
-                    <ChevronRightIcon className="h-6 w-6" />
-                  </div>
-                  <p className="text-gray-700">{c.cantAlumnos} alumnos</p>
-                </div>
-              </Link>
+          <CardMetrica
+            texto={"Total de alumnos actual"}
+            Icono={UsersIcon}
+            data={gradoActual.inscriptosActuales}
+          />
+        </div>
+        <div className="mt-6">
+          <h2 className="font-semibold text-2xl mb-4">Secciones y Ciclos</h2>
+          <div className="flex gap-3 border-b border-gray-400 mb-6">
+          {/* El map para cada seccion */}
+            {gradoActual.seccionCiclos.map((sc, idx) => (
+              <button key={idx} className={`p-4 font-semibold hover:text-black transition ${seccionSelected === idx ? "text-black border-b-2 border-black" : "text-gray-600 hover:text-black"}`} onClick={() => setSeccionSelected(idx)}>
+                Seccion {sc.seccion}
+              </button>
             ))}
           </div>
+          <div className="bg-white p-6 rounded-lg shadow-md border-gray-300">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-semibold text-xl">Ciclos de la Sección</h3>
+              <BotonIcono
+                texto={"Nuevo Ciclo"}
+                onClick={() =>
+                  dispatch(abrirModal({ tipo: "crearCiclo", data: { id: g.id, grado: g.grado }}))}/>
+            </div>
+              {/* Aquí van los ciclos de lo seleccionado */}
+              {gradoActual.seccionCiclos[seccionSelected]?.gradoCiclos?.length > 0 ? (
+                <>
+                  {gradoActual.seccionCiclos[seccionSelected]?.gradoCiclos.map((ciclo) => (
+                    <div key={ciclo.id} className="border rounded-lg bg-gray-100 p-3 mb-4 flex justify-between items-center">
+                      <div>
+                        <h4 className="font-semibold text-lg">Ciclo {ciclo.anio}</h4>
+                        <p className="text-gray-700">{ciclo.cantAlumnos} alumnos</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <BotonIcono Icono={TrashIcon} className="hover:bg-red-700 justify-center" />
+                        <BotonIcono Icono={EyeIcon} className="hover:bg-indigo-700 justify-center" />
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : (<p className="text-gray-500 italic">No hay ciclos disponibles.</p>)}
+              {gradoActual.seccionCiclos[seccionSelected]?.gradoCiclos.map((ciclo) => (
+                <div key={ciclo.id} className="border rounded-lg bg-gray-100 p-3 mb-4 flex justify-between items-center">
+                  <div>
+                    <h4 className="font-semibold text-lg">Ciclo {ciclo.anio}</h4>
+                    <p className="text-gray-700">{ciclo.cantAlumnos} alumnos</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <BotonIcono Icono={TrashIcon} className="hover:bg-red-700 justify-center" />
+                    <BotonIcono Icono={EyeIcon} className="hover:bg-indigo-700 justify-center" />
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
-      ) : (
-        <p className="text-gray-500 italic">No hay ciclos disponibles.</p>
-      )}
+      </div>
     </>
   );
 };
