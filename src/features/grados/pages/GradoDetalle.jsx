@@ -11,16 +11,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { detalleGrado, eliminarCiclo } from "../../../reducers/gradosSlice";
 import { CardMetrica } from "../../../utils/components/CardMetrica";
 import { confirmationAlert } from "../../../utils/alert";
+import { abrirModal } from "../../../reducers/uiSlice";
 export const GradoDetalle = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { gradoActual } = useSelector((state) => state.grados);
 
   const [seccionSelected, setSeccionSelected] = useState(0);
+  const [idSeccion, setIdSeccion] = useState(0);
 
   useEffect(() => {
     dispatch(detalleGrado(id));
   }, []);
+
+  useEffect(() => {
+    if (gradoActual.seccionCiclos && gradoActual.seccionCiclos.length > 0) {
+      setSeccionSelected(0);
+      setIdSeccion(gradoActual.seccionCiclos[0].id);
+    }
+  }, [gradoActual.seccionCiclos]);
 
   const handleDeleteCiclo = async (id) => {
     await confirmationAlert({
@@ -77,31 +86,35 @@ export const GradoDetalle = () => {
           <div className="flex gap-3 border-b border-gray-400 mb-6">
           {/* El map para cada seccion */}
             {gradoActual.seccionCiclos.map((sc, idx) => (
-              <button key={idx} className={`p-4 font-semibold hover:text-black transition ${seccionSelected === idx ? "text-black border-b-2 border-black" : "text-gray-600 hover:text-black"}`} onClick={() => setSeccionSelected(idx)}>
-                Seccion {sc.seccion}
+              <button key={idx} className={`p-4 font-semibold hover:text-black transition ${seccionSelected === idx ? "text-black border-b-2 border-black" : "text-gray-600 hover:text-black"}`} onClick={() => {
+                setSeccionSelected(idx)
+                setIdSeccion(sc.id)
+              }}>
+                Seccion {sc.seccion} | T{sc.turno}
               </button>
             ))}
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md border-gray-300">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex md:justify-between md:items-center mb-4 md:flex-row flex-col border-b pb-3">
               <h3 className="font-semibold text-xl">Ciclos de la Sección</h3>
               <BotonIcono
+                className="hover:bg-indigo-700 justify-center"
                 texto={"Nuevo Ciclo"}
                 onClick={() =>
-                  dispatch(abrirModal({ tipo: "crearCiclo", data: { id: g.id, grado: g.grado }}))}/>
+                  dispatch(abrirModal({ tipo: "crearCiclo", data: { id: idSeccion, grado: gradoActual.nro, idActual: id }}))}/>
             </div>
               {/* Aquí van los ciclos de lo seleccionado */}
               {gradoActual.seccionCiclos[seccionSelected]?.gradoCiclos?.length > 0 ? (
                 <>
                   {gradoActual.seccionCiclos[seccionSelected]?.gradoCiclos.map((ciclo) => (
-                    <div key={ciclo.id} className="border rounded-lg bg-gray-100 p-3 mb-4 flex justify-between items-center">
+                    <div key={ciclo.id} className="border rounded-lg bg-gray-100 p-3 mb-4 flex md:justify-between md:items-center md:flex-row flex-col shadow-md">
                       <div>
                         <h4 className="font-semibold text-lg">Ciclo {ciclo.anio}</h4>
                         <p className="text-gray-700">{ciclo.cantAlumnos} alumnos</p>
                       </div>
-                      <div className="flex gap-2">
-                        <BotonIcono onClick={() => handleDeleteCiclo(ciclo.id)} Icono={TrashIcon} className="hover:bg-red-700 justify-center" />
+                      <div className="flex md:flex-row flex-col md:mt-0 mt-2 gap-2">
                         <BotonIcono Icono={EyeIcon} className="hover:bg-indigo-700 justify-center" />
+                        <BotonIcono onClick={() => handleDeleteCiclo(ciclo.id)} Icono={TrashIcon} className="hover:bg-red-700 justify-center" />
                       </div>
                     </div>
                   ))}

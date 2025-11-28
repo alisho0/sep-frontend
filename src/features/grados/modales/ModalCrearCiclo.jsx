@@ -2,8 +2,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { cerrarModal } from "../../../reducers/uiSlice";
-import { crearCiclo, listarGrados } from "../../../reducers/gradosSlice";
+import { crearCiclo, detalleGrado, listarGrados } from "../../../reducers/gradosSlice";
 import { showAlert } from "../../../utils/alert";
+import { useParams } from "react-router-dom";
 
 export const ModalCrearCiclo = () => {
   const { modalData } = useSelector((state) => state.ui);
@@ -16,6 +17,7 @@ export const ModalCrearCiclo = () => {
 
   const onSubmit = async (data) => {
     try {
+      console.log(data)
       const nuevoCiclo = await dispatch(crearCiclo(data));
       if (crearCiclo.fulfilled.match(nuevoCiclo)) {
         showAlert({
@@ -23,7 +25,7 @@ export const ModalCrearCiclo = () => {
           text: "El ciclo creado y agregado correctamente",
           icon: "success",
         });
-        await dispatch(listarGrados());
+        await dispatch(detalleGrado(modalData.idActual));
         dispatch(cerrarModal());
       } else if (crearCiclo.rejected.match(nuevoCiclo)) {
         throw new Error(nuevoCiclo.error.message);
