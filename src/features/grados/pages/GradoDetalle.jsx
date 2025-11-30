@@ -10,7 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { detalleGrado, eliminarCiclo } from "../../../reducers/gradosSlice";
 import { CardMetrica } from "../../../utils/components/CardMetrica";
-import { confirmationAlert } from "../../../utils/alert";
+import { confirmationAlert, showAlert } from "../../../utils/alert";
 import { abrirModal } from "../../../reducers/uiSlice";
 export const GradoDetalle = () => {
   const { id } = useParams();
@@ -18,30 +18,24 @@ export const GradoDetalle = () => {
   const { gradoActual } = useSelector((state) => state.grados);
 
   const [seccionSelected, setSeccionSelected] = useState(0);
-  const [idSeccion, setIdSeccion] = useState(0);
+  const idSeccion = gradoActual.seccionCiclos[seccionSelected]?.id;
 
   useEffect(() => {
     dispatch(detalleGrado(id));
   }, []);
 
-  useEffect(() => {
-    if (gradoActual.seccionCiclos && gradoActual.seccionCiclos.length > 0) {
-      setSeccionSelected(0);
-      setIdSeccion(gradoActual.seccionCiclos[0].id);
-    }
-  }, [gradoActual.seccionCiclos]);
-
   const handleDeleteCiclo = async (id) => {
-    await confirmationAlert({
+    const res = await confirmationAlert({
       title: 'Eliminar',
       text: '¿Estás seguro de eliminar este ciclo?',
       icon: 'warning'
-    }).then((res) => {
+    })
+
       if (!res.isConfirmed) {
         return
       }
       try {
-        const delCiclo = dispatch(eliminarCiclo(id));
+        const delCiclo = await dispatch(eliminarCiclo(id));
         if (eliminarCiclo.fulfilled.match(delCiclo)) {
           showAlert({
             title: 'Ciclo eliminado',
@@ -58,7 +52,6 @@ export const GradoDetalle = () => {
           icon: 'error'
         });
       }
-    })
   }
 
   return (
@@ -88,7 +81,6 @@ export const GradoDetalle = () => {
             {gradoActual.seccionCiclos.map((sc, idx) => (
               <button key={idx} className={`p-4 font-semibold hover:text-black transition ${seccionSelected === idx ? "text-black border-b-2 border-black" : "text-gray-600 hover:text-black"}`} onClick={() => {
                 setSeccionSelected(idx)
-                setIdSeccion(sc.id)
               }}>
                 Seccion {sc.seccion} | T{sc.turno}
               </button>
