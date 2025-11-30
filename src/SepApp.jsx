@@ -9,6 +9,7 @@ import { DetalleAlumno } from './features/alumnos/pages/DetalleAlumno'
 import { Discapacidades } from './features/discapacidad/pages/Discapacidades'
 import { Grados } from './features/grados/pages/Grados'
 import { GradoDetalle } from './features/grados/pages/GradoDetalle'
+import { GradoCicloDetalle } from './features/grados/pages/GradoCicloDetalle'
 function SepApp() {
   return (
     <>
@@ -22,6 +23,7 @@ function SepApp() {
             <Route path='/discapacidades' element={<Discapacidades />} />
             <Route path='/grados' element={<Grados/>}/>
             <Route path='/grados/:id' element={<GradoDetalle />} />
+            <Route path='/grados/:id/ciclo/:cicloId' element={<GradoCicloDetalle />} />
           </Route>
         </Routes>
       </BrowserRouter>

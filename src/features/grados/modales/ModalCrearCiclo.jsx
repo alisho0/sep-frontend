@@ -17,7 +17,6 @@ export const ModalCrearCiclo = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log(data)
       const nuevoCiclo = await dispatch(crearCiclo(data));
       if (crearCiclo.fulfilled.match(nuevoCiclo)) {
         showAlert({
@@ -58,7 +57,7 @@ export const ModalCrearCiclo = () => {
             </label>
             <input
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              type="text"
+              type="number"
               placeholder="Ej: 2026"
               id="año"
               {...register("anio", { required: true, valueAsNumber: true })}
