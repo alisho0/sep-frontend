@@ -146,7 +146,7 @@ export const GradoDetalle = () => {
                         <BotonIcono
                           onClick={() => handleDeleteCiclo(ciclo.id)}
                           Icono={TrashIcon}
-                          className="hover:bg-red-700 justify-center"
+                          className="bg-indigo-600 text-white hover:bg-red-700 justify-center"
                         />
                       </div>
                     </div>

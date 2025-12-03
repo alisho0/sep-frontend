@@ -28,3 +28,12 @@ export const delCiclo = async (id) => {
         throw new Error(error.response?.data?.message || "Error al eliminar el ciclo");
     }
 }
+
+export const getDetalleCiclo = async (id) => {
+    try {
+        const res = await api.get(`${url}/detalleCiclo/${id}`)
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al traer el ciclo");
+    }
+}
