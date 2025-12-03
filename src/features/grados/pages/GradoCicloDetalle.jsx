@@ -13,15 +13,18 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { BotonIcono } from "../../../utils/components/BotonIcono";
 import { ObservacionesGrado } from "../components/ObservacionesGrado";
 import { UsuariosGrado } from "../components/UsuariosGrado";
+import { metricasPorCicloDetalle } from "../../../reducers/metricasSlice";
 
 export const GradoCicloDetalle = () => {
   const { cicloGradoActual } = useSelector((state) => state.grados);
+  const { metricasCicloDetalle } = useSelector((state) => state.metricas);
   const dispatch = useDispatch();
   const { cicloId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(detalleCiclo(cicloId));
+    dispatch(metricasPorCicloDetalle(cicloId));
   }, [cicloId]);
   return (
     <>
@@ -42,14 +45,14 @@ export const GradoCicloDetalle = () => {
         </div>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 mb-3">
           <CardMetrica
-            texto={"Total de alumnos inscriptos"}
+            texto={metricasCicloDetalle[0].nombre}
             Icono={UsersIcon}
-            data={cicloGradoActual.cantAlumnos}
+            data={metricasCicloDetalle[0].valor}
           />
           <CardMetrica
-            texto={"Discapacidades registradas"}
+            texto={metricasCicloDetalle[1].nombre}
             Icono={ExclamationTriangleIcon}
-            data={cicloGradoActual.cantAlumnos}
+            data={metricasCicloDetalle[1].valor}
           />
         </div>
 

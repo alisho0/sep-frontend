@@ -22,3 +22,13 @@ export const getTotalAlumnos = async () => {
         throw new Error(error.response?.data?.message || "Error al obtener las métricas. Por favor, intente nuevamente");
     }
 }
+
+export const getMetricasCSG = async (id) => {
+    try {
+        const response = await api.get(`${url}/cicloDetalle/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener las métricas", error.response?.data || error);
+        throw new Error(error.response?.data?.message || "Error al obtener las métricas. Por favor, intente nuevamente");
+    }
+}

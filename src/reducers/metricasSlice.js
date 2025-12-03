@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getObsRecientes, getTotalAlumnos } from "../apis/metricasApi";
+import { getMetricasCSG, getObsRecientes, getTotalAlumnos } from "../apis/metricasApi";
 import { actividadReciente } from "../apis/actividadesApi";
 
 export const traerMetricas = createAsyncThunk('metricas/traerMetricas', async () => {
@@ -28,6 +28,11 @@ export const ultimasActividades = createAsyncThunk('metricas/ultimasActividades'
     }
 })
 
+export const metricasPorCicloDetalle = createAsyncThunk('metricas/cicloDetalle', async (id) => {
+    const data = getMetricasCSG(id);
+    return data;
+})
+
 const metricasSlice = createSlice({
     name: 'metricas',
     initialState: {
@@ -44,6 +49,16 @@ const metricasSlice = createSlice({
                 nombre: 'Discapacidades registradas',
                 valor: 0,
             }
+        ],
+        metricasCicloDetalle: [
+            {
+                nombre: 'Alumnos inscriptos',
+                valor: 0
+            },
+            {
+                nombre: 'Discapacidades registradas',
+                valor: 0
+            },
         ],
         observaciones: [],
         loading: false,
@@ -72,6 +87,14 @@ const metricasSlice = createSlice({
             })
             .addCase(ultimasActividades.rejected, (state) => {
                 state.loading = false;
+            })
+            .addCase(metricasPorCicloDetalle.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(metricasPorCicloDetalle.fulfilled, (state, action) => {
+                state.loading = false;
+                state.metricasCicloDetalle[0].valor = action.payload.cantAlumnos;
+                state.metricasCicloDetalle[1].valor = action.payload.cantDiscapacidad;
             })
     }
 })
