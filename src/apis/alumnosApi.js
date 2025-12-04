@@ -41,3 +41,12 @@ export const postAlumno = async (alumno) => {
         throw new Error(error.response?.data?.message || "Error al crear un alumno, intentalo de nuevo.")
     }
 }
+
+export const getAlumnosPorCSG = async (id) => {
+    try {
+        const res = await api.get(`${url}/listarPorCSG/${id}`)
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al listar un alumno, intentalo de nuevo.")
+    }
+}

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { asignarTutorAlumno, getAlumnoById, getAlumnos, postAlumno } from "../apis/alumnosApi"
+import { asignarTutorAlumno, getAlumnoById, getAlumnos, getAlumnosPorCSG, postAlumno } from "../apis/alumnosApi"
 import { listarTutoresPorAlumno } from "./tutoresSlice";
 
 export const traerAlumnos = createAsyncThunk('alumnos/getAlumnos', async () => {
@@ -24,10 +24,16 @@ export const crearAlumno = createAsyncThunk('alumno/crearAlumno', async ({alumno
     return data;
 })
 
+export const listarAlumnosPorCSG = createAsyncThunk('alumnos/listarPorCSG', async (id) => {
+    const data = await getAlumnosPorCSG(id);
+    return data;
+})
+
 const alumnosSlice = createSlice({
     name: 'alumnos',
     initialState: {
         alumnos: [],
+        alumnosCSG: [],
         loading: false,
         alumno: null,
         countAlumnos: 0
@@ -73,6 +79,16 @@ const alumnosSlice = createSlice({
                 state.alumnos.push(action.payload)
             })
             .addCase(crearAlumno.rejected, (state) => {
+                state.loading = false;
+            })
+            .addCase(listarAlumnosPorCSG.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(listarAlumnosPorCSG.fulfilled, (state, action) => {
+                state.loading = false;
+                state.alumnosCSG = action.payload;
+            })
+            .addCase(listarAlumnosPorCSG.rejected, (state) => {
                 state.loading = false;
             })
     }

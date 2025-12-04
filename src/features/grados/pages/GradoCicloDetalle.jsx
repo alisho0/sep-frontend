@@ -14,10 +14,12 @@ import { BotonIcono } from "../../../utils/components/BotonIcono";
 import { ObservacionesGrado } from "../components/ObservacionesGrado";
 import { UsuariosGrado } from "../components/UsuariosGrado";
 import { metricasPorCicloDetalle } from "../../../reducers/metricasSlice";
+import { listarAlumnosPorCSG } from "../../../reducers/alumnosSlice";
 
 export const GradoCicloDetalle = () => {
   const { cicloGradoActual } = useSelector((state) => state.grados);
   const { metricasCicloDetalle } = useSelector((state) => state.metricas);
+  const { alumnosCSG } = useSelector((state) => state.alumnos);
   const dispatch = useDispatch();
   const { cicloId } = useParams();
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ export const GradoCicloDetalle = () => {
   useEffect(() => {
     dispatch(detalleCiclo(cicloId));
     dispatch(metricasPorCicloDetalle(cicloId));
+    dispatch(listarAlumnosPorCSG(cicloId))
   }, [cicloId]);
   return (
     <>
@@ -67,25 +70,27 @@ export const GradoCicloDetalle = () => {
             <p>Alumnos Inscriptos</p>
           </div>
           <div>
-            <div className="border rounded-lg bg-gray-100 p-3 mb-4 flex md:justify-between md:items-center md:flex-row flex-col shadow-md">
-              <div>
-                <h4 className="font-semibold text-lg">Emily Catán</h4>
-                <p className="text-gray-700">44111000</p>
-              </div>
-              <div className="flex md:flex-row flex-col md:mt-0 mt-2 gap-2">
-                <Link className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white font-semibold rounded-lg cursor-pointer">
+            {alumnosCSG.length > 0 ? alumnosCSG.map((a, idx) => (
+              <div className="border rounded-lg bg-gray-100 p-3 mb-4 flex md:justify-between md:items-center md:flex-row flex-col shadow-md" key={idx}>
+                <div>
+                  <h4 className="font-semibold text-lg">{a.nombre}</h4>
+                  <p className="text-gray-700">{a.dni}</p>
+                </div>
+                <div className="flex md:flex-row flex-col md:mt-0 mt-2 gap-2">
+                  <Link className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white font-semibold rounded-lg cursor-pointer">
+                    <BotonIcono
+                      Icono={EyeIcon}
+                      className="w-full justify-center"
+                    />
+                  </Link>
                   <BotonIcono
-                    Icono={EyeIcon}
-                    className="w-full justify-center"
+                    onClick={() => handleDeleteCiclo(ciclo.id)}
+                    Icono={UserMinusIcon}
+                    className="bg-indigo-600 text-white hover:bg-red-700 justify-center"
                   />
-                </Link>
-                <BotonIcono
-                  onClick={() => handleDeleteCiclo(ciclo.id)}
-                  Icono={UserMinusIcon}
-                  className="bg-indigo-600 text-white hover:bg-red-700 justify-center"
-                />
+                </div>
               </div>
-            </div>
+            )) : (<p className="text-sm italic text-gray-700">No hay alumnos inscriptos</p>)}
           </div>
         </div>
       </section>
