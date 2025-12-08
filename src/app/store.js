@@ -7,6 +7,7 @@ import tutoresReducer from '../reducers/tutoresSlice'
 import metricasReducer from '../reducers/metricasSlice'
 import gradosReducer from '../reducers/gradosSlice'
 import discapacidadesReducer from '../reducers/discapacidadesSlice'
+import maestrosReducer from '../reducers/maestrosSlice'
 
 export const store = configureStore({
     reducer: {
@@ -19,5 +20,6 @@ export const store = configureStore({
         metricas: metricasReducer,
         grados: gradosReducer,
         discapacidades: discapacidadesReducer,
+        maestros: maestrosReducer,
     }
 })

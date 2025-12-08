@@ -22,3 +22,12 @@ export const agregarObservacion = async (observacion) => {
         throw error; // Propagamos el error para que pueda ser manejado por el slice
     }
 }
+
+export const getObservacionesGrado = async (id) => {
+    try {
+        const response = await api.get(`${url}/listar/${id}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error en listar las observaciones por grado.");
+    }
+}

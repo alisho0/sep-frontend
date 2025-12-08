@@ -60,8 +60,8 @@ export const GradoCicloDetalle = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-          <UsuariosGrado />
-          <ObservacionesGrado />
+          <UsuariosGrado cicloId={cicloId} />
+          <ObservacionesGrado cicloId={cicloId} />
         </div>
 
         <div className="rounded-lg shadow-lg px-4 py-3 bg-white">
