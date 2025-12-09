@@ -1,11 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getMaestrosAsignadosCiclo } from "../apis/maestrosApi";
+import { getMaestrosAsignadosCiclo, getMaestrosDisponibles } from "../apis/maestrosApi";
 
 export const listarMaestros = createAsyncThunk('maestros/listarAsignados', async (cicloId) => {
-    const data = getMaestrosAsignadosCiclo(cicloId);
+    const data = await getMaestrosAsignadosCiclo(cicloId);
     return data
 });
 
+export const listarMaestrosDisponibles = createAsyncThunk('maestros/listarDisponibles', async () => {
+    const data = await getMaestrosDisponibles();
+    return data;
+});
 const maestrosSlice = createSlice({
     name: 'maestros',
     initialState: {
@@ -13,7 +17,11 @@ const maestrosSlice = createSlice({
         maestrosDisponibles: [],
         loading: false
     },
-    reducers: {},
+    reducers: {
+        eliminarMaestroAsignado: (state, action) => {
+            state.maestrosAsignados = state.maestrosAsignados.filter(m => m.id != action.payload)
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(listarMaestros.pending, (state) => {
@@ -26,7 +34,18 @@ const maestrosSlice = createSlice({
             .addCase(listarMaestros.rejected, (state) => {
                 state.loading = false;
             })
+            .addCase(listarMaestrosDisponibles.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(listarMaestrosDisponibles.fulfilled, (state, action) => {
+                state.loading = false;
+                state.maestrosDisponibles = action.payload;
+            })
+            .addCase(listarMaestrosDisponibles.rejected, (state) => {
+                state.loading = false;
+            })
     }
 });
 
+export const { eliminarMaestroAsignado } = maestrosSlice.actions;
 export default maestrosSlice.reducer;

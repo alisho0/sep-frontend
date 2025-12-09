@@ -6,6 +6,7 @@ import { ModalAgregarTutor } from '../../features/tutores/modales/ModalAgregarTu
 import { ModalCrearAlumno } from '../../features/alumnos/components/modales/ModalCrearAlumno';
 import { ModalCrearDiscapacidad } from '../../features/discapacidad/modales/ModalCrearDiscapacidad';
 import { ModalCrearCiclo } from '../../features/grados/modales/ModalCrearCiclo';
+import { ModalAgregarMaestro } from '../../features/maestros/modales/ModalAgregarMaestro';
  
 export const ModalGlobal = () => {
     const dispatch = useDispatch();
@@ -28,6 +29,7 @@ export const ModalGlobal = () => {
                 {modalTipo === "crearAlumno" && <ModalCrearAlumno />}
                 {modalTipo === "crearDiscapacidad" && <ModalCrearDiscapacidad/>}
                 {modalTipo === "crearCiclo" && <ModalCrearCiclo />}
+                {modalTipo === "agregarMaestro" && <ModalAgregarMaestro modalData={modalData} />}
               </div>
           </div>
         </div>

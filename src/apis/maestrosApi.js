@@ -10,3 +10,12 @@ export const getMaestrosAsignadosCiclo = async (cicloId) => {
         throw new Error(error.response?.data?.message || "Error al listar los maestros");
     }
 }
+
+export const getMaestrosDisponibles = async () => {
+    try {
+        const response = await api.get(`${url}/listarDisponibles`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al listar los maestros");
+    }
+}

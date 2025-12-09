@@ -37,3 +37,21 @@ export const getDetalleCiclo = async (id) => {
         throw new Error(error.response?.data?.message || "Error al traer el ciclo");
     }
 }
+
+// /{idCiclo}/maestros/{idMaestro}
+export const postVincularMaestro = async (idCiclo, idMaestro) => {
+    try {
+        const res = await api.post(`${url}/${idCiclo}/maestros/${idMaestro}`)
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al traer el ciclo");
+    }
+}
+export const delDesvincularMaestro = async (idCiclo, idMaestro) => {
+    try {
+        const res = await api.delete(`${url}/${idCiclo}/maestros/${idMaestro}`)
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al traer el ciclo");
+    }
+}

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getGradoDetalle, getGrados, getGradosDisponibles, getSeccionesDisponibles } from "../apis/gradosApi";
-import { delCiclo, getCiclosGradoDisponibles, getDetalleCiclo, postCiclo } from "../apis/ciclosApi";
+import { delCiclo, delDesvincularMaestro, getCiclosGradoDisponibles, getDetalleCiclo, postCiclo, postVincularMaestro } from "../apis/ciclosApi";
+import { eliminarMaestroAsignado, listarMaestros } from "./maestrosSlice";
 
 export const listarGradosDisponibles = createAsyncThunk('grados/listarDisponibles', async () => {
     try {
@@ -54,6 +55,18 @@ export const eliminarCiclo = createAsyncThunk('grado/eliminarCiclo', async (id) 
 
 export const detalleCiclo = createAsyncThunk('grado/detalleCiclo', async (id) => {
     const data = getDetalleCiclo(id);
+    return data;
+})
+
+export const desvincularMaestro = createAsyncThunk('grado/desvincular', async ({idCiclo, idMaestro}, {dispatch}) => {
+    const data = await delDesvincularMaestro(idCiclo, idMaestro);
+    dispatch(eliminarMaestroAsignado(idMaestro))
+    return data;
+})
+
+export const vincularMaestro = createAsyncThunk('grado/vincular', async ({idCiclo, idMaestro}, {dispatch}) => {
+    const data = await postVincularMaestro(idCiclo, idMaestro);
+    await dispatch(listarMaestros(idCiclo))
     return data;
 })
 
@@ -159,6 +172,24 @@ const gradosSlice = createSlice({
                 state.cicloGradoActual = action.payload
             })
             .addCase(detalleCiclo.rejected, (state) => {
+                state.loading = false
+            })
+            .addCase(desvincularMaestro.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(desvincularMaestro.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(desvincularMaestro.rejected, (state) => {
+                state.loading = false
+            })
+            .addCase(vincularMaestro.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(vincularMaestro.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(vincularMaestro.rejected, (state) => {
                 state.loading = false
             })
     }
