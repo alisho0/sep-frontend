@@ -30,31 +30,29 @@ export const UsuariosGrado = ({ cicloId }) => {
       confirmButtonText: "Confirmar",
       cancelButtonText: "Cancelar",
     }).then((res) => {
-      if (res.isDenied) {
-        return;
+      if (res.isConfirmed) {
+      try {
+        const desvincular = dispatch(desvincularMaestro({ idCiclo, idMaestro }));
+        if (desvincularMaestro.fulfilled.match(desvincular)) {
+          showAlert({
+            title: "Maestro desvinculado",
+            text: "El maestro se desvinculó correctamente.",
+            icon: "success",
+          });
+        } else if (desvincularMaestro.rejected.match(desvincular)) {
+          throw new Error(
+            "El maestro no pudo ser desvinculado. Intentalo de nuevo."
+          );
+        }
+      } catch (error) {
+        showAlert({
+          title: "Error al desvincular",
+          text: error.message,
+          icon: "error",
+        });
+      }
       }
     });
-
-    try {
-      const desvincular = dispatch(desvincularMaestro({ idCiclo, idMaestro }));
-      if (desvincularMaestro.fulfilled.match(desvincular)) {
-        showAlert({
-          title: "Maestro desvinculado",
-          text: "El maestro se desvinculó correctamente.",
-          icon: "success",
-        });
-      } else if (desvincularMaestro.rejected.match(desvincular)) {
-        throw new Error(
-          "El maestro no pudo ser desvinculado. Intentalo de nuevo."
-        );
-      }
-    } catch (error) {
-      showAlert({
-        title: "Error al desvincular",
-        text: error.message,
-        icon: "error",
-      });
-    }
   };
 
   return (

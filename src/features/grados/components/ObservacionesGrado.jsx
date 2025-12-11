@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { BotonIcono } from "../../../utils/components/BotonIcono";
 import { useDispatch, useSelector } from "react-redux";
 import { listarObservaciones } from "../../../reducers/observacionesSlice";
+import { abrirModal } from "../../../reducers/uiSlice";
 
 export const ObservacionesGrado = ({ cicloId }) => {
 
@@ -37,6 +38,11 @@ export const ObservacionesGrado = ({ cicloId }) => {
           texto={"Agregar observación"}
           Icono={PlusIcon}
           className="bg-indigo-600 hover:bg-indigo-700 text-white"
+          onClick={() => dispatch(abrirModal({
+              modalAbierto: true,
+              tipo: "agregarObservacionGrado",
+              data: null
+            }))}
         />
       </div>
       {observacionesPaginadas.map((o, idx) => (

@@ -4,10 +4,11 @@ import { listarMaestrosDisponibles } from "../../../reducers/maestrosSlice";
 import { useForm } from "react-hook-form";
 import { vincularMaestro } from "../../../reducers/gradosSlice";
 import { showAlert } from "../../../utils/alert";
+import { cerrarModal } from "../../../reducers/uiSlice";
 
 export const ModalAgregarMaestro = ({ modalData }) => {
   const dispatch = useDispatch();
-  const { maestrosDisponibles } = useSelector((state) => state.maestros);
+  const { maestrosDisponibles, maestrosAsignados } = useSelector((state) => state.maestros);
   const {
     register,
     formState: { errors },
@@ -18,29 +19,46 @@ export const ModalAgregarMaestro = ({ modalData }) => {
     dispatch(listarMaestrosDisponibles());
   }, [modalData]);
 
+  const maestrosFiltrados = maestrosDisponibles.filter(m => !maestrosAsignados.some(a => a.id == m.id))
+
   const onSubmit = async (data) => {
-    console.log(data.id_maestro, modalData.cicloId)
-    
-        try { // idCiclo, idMaestro
-          const vincular = dispatch(vincularMaestro({ idCiclo: modalData.cicloId, idMaestro: data.id_maestro }));
-          if (vincularMaestro.fulfilled.match(vincular)) {
-            showAlert({
-              title: "Maestro vinculado",
-              text: "El maestro se vinculó correctamente.",
-              icon: "success",
-            });
-          } else if (vincularMaestro.rejected.match(vincular)) {
-            throw new Error(
-              "El maestro no pudo ser vinculado. Intentalo de nuevo."
-            );
-          }
-        } catch (error) {
-          showAlert({
-            title: "Error al vincular",
-            text: error.message,
-            icon: "error",
-          });
-        }
+    if (maestrosAsignados.some((m) => m.id == data.id_maestro)) {
+        showAlert({
+          title: "Error",
+          text: "El maestro ya está asignado a este ciclo.",
+          icon: "warning",
+        });
+        throw new Error(
+          "El maestro ya está asignado a este ciclo."
+        );
+    }
+    try {
+      // idCiclo, idMaestro
+      const vincular = await dispatch(
+        vincularMaestro({
+          idCiclo: modalData.cicloId,
+          idMaestro: data.id_maestro,
+        })
+      );
+      if (vincularMaestro.fulfilled.match(vincular)) {
+        showAlert({
+          title: "Maestro vinculado",
+          text: "El maestro se vinculó correctamente.",
+          icon: "success",
+        });
+        dispatch(cerrarModal());
+      } else if (vincularMaestro.rejected.match(vincular)) {
+        throw new Error(
+          "El maestro no pudo ser vinculado. Intentalo de nuevo."
+        );
+      }
+    } catch (error) {
+      showAlert({
+        title: "Error al vincular",
+        text: error.message,
+        icon: "error",
+      });
+    }
   };
 
   return (
@@ -64,7 +82,7 @@ export const ModalAgregarMaestro = ({ modalData }) => {
             <option value="" disabled>
               Selecciona un maestro
             </option>
-            {maestrosDisponibles.map((m, idx) => (
+            {maestrosFiltrados.map((m, idx) => (
               <option key={idx} value={m.id}>
                 {m.nombre} | {m.usuario}
               </option>
