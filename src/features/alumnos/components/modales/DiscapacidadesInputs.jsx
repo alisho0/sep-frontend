@@ -1,9 +1,11 @@
 import { PlusIcon } from "@heroicons/react/16/solid";
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { useSelector } from "react-redux";
 
 export const DiscapacidadesInputs = () => {
   const { register, watch, setValue, formState: {errors} } = useFormContext();
+  const { discapacidades } = useSelector((state) => state.discapacidades);
   const [discapacidadesSeleccionadas, setDiscapacidadesSeleccionadas] = useState([]);
   const discapacidadActual = watch("discapacidades");
   const isDiscapacidad = watch("discapacidad");
@@ -49,15 +51,11 @@ export const DiscapacidadesInputs = () => {
                   <option value="" disabled hidden>
                     Selecciona una discapacidad
                   </option>
-                  <option value="Discapacidad visual">
-                    Discapacidad visual
+                  {discapacidades.map((d, idx) => (
+                  <option value={d.id} key={idx}>
+                    {d.nombre}
                   </option>
-                  <option value="Discapacidad intelectual">
-                    Discapacidad intelectual
-                  </option>
-                  <option value="Discapacidad motora">
-                    Discapacidad motora
-                  </option>
+                  ))}
                 </select>
                 <div className="flex gap-2 mt-3">
                   <button

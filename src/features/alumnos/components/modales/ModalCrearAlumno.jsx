@@ -11,6 +11,7 @@ import { TutorCrearConId } from "./TutorCrearConId";
 import { crearAlumno } from "../../../../reducers/alumnosSlice";
 import { cerrarModal } from "../../../../reducers/uiSlice";
 import { showAlert } from "../../../../utils/alert";
+import { listarDiscapacidades } from "../../../../reducers/discapacidadesSlice";
 
 export const ModalCrearAlumno = () => {
   const { tutores } = useSelector((state) => state.tutores);
@@ -28,6 +29,7 @@ export const ModalCrearAlumno = () => {
 
   useEffect(() => {
     dispatch(listarTutores());
+    dispatch(listarDiscapacidades())
   }, []);
   useEffect(() => {
     setValue("tutoresIds", tutoresSeleccionados);
