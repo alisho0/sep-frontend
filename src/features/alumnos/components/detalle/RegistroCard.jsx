@@ -8,6 +8,7 @@ import { RegistroDatos } from "./RegistroDatos";
 export const RegistroCard = () => {
 
     const { aniosDisponibles, registro } = useSelector((state) => state.registros);
+    const { observacion } = useSelector((state) => state.observaciones)
     const { alumno } = useSelector((state) => state.alumnos);
     const dispatch = useDispatch();
 
@@ -51,8 +52,8 @@ export const RegistroCard = () => {
         </button>
       </div>
 
-      {registro?.observaciones?.length > 0 &&
-        registro.observaciones.map((obs, idx) => (
+      {observacion?.length > 0 &&
+        observacion.map((obs, idx) => (
           <div
             className="mt-6  border border-gray-400 p-4 rounded-lg bg-gray-100 hover:bg-gray-300 transition-colors"
             key={idx}

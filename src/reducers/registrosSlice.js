@@ -35,8 +35,9 @@ const registrosSlice = createSlice({
                 state.loading = true;
             })
             .addCase(detalleRegistro.fulfilled, (state, action) => {
+                const { observaciones, ...resto } = action.payload;
                 state.loading = false;
-                state.registro = action.payload;
+                state.registro = resto;
             })
             .addCase(detalleRegistro.rejected, (state) => {
                 state.loading = false;

@@ -1,30 +1,58 @@
 import { Autocomplete, TextField } from "@mui/material";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
-import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { Controller, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { crearObservacion } from "../../../reducers/observacionesSlice";
+import { useParams } from "react-router-dom";
+import { showAlert } from "../../../utils/alert";
+import { cerrarModal } from "../../../reducers/uiSlice";
 
 export const ModalAgregarObservacionGrado = () => {
   const { cicloGradoActual, loading } = useSelector((state) => state.grados);
+  const dispatch = useDispatch();
   const {
     register,
     formState: { errors },
-    handleSubmit
+    handleSubmit,
+    control,
   } = useForm();
 
   const alumnosArray = cicloGradoActual.alumnos.map((alumno) => ({
     label: alumno.nombre + " " + alumno.apellido + " | DNI: " + alumno.dni,
-    id: alumno.id,
+    id: alumno.registro,
   }));
 
   const token = localStorage.getItem("token");
   const payload = jwtDecode(token);
   const today = new Date();
-  const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+  const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`;
 
   const onSubmit = async (data) => {
-    console.log(data)
-  }
+    try {
+      const resultAction = await dispatch(
+        crearObservacion({ obs: data, registroId: null })
+      );
+      if (crearObservacion.fulfilled.match(resultAction)) {
+        showAlert({
+          title: "Observación creada",
+          text: "La observación fue creada correctamente",
+          icon: "success",
+        });
+        dispatch(cerrarModal());
+      } else if (crearObservacion.rejected.match(resultAction)) {
+        throw new Error(resultAction.error.message);
+      }
+    } catch (error) {
+      showAlert({
+        title: "Error",
+        text: "Ocurrió un error al crear la observación",
+        icon: "error",
+      });
+    }
+  };
 
   return (
     <>
@@ -33,16 +61,27 @@ export const ModalAgregarObservacionGrado = () => {
         <label htmlFor="alumno" className="italic text-sm text-gray-700">
           Alumno
         </label>
-        <Autocomplete
-          disablePortal
-          options={alumnosArray}
-          sx={{ width: 300 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Ingresa alumno..." />
+        <Controller
+          name="idRegistro"
+          control={control}
+          rules={{ required: "Debes seleccionar un alumno" }}
+          render={({ field, fieldState }) => (
+            <Autocomplete
+              options={alumnosArray}
+              getOptionLabel={(option) => option.label}
+              onChange={(_, value) => field.onChange(value?.id)}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Selecciona un alumno"
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                />
+              )}
+              loading={loading}
+            />
           )}
-          getOptionKey={(option) => option.id}
-          loading={loading}
-          {...register("id_ej")}
         />
         <div className="flex flex-col gap-1 my-4">
           <label htmlFor="observacion">Descripción:</label>

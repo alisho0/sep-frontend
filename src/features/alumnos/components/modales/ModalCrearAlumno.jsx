@@ -84,7 +84,7 @@ export const ModalCrearAlumno = () => {
         icon: "error",
       });
     }
-    console.log(data)
+    // console.log(data)
   };
   return (
     <>

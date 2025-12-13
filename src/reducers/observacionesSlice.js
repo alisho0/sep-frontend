@@ -4,7 +4,9 @@ import { detalleRegistro } from "./registrosSlice";
 
 export const crearObservacion = createAsyncThunk('observaciones/crear', async ({obs, registroId}, {dispatch}) => {
     const data = await agregarObservacion(obs);
-    await dispatch(detalleRegistro({id: registroId}))
+    if(registroId != null) {
+        await dispatch(detalleRegistro({id: registroId}))
+    }
     return data;
 })
 
@@ -28,7 +30,7 @@ const observacionesSlice = createSlice({
             })
             .addCase(crearObservacion.fulfilled, (state, action) => {
                 state.loading = false;
-                state.observacion = action.payload;
+                state.observacion.push(action.payload);
             })
             .addCase(crearObservacion.rejected, (state, action) => {
                 state.loading = false;
@@ -44,6 +46,9 @@ const observacionesSlice = createSlice({
             .addCase(listarObservaciones.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message; 
+            })
+            .addCase(detalleRegistro.fulfilled, (state, action) => {
+                state.observacion = action.payload.observaciones;
             })
     }
 })
