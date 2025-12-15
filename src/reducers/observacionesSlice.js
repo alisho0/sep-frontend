@@ -4,9 +4,9 @@ import { detalleRegistro } from "./registrosSlice";
 
 export const crearObservacion = createAsyncThunk('observaciones/crear', async ({obs, registroId}, {dispatch}) => {
     const data = await agregarObservacion(obs);
-    if(registroId != null) {
-        await dispatch(detalleRegistro({id: registroId}))
-    }
+    // if(registroId != null) {
+    //     await dispatch(detalleRegistro({id: registroId}))
+    // }
     return data;
 })
 

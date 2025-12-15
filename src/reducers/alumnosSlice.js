@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { asignarTutorAlumno, getAlumnoById, getAlumnos, getAlumnosPorCSG, postAlumno } from "../apis/alumnosApi"
 import { listarTutoresPorAlumno } from "./tutoresSlice";
+import { detalleCiclo } from "./gradosSlice";
 
 export const traerAlumnos = createAsyncThunk('alumnos/getAlumnos', async () => {
  const data = await getAlumnos();
@@ -91,6 +92,16 @@ const alumnosSlice = createSlice({
             .addCase(listarAlumnosPorCSG.rejected, (state) => {
                 state.loading = false;
             })
+            // .addCase(detalleCiclo.pending, (state) => {
+            //     state.loading = true;
+            // })
+            // .addCase(detalleCiclo.fulfilled, (state, action) => {
+            //     state.loading = false;
+            //     state.alumnosCSG = action.payload.alumnos;
+            // })
+            // .addCase(detalleCiclo.rejected, (state) => {
+            //     state.loading = false;
+            // })
     }
 })
 

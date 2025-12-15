@@ -168,8 +168,9 @@ const gradosSlice = createSlice({
                 state.loading = true
             })
             .addCase(detalleCiclo.fulfilled, (state, action) => {
+                // const { alumnos, ...resto } = action.payload
                 state.loading = false;
-                state.cicloGradoActual = action.payload
+                state.cicloGradoActual = action.payload;
             })
             .addCase(detalleCiclo.rejected, (state) => {
                 state.loading = false

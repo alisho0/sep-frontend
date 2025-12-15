@@ -22,7 +22,7 @@ export const RegistroCard = () => {
             Historial de observaciones por año lectivo
             </p>
         </div>
-        <button className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors font-medium hover:cursor-pointer flex items-center gap-1" onClick={() => dispatch(abrirModal({ modalAbierto: true, tipo: 'detalleAlumno', data: alumno }))}>
+        <button className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors font-medium hover:cursor-pointer flex items-center gap-1" onClick={() => dispatch(abrirModal({ modalAbierto: true, tipo: 'crearRegistro', data: alumno }))}>
             <PlusIcon className="h-5 w-5" />
             Nuevo Registro
         </button>

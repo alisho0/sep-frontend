@@ -20,3 +20,12 @@ export const traerRegistro = async (id) => {
         console.log(error);
     }
 }
+
+export const delRegistro = async (id) => {
+    try {
+        const response = await api.delete(`${url}/eliminar/${id}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al desvincular el tutor. Por favor, intente nuevamente");
+    }
+}

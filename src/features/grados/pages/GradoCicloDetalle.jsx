@@ -15,6 +15,8 @@ import { ObservacionesGrado } from "../components/ObservacionesGrado";
 import { UsuariosGrado } from "../components/UsuariosGrado";
 import { metricasPorCicloDetalle } from "../../../reducers/metricasSlice";
 import { listarAlumnosPorCSG } from "../../../reducers/alumnosSlice";
+import { confirmationAlert } from "../../../utils/alert";
+import { eliminarRegistro } from "../../../reducers/registrosSlice";
 
 export const GradoCicloDetalle = () => {
   const { cicloGradoActual } = useSelector((state) => state.grados);
@@ -29,6 +31,41 @@ export const GradoCicloDetalle = () => {
     dispatch(metricasPorCicloDetalle(cicloId));
     dispatch(listarAlumnosPorCSG(cicloId))
   }, [cicloId]);
+  
+  const desvincularAlumno = async (registroId, alumnoId) => {
+    // console.log("registro: ", registroId, "alumno: ", alumnoId)
+    await confirmationAlert({
+      title: '¿Estás seguro?',
+      text: 'Se desvinculará al alumno del grado y se eliminarán todas sus observaciones.',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+      icon: 'warning'
+    }).then((res) => {
+          if (res.isConfirmed) {
+          try {
+            const desvincular = dispatch(eliminarRegistro({registroId, alumnoId}));
+            if (eliminarRegistro.fulfilled.match(desvincular)) {
+              showAlert({
+                title: "Alumno desvinculado",
+                text: "El alumno se desvinculó correctamente.",
+                icon: "success",
+              });
+            } else if (eliminarRegistro.rejected.match(desvincular)) {
+              throw new Error(
+                "El alumno no pudo ser desvinculado. Intentalo de nuevo."
+              );
+            }
+          } catch (error) {
+            showAlert({
+              title: "Error al desvincular",
+              text: error.message,
+              icon: "error",
+            });
+          }
+          }
+        });
+  }
+
   return (
     <>
       <section className="container mx-auto md:px-28 px-4 pt-9">
@@ -77,14 +114,14 @@ export const GradoCicloDetalle = () => {
                   <p className="text-gray-700">{a.dni}</p>
                 </div>
                 <div className="flex md:flex-row flex-col md:mt-0 mt-2 gap-2">
-                  <Link className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white font-semibold rounded-lg cursor-pointer">
+                  <Link className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white font-semibold rounded-lg cursor-pointer" to={`/alumnos/${a.id}`}>
                     <BotonIcono
                       Icono={EyeIcon}
                       className="w-full justify-center"
                     />
                   </Link>
                   <BotonIcono
-                    onClick={() => handleDeleteCiclo(ciclo.id)}
+                    onClick={() => desvincularAlumno(a.idRegistro, a.id)}
                     Icono={UserMinusIcon}
                     className="bg-indigo-600 text-white hover:bg-red-700 justify-center"
                   />

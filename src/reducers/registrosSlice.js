@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { aniosConRegistros, traerRegistro } from "../apis/registrosApi";
+import { aniosConRegistros, delRegistro, traerRegistro } from "../apis/registrosApi";
+import { detalleCiclo } from "./gradosSlice";
 
 export const aniosRegistros = createAsyncThunk('registros/aniosDisponibles', async ({id}) => {
     const data = await aniosConRegistros(id);
@@ -8,6 +9,12 @@ export const aniosRegistros = createAsyncThunk('registros/aniosDisponibles', asy
 
 export const detalleRegistro = createAsyncThunk('registros/observaciones', async ({id}) => {
     const data = await traerRegistro(id);
+    return data;
+})
+
+export const eliminarRegistro = createAsyncThunk('registro/eliminar', async ({registroId, cicloId}, {dispatch}) => {
+    const data = await delRegistro(registroId);
+    await dispatch(detalleCiclo(cicloId))
     return data;
 })
 
@@ -40,6 +47,15 @@ const registrosSlice = createSlice({
                 state.registro = resto;
             })
             .addCase(detalleRegistro.rejected, (state) => {
+                state.loading = false;
+            })
+            .addCase(eliminarRegistro.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(eliminarRegistro.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(eliminarRegistro.rejected, (state) => {
                 state.loading = false;
             })
     }
