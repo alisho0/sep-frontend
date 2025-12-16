@@ -29,3 +29,12 @@ export const delRegistro = async (id) => {
         throw new Error(error.response?.data?.message || "Error al desvincular el tutor. Por favor, intente nuevamente");
     }
 }
+export const postRegistro = async (registroData) => {
+    try {
+        console.log("La data llega así en api: ", registroData)
+        const response = await api.post(`${url}/crear`, registroData);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al desvincular el tutor. Por favor, intente nuevamente");
+    }
+}

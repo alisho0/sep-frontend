@@ -1,16 +1,55 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { InfoGradoInputs } from "./InfoGradoInputs";
 import { FormProvider, useForm } from "react-hook-form";
 import { BotonIcono } from "../../../../utils/components/BotonIcono";
 import { cerrarModal } from "../../../../reducers/uiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { aniosRegistros, crearRegistro, detalleRegistro } from "../../../../reducers/registrosSlice";
+import { confirmationAlert, showAlert } from "../../../../utils/alert";
 
 export const ModalCrearRegistro = () => {
+    const { aniosDisponibles, registro } = useSelector(
+      (state) => state.registros
+    );
+    const { alumno } = useSelector(
+      (state) => state.alumnos
+    );
     const dispatch = useDispatch();
-  const methods = useForm();
+    // const { id } = useParams();
 
-  const onSubmit = (data) => {
+  const methods = useForm({
+    defaultValues: {
+      idAlumno: Number(alumno.id)
+    }
+  });
+
+  const { register } = methods;
+
+  const onSubmit = async (data) => {
     console.log(data);
+      try {
+        const nuevoRegistro = await dispatch(crearRegistro({registroData: data}));
+        if (crearRegistro.fulfilled.match(nuevoRegistro)) {
+          showAlert({
+            title: "Registro creado",
+            text: "El registro fue creado y agregado correctamente",
+            icon: "success",
+          });
+          await dispatch(aniosRegistros({ id }));
+          dispatch(cerrarModal());
+        } else if (crearRegistro.rejected.match(nuevoRegistro)) {
+          throw new Error(crearRegistro.error.message);
+        }
+      } catch (error) {
+        showAlert({
+          title: "Creación fallida",
+          text:
+            error.message ||
+            "El registro no pudo ser creado. Intentalo nuevamente.",
+          icon: "error",
+        });
+      }
   };
   return (
     <>
@@ -26,6 +65,7 @@ export const ModalCrearRegistro = () => {
           className="flex flex-col"
         >
           <InfoGradoInputs />
+          <input type="hidden" {...register("idAlumno", { valueAsNumber: true })} />
           <div className="flex justify-end mt-3 gap-2 text-white font-semibold">
             <button
               className="bg-red-700 py-2 px-4 gap-1 rounded-lg hover:bg-red-800 transition-colors cursor-pointer "

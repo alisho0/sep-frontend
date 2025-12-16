@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { aniosConRegistros, delRegistro, traerRegistro } from "../apis/registrosApi";
+import { aniosConRegistros, delRegistro, postRegistro, traerRegistro } from "../apis/registrosApi";
 import { detalleCiclo } from "./gradosSlice";
 
 export const aniosRegistros = createAsyncThunk('registros/aniosDisponibles', async ({id}) => {
@@ -15,6 +15,11 @@ export const detalleRegistro = createAsyncThunk('registros/observaciones', async
 export const eliminarRegistro = createAsyncThunk('registro/eliminar', async ({registroId, cicloId}, {dispatch}) => {
     const data = await delRegistro(registroId);
     await dispatch(detalleCiclo(cicloId))
+    return data;
+})
+
+export const crearRegistro = createAsyncThunk('registro/crear', async ({registroData}, {dispatch}) => {
+    const data = postRegistro(registroData);
     return data;
 })
 
