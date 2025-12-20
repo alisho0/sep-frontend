@@ -31,3 +31,12 @@ export const getObservacionesGrado = async (id) => {
         throw new Error(error.response?.data?.message || "Error en listar las observaciones por grado.");
     }
 }
+
+export const delObservacion = async (id) => {
+    try {
+        const response = await api.delete(`${url}/eliminar/${id}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error en listar las observaciones por grado.");
+    }
+}

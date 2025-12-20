@@ -2,8 +2,10 @@ import { CalendarIcon, ChatBubbleBottomCenterIcon, PlusIcon, ChevronLeftIcon, Ch
 import React, { useEffect, useState } from "react";
 import { BotonIcono } from "../../../utils/components/BotonIcono";
 import { useDispatch, useSelector } from "react-redux";
-import { listarObservaciones } from "../../../reducers/observacionesSlice";
+import { eliminarObservacion, listarObservaciones } from "../../../reducers/observacionesSlice";
 import { abrirModal } from "../../../reducers/uiSlice";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import { confirmationAlert, showAlert } from "../../../utils/alert";
 
 export const ObservacionesGrado = ({ cicloId }) => {
 
@@ -26,6 +28,39 @@ export const ObservacionesGrado = ({ cicloId }) => {
       setPaginaActual(numeroPagina);
     }
   };
+
+  const handleDelete = async (id) => {
+    await confirmationAlert({
+      title: "¿Estás seguro?",
+      text: "¿Estás seguro de eliminar esta observación?",
+      icon: "warning",
+      confirmButtonText:"Eliminar",
+      cancelButtonText: "Cancelar"
+    }).then((res) => {
+          if (res.isConfirmed) {
+          try {
+            const eliminar = dispatch(eliminarObservacion(id));
+            if (eliminarObservacion.fulfilled.match(eliminar)) {
+              showAlert({
+                title: "Observación eliminada",
+                text: "La observación se eliminó correctamente.",
+                icon: "success",
+              });
+            } else if (eliminarObservacion.rejected.match(eliminar)) {
+              throw new Error(
+                "La observación no pudo ser eliminado. Intentalo de nuevo."
+              );
+            }
+          } catch (error) {
+            showAlert({
+              title: "Error al eliminar",
+              text: error.message,
+              icon: "error",
+            });
+          }
+          }
+        });
+  }
   
   return (
     <div className="rounded-lg shadow-lg px-4 py-3 bg-white overflow-y-scroll">
@@ -47,7 +82,7 @@ export const ObservacionesGrado = ({ cicloId }) => {
       </div>
       {observacionesPaginadas.map((o, idx) => (
         <div className="border border-gray-400 p-4 rounded-lg bg-gray-100 hover:bg-gray-300 transition-colors mb-3" key={idx}>
-          <div className="flex justify-between mb-4">
+          <div className="flex flex-col md:flex-row justify-between mb-4">
             <p className="font-semibold">{o.alumno}</p>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
@@ -59,9 +94,12 @@ export const ObservacionesGrado = ({ cicloId }) => {
               </p>
             </div>
           </div>
-          <p className="leading-relaxed">
-            {o.contenido}
-          </p>
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-center">
+            <p className="leading-relaxed">
+              {o.contenido}
+            </p>
+            <BotonIcono texto={"Eliminar"} Icono={TrashIcon} className="bg-red-600 text-white hover:bg-red-700 transition hover:shadow-md flex justify-center" onClick={() => handleDelete(o.id)}/>
+          </div>
         </div>
       ))}
 

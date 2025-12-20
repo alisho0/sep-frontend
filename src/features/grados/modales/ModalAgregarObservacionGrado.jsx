@@ -10,6 +10,7 @@ import { cerrarModal } from "../../../reducers/uiSlice";
 
 export const ModalAgregarObservacionGrado = () => {
   const { cicloGradoActual, loading } = useSelector((state) => state.grados);
+  const { alumnosCSG } = useSelector((state) => state.alumnos);
   const dispatch = useDispatch();
   const {
     register,
@@ -18,9 +19,9 @@ export const ModalAgregarObservacionGrado = () => {
     control,
   } = useForm();
 
-  const alumnosArray = cicloGradoActual.alumnos.map((alumno) => ({
-    label: alumno.nombre + " " + alumno.apellido + " | DNI: " + alumno.dni,
-    id: alumno.registro,
+  const alumnosArray = alumnosCSG.map((alumno) => ({
+    label: alumno.nombre + " | DNI: " + alumno.dni,
+    id: alumno.idRegistro,
   }));
 
   const token = localStorage.getItem("token");
@@ -32,6 +33,7 @@ export const ModalAgregarObservacionGrado = () => {
 
   const onSubmit = async (data) => {
     try {
+      console.log(data)
       const resultAction = await dispatch(
         crearObservacion({ obs: data, registroId: null })
       );

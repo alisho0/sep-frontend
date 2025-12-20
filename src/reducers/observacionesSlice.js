@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { agregarObservacion, getObservacionesGrado } from "../apis/observacionesApi";
+import { agregarObservacion, delObservacion, getObservacionesGrado } from "../apis/observacionesApi";
 import { detalleRegistro } from "./registrosSlice";
 
 export const crearObservacion = createAsyncThunk('observaciones/crear', async ({obs, registroId}, {dispatch}) => {
@@ -14,6 +14,12 @@ export const listarObservaciones = createAsyncThunk('observaciones/listar', asyn
     const data = await getObservacionesGrado(id);
     return data;
 });
+
+export const eliminarObservacion = createAsyncThunk('observaciones/eliminar', async (id) => {
+    const data = await delObservacion(id);
+    return id;
+});
+
 
 const observacionesSlice = createSlice({
     name: 'observaciones',
@@ -47,8 +53,22 @@ const observacionesSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message; 
             })
+            .addCase(detalleRegistro.pending, (state) => {
+                state.loading = true; 
+            })
             .addCase(detalleRegistro.fulfilled, (state, action) => {
                 state.observacion = action.payload.observaciones;
+            })
+            .addCase(eliminarObservacion.pending, (state) => {
+                state.loading = true; 
+            })
+            .addCase(eliminarObservacion.fulfilled, (state, action) => {
+                state.loading = false;
+                state.observacion = state.observacion.filter(o => o.id != action.payload)
+            })
+            .addCase(eliminarObservacion.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message; 
             })
     }
 })

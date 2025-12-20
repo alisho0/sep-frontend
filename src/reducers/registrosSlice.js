@@ -15,7 +15,7 @@ export const detalleRegistro = createAsyncThunk('registros/observaciones', async
 export const eliminarRegistro = createAsyncThunk('registro/eliminar', async ({registroId, cicloId}, {dispatch}) => {
     const data = await delRegistro(registroId);
     await dispatch(detalleCiclo(cicloId))
-    return data;
+    return registroId;
 })
 
 export const crearRegistro = createAsyncThunk('registro/crear', async ({registroData}, {dispatch}) => {
@@ -59,8 +59,19 @@ const registrosSlice = createSlice({
             })
             .addCase(eliminarRegistro.fulfilled, (state, action) => {
                 state.loading = false;
+                state.registro = state.registro.filter(r => r == action.payload);
             })
             .addCase(eliminarRegistro.rejected, (state) => {
+                state.loading = false;
+            })
+            .addCase(crearRegistro.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(crearRegistro.fulfilled, (state, action) => {
+                state.loading = false;
+                state.aniosDisponibles.push(action.payload);
+            })
+            .addCase(crearRegistro.rejected, (state) => {
                 state.loading = false;
             })
     }

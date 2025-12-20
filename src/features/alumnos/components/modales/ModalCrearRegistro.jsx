@@ -16,7 +16,7 @@ export const ModalCrearRegistro = () => {
       (state) => state.alumnos
     );
     const dispatch = useDispatch();
-    // const { id } = useParams();
+    const { id } = useParams();
 
   const methods = useForm({
     defaultValues: {
@@ -29,6 +29,10 @@ export const ModalCrearRegistro = () => {
   const onSubmit = async (data) => {
     console.log(data);
       try {
+        const seRepite = aniosDisponibles.filter((a => a.anio == data.anioCicloGrado));
+        if (seRepite.length > 0) { 
+          throw new Error("El año seleccionado ya está registrado en el alumno");
+        }
         const nuevoRegistro = await dispatch(crearRegistro({registroData: data}));
         if (crearRegistro.fulfilled.match(nuevoRegistro)) {
           showAlert({
@@ -36,7 +40,7 @@ export const ModalCrearRegistro = () => {
             text: "El registro fue creado y agregado correctamente",
             icon: "success",
           });
-          await dispatch(aniosRegistros({ id }));
+          // await dispatch(aniosRegistros({ id }));
           dispatch(cerrarModal());
         } else if (crearRegistro.rejected.match(nuevoRegistro)) {
           throw new Error(crearRegistro.error.message);

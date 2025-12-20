@@ -5,7 +5,7 @@ const url = `${import.meta.env.VITE_BASE_URL}/registro`;
 
 export const aniosConRegistros = async (id) => {
     try {
-        const response = await api.get(`${url}/añosDisponibles/${id}`)
+        const response = await api.get(`${url}/aniosDisponibles/${id}`)
         return response.data;
     } catch (error) {
         console.log(error);
