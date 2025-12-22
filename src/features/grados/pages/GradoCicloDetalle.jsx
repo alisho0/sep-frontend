@@ -68,7 +68,7 @@ export const GradoCicloDetalle = () => {
 
   return (
     <>
-      <section className="container mx-auto md:px-28 px-4 pt-9">
+      <section className="container mx-auto px-4 pt-9">
         <div className="flex gap-3 items-center mb-4">
           <BotonIcono
             Icono={ArrowLeftIcon}

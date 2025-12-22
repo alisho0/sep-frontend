@@ -95,7 +95,7 @@ export const ObservacionesGrado = ({ cicloId }) => {
             </div>
           </div>
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-center">
-            <p className="leading-relaxed">
+            <p className="leading-relaxed line-clamp-3">
               {o.contenido}
             </p>
             <BotonIcono texto={"Eliminar"} Icono={TrashIcon} className="bg-red-600 text-white hover:bg-red-700 transition hover:shadow-md flex justify-center" onClick={() => handleDelete(o.id)}/>
