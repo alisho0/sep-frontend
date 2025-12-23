@@ -4,7 +4,7 @@ import { BotonIcono } from "../../../utils/components/BotonIcono";
 import { useDispatch, useSelector } from "react-redux";
 import { eliminarObservacion, listarObservaciones } from "../../../reducers/observacionesSlice";
 import { abrirModal } from "../../../reducers/uiSlice";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { confirmationAlert, showAlert } from "../../../utils/alert";
 
 export const ObservacionesGrado = ({ cicloId }) => {
@@ -94,11 +94,18 @@ export const ObservacionesGrado = ({ cicloId }) => {
               </p>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-center">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-left">
             <p className="leading-relaxed line-clamp-3">
               {o.contenido}
             </p>
-            <BotonIcono texto={"Eliminar"} Icono={TrashIcon} className="bg-red-600 text-white hover:bg-red-700 transition hover:shadow-md flex justify-center" onClick={() => handleDelete(o.id)}/>
+            <div className="flex flex-col gap-2">
+              <BotonIcono texto={""} Icono={EyeIcon} className="bg-indigo-600 text-white hover:bg-indigo-700 transition hover:shadow-md flex justify-center" onClick={() => dispatch(abrirModal({
+                modalAbierto: true,
+                tipo: "mostrarObservacion",
+                data: o,
+              }))}/>
+              <BotonIcono texto={""} Icono={TrashIcon} className="bg-red-600 text-white hover:bg-red-700 transition hover:shadow-md flex justify-center" onClick={() => handleDelete(o.id)}/>
+            </div>
           </div>
         </div>
       ))}

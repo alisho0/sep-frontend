@@ -9,6 +9,7 @@ import { ModalCrearCiclo } from '../../features/grados/modales/ModalCrearCiclo';
 import { ModalAgregarMaestro } from '../../features/maestros/modales/ModalAgregarMaestro';
 import { ModalAgregarObservacionGrado } from '../../features/grados/modales/ModalAgregarObservacionGrado';
 import { ModalCrearRegistro } from '../../features/alumnos/components/modales/ModalCrearRegistro';
+import { ModalMostrarObservacion } from '../../features/grados/modales/ModalMostrarObservacion';
  
 export const ModalGlobal = () => {
     const dispatch = useDispatch();
@@ -34,6 +35,7 @@ export const ModalGlobal = () => {
                 {modalTipo === "agregarMaestro" && <ModalAgregarMaestro modalData={modalData} />}
                 {modalTipo === "agregarObservacionGrado" && <ModalAgregarObservacionGrado />}
                 {modalTipo === "crearRegistro" && <ModalCrearRegistro />}
+                {modalTipo === "mostrarObservacion" && <ModalMostrarObservacion data={modalData} />}
               </div>
           </div>
         </div>
