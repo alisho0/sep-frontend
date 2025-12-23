@@ -1,30 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import { CalendarIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { PlusIcon } from "@heroicons/react/16/solid";
 import { abrirModal } from "../../../../reducers/uiSlice";
 import { RegistroDatos } from "./RegistroDatos";
+import { showAlert } from "../../../../utils/alert";
+import { detalleRegistro } from "../../../../reducers/registrosSlice";
 
 export const RegistroCard = () => {
+  const { aniosDisponibles, registro } = useSelector(
+    (state) => state.registros
+  );
+  const { observacion } = useSelector((state) => state.observaciones);
+  const { alumno } = useSelector((state) => state.alumnos);
+  const [selected, setSelected] = useState();
+  const dispatch = useDispatch();
 
-    const { aniosDisponibles, registro } = useSelector((state) => state.registros);
-    const { observacion } = useSelector((state) => state.observaciones)
-    const { alumno } = useSelector((state) => state.alumnos);
-    const dispatch = useDispatch();
-
+  const handleChangeRegistro = async (anio) => {
+    try {
+      await dispatch(detalleRegistro({id: anio.id})); 
+    } catch (error) {
+      showAlert({
+        title: "Cambio fallido",
+        text:
+          error.message ||
+          "Error al cambiar de registro. Intentalo nuevamente.",
+        icon: "error",
+      });
+    }
+  };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md border-gray-300 md:col-span-3">
       <div className="flex justify-between items-center ">
         <div>
-            <h3 className="text-md font-semibold">Registros y Observaciones</h3>
-            <p className="text-gray-600 text-sm">
+          <h3 className="text-md font-semibold">Registros y Observaciones</h3>
+          <p className="text-gray-600 text-sm">
             Historial de observaciones por año lectivo
-            </p>
+          </p>
         </div>
-        <button className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors font-medium hover:cursor-pointer flex items-center gap-1" onClick={() => dispatch(abrirModal({ modalAbierto: true, tipo: 'crearRegistro', data: alumno }))}>
-            <PlusIcon className="h-5 w-5" />
-            Nuevo Registro
+        <button
+          className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors font-medium hover:cursor-pointer flex items-center gap-1"
+          onClick={() =>
+            dispatch(
+              abrirModal({
+                modalAbierto: true,
+                tipo: "crearRegistro",
+                data: alumno,
+              })
+            )
+          }
+        >
+          <PlusIcon className="h-5 w-5" />
+          Nuevo Registro
         </button>
       </div>
 
@@ -32,23 +60,36 @@ export const RegistroCard = () => {
 
       <div className="flex justify-between items-center mt-6">
         <div className="flex bg-indigo-600 w-fit rounded-lg p-1">
-            {aniosDisponibles.map((anio) => {
-                const isSelected = anio.anio == registro.anioCiclo
+          {aniosDisponibles.map((anio) => {
+            const isSelected = anio.anio == registro.anioCiclo;
             return (
-                <button
+              <button
                 key={anio.id}
-                className={`text-white px-2 py-0.5 rounded font-semibold hover:cursor-pointer ${isSelected ? 'bg-indigo-900' : ''}`}
-                onClick={() => console.log("Enviado")}
-                >
+                className={`text-white px-2 py-0.5 rounded font-semibold hover:cursor-pointer hover:bg-indigo-700 transition ${
+                  isSelected ? "bg-indigo-900" : ""
+                }`}
+                onClick={() => handleChangeRegistro(anio)}
+              >
                 {anio.anio}
-                </button>
+              </button>
             );
-            })}
+          })}
         </div>
-        
-        <button className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors font-medium hover:cursor-pointer flex items-center gap-1" onClick={() => dispatch(abrirModal({ modalAbierto: true, tipo: 'agregarObservacion', data: alumno }))} >
-            <PlusIcon className="h-5 w-5" />
-            Nueva Observación
+
+        <button
+          className="bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors font-medium hover:cursor-pointer flex items-center gap-1"
+          onClick={() =>
+            dispatch(
+              abrirModal({
+                modalAbierto: true,
+                tipo: "agregarObservacion",
+                data: alumno,
+              })
+            )
+          }
+        >
+          <PlusIcon className="h-5 w-5" />
+          Nueva Observación
         </button>
       </div>
 

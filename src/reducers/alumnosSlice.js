@@ -10,7 +10,6 @@ export const traerAlumnos = createAsyncThunk('alumnos/getAlumnos', async () => {
 
 export const traerPorAlumnoId = createAsyncThunk('alumnos/detalle', async ({id}) => {
     const data = await getAlumnoById(id);
-    console.log(data)
     return data;
 })
 
