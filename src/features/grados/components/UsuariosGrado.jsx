@@ -1,7 +1,6 @@
 import {
   InformationCircleIcon,
   PlusIcon,
-  TrashIcon,
 } from "@heroicons/react/16/solid";
 import React, { useEffect } from "react";
 import { BotonIcono } from "../../../utils/components/BotonIcono";
@@ -12,6 +11,7 @@ import {
 import { abrirModal } from "../../../reducers/uiSlice";
 import { desvincularMaestro } from "../../../reducers/gradosSlice";
 import { confirmationAlert, showAlert } from "../../../utils/alert";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 export const UsuariosGrado = ({ cicloId }) => {
   const dispatch = useDispatch();
@@ -57,9 +57,25 @@ export const UsuariosGrado = ({ cicloId }) => {
 
   return (
     <div className="rounded-lg px-4 py-3 bg-white shadow-lg">
-      <div className="flex items-center gap-2 mb-3">
-        <InformationCircleIcon className="h-5 w-5" />
-        <h2 className="text-xl font-semibold">Maestros a cargo</h2>
+      <div className="flex flex-col mb-3 md:flex-row md:justify-between">
+        <div className="flex items-center gap-2 md:gap-0 mb-2">
+          <InformationCircleIcon className="h-5 w-5" />
+          <h2 className="text-xl font-semibold">Maestros a cargo</h2>
+        </div>
+        <BotonIcono
+          onClick={() =>
+            dispatch(
+              abrirModal({
+                modalAbierto: true,
+                tipo: "agregarMaestro",
+                data: {cicloId},
+              })
+            )
+          }
+          texto={"Agregar maestro"}
+          Icono={PlusIcon}
+          className="bg-indigo-600 hover:bg-indigo-700 transition-colors text-white justify-center"
+        />
       </div>
 
       {maestrosAsignados.length > 0 ? maestrosAsignados.map((m, idx) => (
@@ -80,20 +96,6 @@ export const UsuariosGrado = ({ cicloId }) => {
         </div>
       )) : <p className="text-sm italic text-gray-700 mb-2">No hay maestros asignados</p>  }
       
-      <BotonIcono
-        onClick={() =>
-          dispatch(
-            abrirModal({
-              modalAbierto: true,
-              tipo: "agregarMaestro",
-              data: {cicloId},
-            })
-          )
-        }
-        texto={"Agregar maestro"}
-        Icono={PlusIcon}
-        className="bg-indigo-600 hover:bg-indigo-700 transition-colors text-white"
-      />
     </div>
   );
 };

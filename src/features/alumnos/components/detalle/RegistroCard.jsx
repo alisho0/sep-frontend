@@ -6,8 +6,12 @@ import { abrirModal } from "../../../../reducers/uiSlice";
 import { RegistroDatos } from "./RegistroDatos";
 import { showAlert } from "../../../../utils/alert";
 import { detalleRegistro } from "../../../../reducers/registrosSlice";
+import { BotonIcono } from "../../../../utils/components/BotonIcono";
+import { EyeIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { useObservacion } from "../../../../hooks/useObservacion";
 
 export const RegistroCard = () => {
+  const { handleDelete } = useObservacion();
   const { aniosDisponibles, registro } = useSelector(
     (state) => state.registros
   );
@@ -18,7 +22,7 @@ export const RegistroCard = () => {
 
   const handleChangeRegistro = async (anio) => {
     try {
-      await dispatch(detalleRegistro({id: anio.id})); 
+      await dispatch(detalleRegistro({ id: anio.id }));
     } catch (error) {
       showAlert({
         title: "Cambio fallido",
@@ -29,6 +33,7 @@ export const RegistroCard = () => {
       });
     }
   };
+  
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md border-gray-300 md:col-span-3">
@@ -110,11 +115,34 @@ export const RegistroCard = () => {
                 {obs.nombreUsuario}
               </p>
             </div>
-            <p className="leading-relaxed">{obs.contenido}</p>
+            <div className="flex flex-col md:flex-row md:gap-2 gap-3">
+              <p className="leading-relaxed line-clamp-3">{obs.contenido}</p>
+              <div className="flex flex-col gap-2">
+                <BotonIcono
+                  texto={""}
+                  Icono={EyeIcon}
+                  className="bg-indigo-600 text-white hover:bg-indigo-700 transition hover:shadow-md flex justify-center"
+                  onClick={() =>
+                    dispatch(
+                      abrirModal({
+                        modalAbierto: true,
+                        tipo: "mostrarObservacion",
+                        data: obs,
+                      })
+                    )
+                  }
+                />
+                <BotonIcono
+                  texto={""}
+                  Icono={TrashIcon}
+                  className="bg-red-600 text-white hover:bg-red-700 transition hover:shadow-md flex justify-center"
+                  onClick={() => handleDelete(obs.id)}
+                />
+              </div>
+            </div>
           </div>
         ))}
 
-      <div></div>
     </div>
   );
 };

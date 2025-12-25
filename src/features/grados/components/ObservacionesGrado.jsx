@@ -6,11 +6,13 @@ import { eliminarObservacion, listarObservaciones } from "../../../reducers/obse
 import { abrirModal } from "../../../reducers/uiSlice";
 import { EyeIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { confirmationAlert, showAlert } from "../../../utils/alert";
+import { useObservacion } from "../../../hooks/useObservacion";
 
 export const ObservacionesGrado = ({ cicloId }) => {
 
   const { observacion } = useSelector((state) => state.observaciones);
   const dispatch = useDispatch();
+  const { handleDelete } = useObservacion();
   const [paginaActual, setPaginaActual] = useState(1);
   const observacionesPorPagina = 5;
 
@@ -28,43 +30,10 @@ export const ObservacionesGrado = ({ cicloId }) => {
       setPaginaActual(numeroPagina);
     }
   };
-
-  const handleDelete = async (id) => {
-    await confirmationAlert({
-      title: "¿Estás seguro?",
-      text: "¿Estás seguro de eliminar esta observación?",
-      icon: "warning",
-      confirmButtonText:"Eliminar",
-      cancelButtonText: "Cancelar"
-    }).then((res) => {
-          if (res.isConfirmed) {
-          try {
-            const eliminar = dispatch(eliminarObservacion(id));
-            if (eliminarObservacion.fulfilled.match(eliminar)) {
-              showAlert({
-                title: "Observación eliminada",
-                text: "La observación se eliminó correctamente.",
-                icon: "success",
-              });
-            } else if (eliminarObservacion.rejected.match(eliminar)) {
-              throw new Error(
-                "La observación no pudo ser eliminado. Intentalo de nuevo."
-              );
-            }
-          } catch (error) {
-            showAlert({
-              title: "Error al eliminar",
-              text: error.message,
-              icon: "error",
-            });
-          }
-          }
-        });
-  }
   
   return (
     <div className="rounded-lg shadow-lg px-4 py-3 bg-white overflow-y-scroll">
-      <div className="flex items-center justify-between mb-5 flex-wrap">
+      <div className="flex flex-col md:flex-row md:justify-between gap-2 md:gap-0 mb-5">
         <div className="flex items-center gap-2">
           <ChatBubbleBottomCenterIcon className="h-5 w-5" />
           <h2 className="text-xl font-semibold">Observaciones realizadas</h2>
@@ -72,7 +41,7 @@ export const ObservacionesGrado = ({ cicloId }) => {
         <BotonIcono
           texto={"Agregar observación"}
           Icono={PlusIcon}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white justify-center"
           onClick={() => dispatch(abrirModal({
               modalAbierto: true,
               tipo: "agregarObservacionGrado",
