@@ -10,6 +10,7 @@ import { Discapacidades } from './features/discapacidad/pages/Discapacidades'
 import { Grados } from './features/grados/pages/Grados'
 import { GradoDetalle } from './features/grados/pages/GradoDetalle'
 import { GradoCicloDetalle } from './features/grados/pages/GradoCicloDetalle'
+import { Usuarios } from './features/usuarios/pages/Usuarios'
 function SepApp() {
   return (
     <>
@@ -24,6 +25,7 @@ function SepApp() {
             <Route path='/grados' element={<Grados/>}/>
             <Route path='/grados/:id' element={<GradoDetalle />} />
             <Route path='/grados/:id/ciclo/:cicloId' element={<GradoCicloDetalle />} />
+            <Route path='/usuarios' element={<Usuarios />} />
           </Route>
         </Routes>
       </BrowserRouter>

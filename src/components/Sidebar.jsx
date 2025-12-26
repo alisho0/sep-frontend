@@ -20,7 +20,7 @@ export const Sidebar = ({ open, setOpen }) => {
     { name: "Alumnos", href: "/alumnos", icon: UsersIcon, show: true, id: 2 },
     { name: "Grados", href: "/grados", icon: AcademicCapIcon, show: true, id: 3 },
     { name: "Discapacidades", href: "/discapacidades", icon: Cog8ToothIcon, show: true, id: 4 },
-    { name: "Usuarios", href: "#", icon: UserGroupIcon, show: true, id: 5 },
+    { name: "Usuarios", href: "/usuarios", icon: UserGroupIcon, show: true, id: 5 },
     { name: "Configuración", href: "#", icon: Cog8ToothIcon, show: true, id: 6 },
   ]
 
