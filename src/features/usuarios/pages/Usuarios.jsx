@@ -8,6 +8,7 @@ import {
 import { BotonIcono } from "../../../utils/components/BotonIcono";
 import { useDispatch, useSelector } from "react-redux";
 import { listarUsuarios } from "../../../reducers/usuariosSlice";
+import { abrirModal } from "../../../reducers/uiSlice";
 
 export const Usuarios = () => {
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ export const Usuarios = () => {
               <h2 className="font-semibold">Usuarios del Sistema</h2>
               <p className="text-sm italic text-gray-800">{usuarios.length} usuarios encontrados</p>
             </div>
-            <BotonIcono texto={"Nuevo Usuario"} className="bg-indigo-600 text-white hover:bg-indigo-700 transition-colors justify-center" />
+            <BotonIcono texto={"Nuevo Usuario"} onClick={() => dispatch(abrirModal({ modalAbierto: true, tipo: "crearUsuario", data: null }))} className="bg-indigo-600 text-white hover:bg-indigo-700 transition-colors justify-center" />
           </div>
           {usuarios.map((u) => (
             <div key={u.id} className="border border-gray-400 p-4 rounded-lg bg-gray-100 md:flex-row md:justify-between md:items-center hover:bg-gray-300 transition-colors mb-3 flex flex-col gap-3">

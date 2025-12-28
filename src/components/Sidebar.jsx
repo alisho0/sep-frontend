@@ -1,11 +1,19 @@
 import { AcademicCapIcon, Bars3Icon, Cog8ToothIcon, HomeIcon, UserGroupIcon, UsersIcon, XMarkIcon } from "@heroicons/react/16/solid";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
+import { useSelector } from "react-redux";
 
 export const Sidebar = ({ open, setOpen }) => {
+  const { modalAbierto } = useSelector((state) => state.ui);
   const location = useLocation();
   const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (modalAbierto) {
+      setOpen(false);
+    }
+  }, [modalAbierto])
 
   let usuario = null;
   let rol = null;
@@ -30,8 +38,9 @@ export const Sidebar = ({ open, setOpen }) => {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="p-2 m-4 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white rounded-lg z-50 fixed top-4 left-4 cursor-pointer"
+          className="p-2 m-4 bg-indigo-600 disabled:bg-indigo-600/50 disabled:cursor-not-allowed hover:bg-indigo-700 transition-colors text-white rounded-lg z-50 fixed top-4 left-4 cursor-pointer"
           aria-label="Abrir sidebar"
+          disabled={modalAbierto ? true : false}
         >
           <Bars3Icon className="h-6 w-6" />
         </button>
