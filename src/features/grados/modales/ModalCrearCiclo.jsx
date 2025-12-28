@@ -45,7 +45,7 @@ export const ModalCrearCiclo = () => {
       <div>
         <div className="mb-3">
           <h2 className="font-semibold text-xl">Crear nuevo ciclo</h2>
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-gray-700 italic">
             Agrega un nuevo ciclo para {modalData.grado}° grado
           </p>
         </div>
