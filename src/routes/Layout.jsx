@@ -9,7 +9,7 @@ export const Layout = () => {
   return (
     <>
         <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
-        <main className={`flex-1 min-h-screen bg-gray-200 transition-all duration-300 ${
+        <main className={`flex-1 min-h-screen bg-neutral-100 transition-all duration-300 ${
           sidebarOpen ? "md:ml-64" : "md:ml-0"
         }`}>
           <Outlet/>
