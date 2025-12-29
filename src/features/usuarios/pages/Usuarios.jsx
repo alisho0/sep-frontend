@@ -7,8 +7,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { BotonIcono } from "../../../utils/components/BotonIcono";
 import { useDispatch, useSelector } from "react-redux";
-import { listarUsuarios } from "../../../reducers/usuariosSlice";
+import { eliminarUsuario, listarUsuarios } from "../../../reducers/usuariosSlice";
 import { abrirModal } from "../../../reducers/uiSlice";
+import { confirmationAlert, showAlert } from "../../../utils/alert";
 
 export const Usuarios = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,40 @@ export const Usuarios = () => {
     { id: 2, text: "Directores", data: 4, icono: UsersIcon },
     { id: 3, text: "Maestros", data: 4, icono: UsersIcon },
   ];
+
+  
+    const handleDeleteUsuario = async (id) => {
+      await confirmationAlert({
+        title: "¿Estás seguro?",
+        text: "¿Estás seguro de eliminar este usuario?",
+        icon: "warning",
+        confirmButtonText: "Eliminar",
+        cancelButtonText: "Cancelar",
+      }).then((res) => {
+        if (res.isConfirmed) {
+          try {
+            const eliminar = dispatch(eliminarUsuario(id));
+            if (eliminarUsuario.fulfilled.match(eliminar)) {
+              showAlert({
+                title: "Usuario eliminado",
+                text: "El usuario se eliminó correctamente.",
+                icon: "success",
+              });
+            } else if (eliminarUsuario.rejected.match(eliminar)) {
+              throw new Error(
+                "El usuario no pudo ser eliminado. Intentalo de nuevo."
+              );
+            }
+          } catch (error) {
+            showAlert({
+              title: "Error al eliminar",
+              text: error.message,
+              icon: "error",
+            });
+          }
+        }
+      });
+    };
 
   return (
     <>
@@ -74,6 +109,7 @@ export const Usuarios = () => {
                   texto={"Eliminar"}
                   Icono={TrashIcon}
                   className="bg-indigo-600 justify-center hover:bg-red-700 text-white"
+                  onClick={() => handleDeleteUsuario(u.id)}
                 />
               </div>
             </div>
