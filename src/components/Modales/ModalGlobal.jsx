@@ -12,6 +12,7 @@ import { ModalAgregarObservacionGrado } from '../../features/grados/modales/Moda
 import { ModalCrearRegistro } from '../../features/alumnos/components/modales/ModalCrearRegistro';
 import { ModalMostrarObservacion } from '../../features/grados/modales/ModalMostrarObservacion';
 import { ModalCrearUsuario } from '../../features/usuarios/modales/ModalCrearUsuario';
+import { ModalEditarUsuario } from '../../features/usuarios/modales/ModalEditarUsuario';
  
 export const ModalGlobal = () => {
     const dispatch = useDispatch();
@@ -65,6 +66,7 @@ export const ModalGlobal = () => {
               {modalTipo === "crearRegistro" && <ModalCrearRegistro />}
               {modalTipo === "mostrarObservacion" && <ModalMostrarObservacion data={modalData} />}
               {modalTipo === "crearUsuario" && <ModalCrearUsuario />}
+              {modalTipo === "editarUsuario" && <ModalEditarUsuario />}
             </div>
           </div>
         </div>

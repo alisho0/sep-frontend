@@ -10,6 +10,14 @@ export const getUsuarios = async () => {
         throw new Error(error.response?.data?.message || "Error al traer los usuarios disponibles.");
     }
 }
+export const obtenerUsuario = async (id) => {
+    try {
+        const res = await api.get(`${url}/detalle/${id}`);
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al traer el usuario.");
+    }
+}
 
 export const delUsuario = async (id) => {
     try {

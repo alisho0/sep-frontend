@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { BotonIcono } from "../../../utils/components/BotonIcono";
 import { useDispatch, useSelector } from "react-redux";
-import { eliminarUsuario, listarUsuarios } from "../../../reducers/usuariosSlice";
+import { eliminarUsuario, listarUsuarios, obtenerUsuarioCompleto } from "../../../reducers/usuariosSlice";
 import { abrirModal } from "../../../reducers/uiSlice";
 import { confirmationAlert, showAlert } from "../../../utils/alert";
 
@@ -19,14 +19,16 @@ export const Usuarios = () => {
   }, []);
 
   const { usuarios } = useSelector((state) => state.usuarios);
+  const cant_directores = usuarios.filter(u => u.rol != "Admin" && u.rol != "Maestro").length
+  const cant_maestros = usuarios.filter(u => u.rol != "Admin" && u.rol != "Director").length
 
   const metricas = [
-    { id: 1, text: "Total de Usuarios", data: 4, icono: UsersIcon },
-    { id: 2, text: "Directores", data: 4, icono: UsersIcon },
-    { id: 3, text: "Maestros", data: 4, icono: UsersIcon },
+    { id: 1, text: "Total de Usuarios", data: usuarios.length, icono: UsersIcon },
+    { id: 2, text: "Directores", data: cant_directores, icono: UsersIcon },
+    { id: 3, text: "Maestros", data: cant_maestros, icono: UsersIcon },
   ];
 
-  
+
     const handleDeleteUsuario = async (id) => {
       await confirmationAlert({
         title: "¿Estás seguro?",
@@ -59,6 +61,26 @@ export const Usuarios = () => {
         }
       });
     };
+
+    const handleEditarUsuario = async (id) => {
+      try {
+        const usuarioCompleto = await dispatch(obtenerUsuarioCompleto(id))
+        console.log(usuarioCompleto.payload)
+        if (obtenerUsuarioCompleto.fulfilled.match(usuarioCompleto)) {
+          dispatch(abrirModal({ modalAbierto: true, tipo: "editarUsuario", data: usuarioCompleto.payload }))
+        } else {
+          throw new Error("Error al traer el usuario.")
+        }
+      } catch (error) {
+            showAlert({
+              title: "Error",
+              text:
+                error.message ||
+                "No se pudo traer los datos del usuario. Intentalo nuevamente.",
+              icon: "error",
+            });
+      }
+    }
 
   return (
     <>
@@ -104,6 +126,7 @@ export const Usuarios = () => {
                   texto={"Editar"}
                   Icono={PencilSquareIcon}
                   className="bg-indigo-600 justify-center hover:bg-indigo-700 text-white"
+                  onClick={() => handleEditarUsuario(u.id)}
                 />
                 <BotonIcono
                   texto={"Eliminar"}

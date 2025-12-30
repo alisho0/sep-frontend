@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { delUsuario, getUsuarios } from "../apis/usuariosApi";
+import { delUsuario, getUsuarios, obtenerUsuario } from "../apis/usuariosApi";
 import { register } from "../apis/authApi";
 import { act } from "react";
 
@@ -18,10 +18,16 @@ export const eliminarUsuario = createAsyncThunk("usuarios/eliminar", async (id) 
   return id;
 });
 
+export const obtenerUsuarioCompleto = createAsyncThunk("usuario/detalle", async (id) => {
+  const data = await obtenerUsuario(id);
+  return data;
+})
+
 const usuariosSlice = createSlice({
   name: "usuarios",
   initialState: {
     usuarios: [],
+    usuario: {},
     loading: false
   },
   reducers: {},
@@ -54,6 +60,16 @@ const usuariosSlice = createSlice({
         state.usuarios = state.usuarios.filter(u => u.id != action.payload);
       })
       .addCase(eliminarUsuario.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(obtenerUsuarioCompleto.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(obtenerUsuarioCompleto.fulfilled, (state, action) => {
+        state.loading = false;
+        state.usuario = action.payload;
+      })
+      .addCase(obtenerUsuarioCompleto.rejected, (state, action) => {
         state.loading = false;
       });
   },
