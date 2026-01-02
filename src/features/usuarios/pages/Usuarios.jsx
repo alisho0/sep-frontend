@@ -65,7 +65,6 @@ export const Usuarios = () => {
     const handleEditarUsuario = async (id) => {
       try {
         const usuarioCompleto = await dispatch(obtenerUsuarioCompleto(id))
-        console.log(usuarioCompleto.payload)
         if (obtenerUsuarioCompleto.fulfilled.match(usuarioCompleto)) {
           dispatch(abrirModal({ modalAbierto: true, tipo: "editarUsuario", data: usuarioCompleto.payload }))
         } else {

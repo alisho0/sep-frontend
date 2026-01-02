@@ -10,10 +10,15 @@ export const UsuarioInputs = () => {
     const { modalData, modalTipo } = useSelector((state) => state.ui)
     
     useEffect(() => {
-        if (modalData?.rol) {
-        setValue("rol", modalData.rol);
-        }
-    }, [modalData?.rol, setValue]);
+      if (modalTipo === "editarUsuario" && modalData) {
+        setValue("nombre", modalData.nombre || "");
+        setValue("apellido", modalData.apellido || "");
+        setValue("username", modalData.username || "");
+        setValue("dni", modalData.dni || "");
+        setValue("domicilio", modalData.domicilio || "");
+        setValue("rol", modalData.rol || "");
+      }
+    }, [modalTipo, modalData, setValue]);
 
   return (
     <>
@@ -25,7 +30,6 @@ export const UsuarioInputs = () => {
           className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           type="text"
           placeholder="Escribe el nombre..."
-          value={modalTipo == "editarUsuario" ? modalData.nombre : ""}
           id="nombre"
           name="nombre"
           {...register("nombre", { required: true })}
@@ -44,7 +48,6 @@ export const UsuarioInputs = () => {
           className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           type="text"
           placeholder="Escribe el apellido..."
-          value={modalTipo == "editarUsuario" ? modalData.apellido : ""}
           id="apellido"
           name="apellido"
           {...register("apellido", { required: true })}
@@ -63,7 +66,6 @@ export const UsuarioInputs = () => {
           className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           type="text"
           placeholder="Escribe el nombre..."
-          value={modalTipo == "editarUsuario" ? modalData.username : ""}
           id="username"
           name="username"
           {...register("username", { required: true })}
@@ -74,25 +76,26 @@ export const UsuarioInputs = () => {
           </span>
         )}
       </div>
-      <div className="flex flex-col col-span-2 md:col-span-1">
-        <label htmlFor="password" className="text-sm font-medium text-gray-700">
-          Contraseña *
-        </label>
-        <input
-          className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          type="text"
-          placeholder="Escribe la contraseña..."
-          value={modalTipo == "editarUsuario" ? modalData.nombreCompleto : ""}
-          id="password"
-          name="password"
-          {...register("password", { required: true })}
-        />
-        {errors?.password && (
-          <span className="text-xs text-red-700">
-            Este campo es obligatorio
-          </span>
-        )}
-      </div>
+      {modalTipo == "crearUsuario" && (
+        <div className="flex flex-col col-span-2 md:col-span-1">
+          <label htmlFor="password" className="text-sm font-medium text-gray-700">
+            Contraseña *
+          </label>
+          <input
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            type="text"
+            placeholder="Escribe la contraseña..."
+            id="password"
+            name="password"
+            {...register("password", { required: true })}
+          />
+          {errors?.password && (
+            <span className="text-xs text-red-700">
+              Este campo es obligatorio
+            </span>
+          )}
+        </div>
+      )}
 
       <div className="flex flex-col col-span-2 md:col-span-1">
         <label htmlFor="dni" className="text-sm font-medium text-gray-700">
@@ -102,7 +105,6 @@ export const UsuarioInputs = () => {
           className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           type="text"
           placeholder="Escribe el documento..."
-          value={modalTipo == "editarUsuario" ? modalData.dni : ""}
           id="dni"
           name="dni"
           {...register("dni", { required: false })}
@@ -120,14 +122,13 @@ export const UsuarioInputs = () => {
           className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           type="text"
           placeholder="Escribe el domicilio..."
-          value={modalTipo == "editarUsuario" ? modalData.domicilio : ""}
           id="domicilio"
           name="domicilio"
           {...register("domicilio", { required: false })}
         />
         {/* {errors?.password && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)} */}
       </div>
-      <div className="flex flex-col col-span-2 ">
+      <div className={`flex flex-col col-span-2  ${ modalTipo == "editarUsuario" ? "md:col-span-1" : "" }`}>
         <label htmlFor="rol" className="text-sm font-medium text-gray-700 mb-1">
           Rol
         </label>

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { delUsuario, getUsuarios, obtenerUsuario } from "../apis/usuariosApi";
+import { delUsuario, editUsuario, getUsuarios, obtenerUsuario } from "../apis/usuariosApi";
 import { register } from "../apis/authApi";
 import { act } from "react";
 
@@ -20,6 +20,10 @@ export const eliminarUsuario = createAsyncThunk("usuarios/eliminar", async (id) 
 
 export const obtenerUsuarioCompleto = createAsyncThunk("usuario/detalle", async (id) => {
   const data = await obtenerUsuario(id);
+  return data;
+})
+export const modificarUsuario = createAsyncThunk("usuario/editar", async ({id, usuario}) => {
+  const data = await editUsuario(id, usuario);
   return data;
 })
 
@@ -70,6 +74,21 @@ const usuariosSlice = createSlice({
         state.usuario = action.payload;
       })
       .addCase(obtenerUsuarioCompleto.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(modificarUsuario.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(modificarUsuario.fulfilled, (state, action) => {
+        state.loading = false;
+        // Actualizar el usuario modificado en el arreglo usuarios
+        const updatedUser = action.payload;
+        const idx = state.usuarios.findIndex(u => u.id === updatedUser.id);
+        if (idx !== -1) {
+          state.usuarios[idx] = updatedUser;
+        }
+      })
+      .addCase(modificarUsuario.rejected, (state, action) => {
         state.loading = false;
       });
   },

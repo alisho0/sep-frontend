@@ -27,3 +27,12 @@ export const delUsuario = async (id) => {
         throw new Error(error.response?.data?.message || "Error al traer los usuarios disponibles.");
     }
 }
+
+export const editUsuario = async (id, data) => {
+    try {
+        const res = await api.put(`${url}/editar/${id}`, data);
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al editar el usuario.");
+    }
+}
