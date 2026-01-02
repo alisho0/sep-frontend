@@ -1,13 +1,17 @@
 import { AcademicCapIcon, Bars3Icon, Cog8ToothIcon, HomeIcon, UserGroupIcon, UsersIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import { useSelector } from "react-redux";
 import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
+import { BotonIcono } from "../utils/components/BotonIcono";
+import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
+import { logout } from "../apis/authApi";
 
 export const Sidebar = ({ open, setOpen }) => {
   const { modalAbierto } = useSelector((state) => state.ui);
   const location = useLocation();
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -32,6 +36,14 @@ export const Sidebar = ({ open, setOpen }) => {
     { name: "Usuarios", href: "/usuarios", icon: UserGroupIcon, show: true, id: 5 },
     { name: "Configuración", href: "#", icon: Cog8ToothIcon, show: true, id: 6 },
   ]
+
+  const handleLogout = async () => {
+    await logout();
+    localStorage.removeItem("token");
+    // Navegación interna sin recargar la página
+    navigate("/");
+
+  }
 
   return (
     <>
@@ -58,42 +70,49 @@ export const Sidebar = ({ open, setOpen }) => {
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full w-64 bg-zinc-900 text-white transform transition-transform duration-300 ease-in-out z-40
-          ${open ? "translate-x-0" : "-translate-x-full"}`}
+          ${open ? "translate-x-0" : "-translate-x-full"} flex flex-col justify-between`}
       >
-        {/* Encabezado con botón integrado */}
-        <div className="flex items-center justify-between p-4 border-b border-zinc-700">
-          <div className="flex flex-col gap-3 items-start justify-between">
-            <h2 className="text-xl font-bold">Sistema Escolar</h2>
-            <div>
-              <p className="text-gray-100 font-semibold">{usuario ? usuario : "Usuario no encontrado"}</p>
-              <span className="text-sm italic text-gray-400">{rol ? rol : "Rol no encontrado"}</span>
+        <div>
+          {/* Encabezado con botón integrado */}
+            <div className="flex items-center justify-between p-4 border-b border-zinc-700">
+              <div className="flex flex-col gap-3 items-start justify-between">
+                <h2 className="text-xl font-bold">Sistema Escolar</h2>
+                <div>
+                  <p className="text-gray-100 font-semibold">{usuario ? usuario : "Usuario no encontrado"}</p>
+                  <span className="text-sm italic text-gray-400">{rol ? rol : "Rol no encontrado"}</span>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => setOpen(false)}
+                className="p-2 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white rounded-lg md:block cursor-pointer"
+                aria-label="Cerrar sidebar"
+                >
+                  <XMarkIcon className="h-5 w-5" />
+              </button>
             </div>
-          </div>
-          
-          <button
-            onClick={() => setOpen(false)}
-            className="p-2 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white rounded-lg md:block cursor-pointer"
-            aria-label="Cerrar sidebar"
-            >
-              <XMarkIcon className="h-5 w-5" />
-          </button>
-        </div>
 
-        <nav>
-          <ul className="flex flex-col gap-2 p-4 text-gray-100 font-medium">
-            {navigation.map((item) => {
-              const isActive = location.pathname === item.href
-              const Icon = item.icon
-              return (
-                <li key={item.id}>
-                  <Link to={item.href} className={`hover:text-indigo-400 rounded-lg transition-colors flex gap-3 px-3 py-2 font-medium items-center ${isActive ? "bg-zinc-800" : "hover:bg-gray-600/50"}`}>
-                    <Icon className="w-5 h-5" />
-                    {item.name}
-                  </Link>
-                </li>
-            )})}
-          </ul>
-        </nav>
+            <nav>
+              <ul className="flex w-full flex-col gap-2 p-4 text-gray-100 font-medium">
+                {navigation.map((item) => {
+                  const isActive = location.pathname === item.href
+                  const Icon = item.icon
+                  return (
+                    <li key={item.id}>
+                      <Link to={item.href} className={`hover:text-indigo-400 rounded-lg transition-colors flex gap-3 px-3 py-2 font-medium items-center ${isActive ? "bg-zinc-800" : "hover:bg-gray-600/50"}`}>
+                        <Icon className="w-5 h-5" />
+                        {item.name}
+                      </Link>
+                    </li>
+                )})}
+              </ul>
+            </nav>
+          </div>
+          <div className="mb-5 border-y border-zinc-700 flex justify-center">
+            <BotonIcono texto={"Cerrar Sesión"} Icono={ArrowRightStartOnRectangleIcon} 
+            className=" hover:text-indigo-400 w-full transition-colors m-2 px-3 py-2 font-medium hover:bg-gray-600/50"
+            onClick={() => handleLogout()} />
+          </div>
       </aside>
 
     </>

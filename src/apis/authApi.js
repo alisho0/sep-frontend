@@ -20,3 +20,17 @@ export const register = async (usuario) => {
         throw new Error(error.response?.data?.message || "Error al crear el usuario.");
     }
 }
+
+export const logout = async () => {
+    try {
+        const token = localStorage.getItem("token");
+        await api.post("/auth/logout", {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }); 
+    } catch (error) {
+        console.log(error)
+        throw new Error(error.response?.data?.message || "Error al cerrar sesión")
+    }
+}
