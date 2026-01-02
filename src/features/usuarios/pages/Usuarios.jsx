@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { CardMetrica } from "../../../utils/components/CardMetrica";
 import {
+  EyeIcon,
   PencilSquareIcon,
   TrashIcon,
   UsersIcon,
@@ -81,6 +82,25 @@ export const Usuarios = () => {
       }
     }
 
+    const handleVerUsuario = async (id) => {
+      try {
+        const usuarioCompleto = await dispatch(obtenerUsuarioCompleto(id))
+        if (obtenerUsuarioCompleto.fulfilled.match(usuarioCompleto)) {
+          dispatch(abrirModal({ modalAbierto: true, tipo: "detalleUsuario", data: usuarioCompleto.payload }))
+        } else {
+          throw new Error("Error al traer el usuario.")
+        }
+      } catch (error) {
+            showAlert({
+              title: "Error",
+              text:
+                error.message ||
+                "No se pudo traer los datos del usuario. Intentalo nuevamente.",
+              icon: "error",
+            });
+      }
+    }
+
   return (
     <>
       <section className="container mx-auto px-10 md:px-28 pt-9">
@@ -121,6 +141,12 @@ export const Usuarios = () => {
                 <span className="text-sm text-gray-800">{u.username}</span>
               </div>
               <div className="flex flex-col gap-2 justify-center md:flex-row">
+                <BotonIcono
+                  texto={"Ver Detalle"}
+                  Icono={EyeIcon}
+                  className="bg-indigo-600 justify-center hover:bg-indigo-700 text-white"
+                  onClick={() => handleVerUsuario(u.id)}
+                />
                 <BotonIcono
                   texto={"Editar"}
                   Icono={PencilSquareIcon}

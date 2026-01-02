@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import { useSelector } from "react-redux";
+import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
 
 export const Sidebar = ({ open, setOpen }) => {
   const { modalAbierto } = useSelector((state) => state.ui);
@@ -27,7 +28,7 @@ export const Sidebar = ({ open, setOpen }) => {
     { name: "Inicio", href: "/menu", icon: HomeIcon, show: true, id: 1 },
     { name: "Alumnos", href: "/alumnos", icon: UsersIcon, show: true, id: 2 },
     { name: "Grados", href: "/grados", icon: AcademicCapIcon, show: true, id: 3 },
-    { name: "Discapacidades", href: "/discapacidades", icon: Cog8ToothIcon, show: true, id: 4 },
+    { name: "Discapacidades", href: "/discapacidades", icon: ExclamationTriangleIcon, show: true, id: 4 },
     { name: "Usuarios", href: "/usuarios", icon: UserGroupIcon, show: true, id: 5 },
     { name: "Configuración", href: "#", icon: Cog8ToothIcon, show: true, id: 6 },
   ]
