@@ -31,36 +31,35 @@ export const Usuarios = () => {
 
 
     const handleDeleteUsuario = async (id) => {
-      await confirmationAlert({
+      const res = await confirmationAlert({
         title: "¿Estás seguro?",
         text: "¿Estás seguro de eliminar este usuario?",
         icon: "warning",
         confirmButtonText: "Eliminar",
         cancelButtonText: "Cancelar",
-      }).then((res) => {
-        if (res.isConfirmed) {
-          try {
-            const eliminar = dispatch(eliminarUsuario(id));
-            if (eliminarUsuario.fulfilled.match(eliminar)) {
-              showAlert({
-                title: "Usuario eliminado",
-                text: "El usuario se eliminó correctamente.",
-                icon: "success",
-              });
-            } else if (eliminarUsuario.rejected.match(eliminar)) {
-              throw new Error(
-                "El usuario no pudo ser eliminado. Intentalo de nuevo."
-              );
-            }
-          } catch (error) {
-            showAlert({
-              title: "Error al eliminar",
-              text: error.message,
-              icon: "error",
-            });
-          }
-        }
       });
+      if (res.isConfirmed) {
+        try {
+          const eliminar = await dispatch(eliminarUsuario(id));
+          if (eliminarUsuario.fulfilled.match(eliminar)) {
+            showAlert({
+              title: "Usuario eliminado",
+              text: "El usuario se eliminó correctamente.",
+              icon: "success",
+            });
+          } else if (eliminarUsuario.rejected.match(eliminar)) {
+            throw new Error(
+              "El usuario no pudo ser eliminado. Intentalo de nuevo."
+            );
+          }
+        } catch (error) {
+          showAlert({
+            title: "Error al eliminar",
+            text: error.message,
+            icon: "error",
+          });
+        }
+      }
     };
 
     const handleEditarUsuario = async (id) => {

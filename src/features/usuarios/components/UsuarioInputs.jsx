@@ -3,22 +3,31 @@ import { useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { cerrarModal } from "../../../reducers/uiSlice";
 
-export const UsuarioInputs = () => {
+export const UsuarioInputs = ({usuariosForm = true}) => {
     
     const { register, formState: {errors}, setValue } = useFormContext();
     const dispatch = useDispatch();
     const { modalData, modalTipo } = useSelector((state) => state.ui)
+    const { usuario } = useSelector((state) => state.usuarios)
     
     useEffect(() => {
-      if (modalTipo === "editarUsuario" && modalData) {
+      if (modalTipo === "editarUsuario" && modalData ) {
         setValue("nombre", modalData.nombre || "");
         setValue("apellido", modalData.apellido || "");
         setValue("username", modalData.username || "");
         setValue("dni", modalData.dni || "");
         setValue("domicilio", modalData.domicilio || "");
         setValue("rol", modalData.rol || "");
+      } else if( usuario && !usuariosForm ) {
+        setValue("id", usuario.id || "");
+        setValue("nombre", usuario.nombre || "");
+        setValue("apellido", usuario.apellido || "");
+        setValue("username", usuario.username || "");
+        setValue("dni", usuario.dni || "");
+        setValue("domicilio", usuario.domicilio || "");
+        setValue("rol", usuario.rol || "");
       }
-    }, [modalTipo, modalData, setValue]);
+    }, [modalTipo, modalData, setValue, usuario]);
 
   return (
     <>
@@ -128,7 +137,7 @@ export const UsuarioInputs = () => {
         />
         {/* {errors?.password && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)} */}
       </div>
-      <div className={`flex flex-col col-span-2  ${ modalTipo == "editarUsuario" ? "md:col-span-1" : "" }`}>
+      <div className={`flex flex-col col-span-2  ${ modalTipo == "editarUsuario" || !usuariosForm  ? "md:col-span-1" : "" }`}>
         <label htmlFor="rol" className="text-sm font-medium text-gray-700 mb-1">
           Rol
         </label>
@@ -137,6 +146,7 @@ export const UsuarioInputs = () => {
           id="rol"
           className={`w-full outline-none text-gray-700 bg-white border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-indigo-500`}
           {...register("rol", { required: true })}
+          disabled={!usuariosForm}
           defaultValue=""
         >
           <option value="" disabled>
@@ -151,18 +161,20 @@ export const UsuarioInputs = () => {
           </span>
         )}
       </div>
-      <div className="flex justify-end text-white font-semibold col-span-2 w-fit gap-2 mt-4 ml-auto">
-        <button
-          className="bg-red-700 py-2 px-4 gap-1 rounded-lg hover:bg-red-800 transition-colors cursor-pointer"
-          onClick={() => dispatch(cerrarModal())}
-          type="button"
-        >
-          Cancelar
-        </button>
-        <button className="bg-indigo-600 py-2 px-4 gap-1 rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer">
-          Agregar
-        </button>
-      </div>
+      {usuariosForm && (
+        <div className="flex justify-end text-white font-semibold col-span-2 w-fit gap-2 mt-4 ml-auto">
+          <button
+            className="bg-red-700 py-2 px-4 gap-1 rounded-lg hover:bg-red-800 transition-colors cursor-pointer"
+            onClick={() => dispatch(cerrarModal())}
+            type="button"
+          >
+            Cancelar
+          </button>
+          <button className="bg-indigo-600 py-2 px-4 gap-1 rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer">
+            Agregar
+          </button>
+        </div>
+      )}
     </>
   );
 };
