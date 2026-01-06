@@ -27,6 +27,8 @@ export const modificarUsuario = createAsyncThunk("usuario/editar", async ({id, u
   return data;
 })
 export const modificarContraseña = createAsyncThunk("usuario/contraseña", async ({id, contraseñas}) => {
+  console.log("El id:", id)
+  console.log("El json:", contraseñas)
   const data = await editPassword(id, contraseñas);
   return data;
 })

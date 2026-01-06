@@ -38,6 +38,8 @@ export const editUsuario = async (id, data) => {
 }
 
 export const editPassword = async (id, data) => {
+    console.log("El id:", id)
+    console.log("El json:", data)
     try {
         const res = await api.put(`${url}/cambiarPassword/${id}`, data);
         return res.data;
