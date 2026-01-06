@@ -154,6 +154,7 @@ export const UsuarioInputs = ({usuariosForm = true}) => {
           </option>
           <option value="MAESTRO">Maestro</option>
           <option value="DIRECTOR">Director</option>
+          <option value="ADMIN" disabled>Admin</option>
         </select>
         {errors?.nroGrado && (
           <span className="text-xs text-red-700">

@@ -36,3 +36,12 @@ export const editUsuario = async (id, data) => {
         throw new Error(error.response?.data?.message || "Error al editar el usuario.");
     }
 }
+
+export const editPassword = async (id, data) => {
+    try {
+        const res = await api.put(`${url}/cambiarPassword/${id}`, data);
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al cambiar la contraseña del usuario.");
+    }
+}

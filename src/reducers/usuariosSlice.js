@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { delUsuario, editUsuario, getUsuarios, obtenerUsuario } from "../apis/usuariosApi";
+import { delUsuario, editPassword, editUsuario, getUsuarios, obtenerUsuario } from "../apis/usuariosApi";
 import { register } from "../apis/authApi";
 import { act } from "react";
 
@@ -24,6 +24,10 @@ export const obtenerUsuarioCompleto = createAsyncThunk("usuario/detalle", async 
 })
 export const modificarUsuario = createAsyncThunk("usuario/editar", async ({id, usuario}) => {
   const data = await editUsuario(id, usuario);
+  return data;
+})
+export const modificarContraseña = createAsyncThunk("usuario/contraseña", async ({id, contraseñas}) => {
+  const data = await editPassword(id, contraseñas);
   return data;
 })
 
@@ -89,6 +93,15 @@ const usuariosSlice = createSlice({
         }
       })
       .addCase(modificarUsuario.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(modificarContraseña.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(modificarContraseña.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(modificarContraseña.rejected, (state, action) => {
         state.loading = false;
       });
   },
