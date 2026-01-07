@@ -10,6 +10,7 @@ import { confirmationAlert, showAlert } from "../../utils/alert";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordSchema } from "../../validation/passwordSchema";
 import { useNavigate } from "react-router-dom";
+import { editarUsuarioSchema } from "../../validation/editarUsuarioSchema";
 
 
 export const Configuracion = () => {
@@ -18,9 +19,12 @@ export const Configuracion = () => {
   const navigate = useNavigate()
 
   // Formulario de información personal
-  const personalFormMethods = useForm();
+  const personalFormMethods = useForm({
+    resolver: zodResolver(editarUsuarioSchema)
+  });
   const {
     handleSubmit: handlePersonalSubmit,
+    setValue,
   } = personalFormMethods;
 
   // Formulario de cambio de contraseña
@@ -41,10 +45,13 @@ export const Configuracion = () => {
   }
 
   useEffect(() => {
-    dispatch(obtenerUsuarioCompleto(idUsuario));
+    if (idUsuario) {
+      dispatch(obtenerUsuarioCompleto(idUsuario));
+    }
   }, [idUsuario]);
 
   const handleEditarUsuario = async (data) => {
+    console.log("Datos a editar:", data);
     const res = await confirmationAlert({
       title: "¿Estás seguro?",
       text: "¿Estás seguro de modificar tu información? Si cambiaste tu nombre de usuario, deberás usar el nuevo para iniciar sesión la próxima vez.",
@@ -54,11 +61,11 @@ export const Configuracion = () => {
     });
     if (res.isConfirmed) {
       try {
-        const resultAction = await dispatch(modificarUsuario({ id: data.id, usuario: data }));
+        const resultAction = await dispatch(modificarUsuario({ id: idUsuario, usuario: data }));
         if (modificarUsuario.fulfilled.match(resultAction)) {
           showAlert({
             title: "Usuario modificado",
-            text: "El usuario se modificó correctamente.",
+            text: "El usuario se modificó correctamente. Si modificaste tu nombre de usuario, serás redirigido a iniciar sesión.",
             icon: "success",
           });
         } else if (modificarUsuario.rejected.match(resultAction)) {
@@ -84,7 +91,7 @@ export const Configuracion = () => {
     });
     if (res.isConfirmed) {
       try {
-        const resultAction = await dispatch(modificarContraseña({ id: usuario.id, contraseñas: data }));
+        const resultAction = await dispatch(modificarContraseña({ id: idUsuario, contraseñas: data }));
         if (modificarContraseña.fulfilled.match(resultAction)) {
           showAlert({
             title: "Contraseña modificada",

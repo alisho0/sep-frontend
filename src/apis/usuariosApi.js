@@ -33,6 +33,7 @@ export const editUsuario = async (id, data) => {
         const res = await api.put(`${url}/editar/${id}`, data);
         return res.data;
     } catch (error) {
+        console.error(error)
         throw new Error(error.response?.data?.message || "Error al editar el usuario.");
     }
 }

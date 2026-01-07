@@ -45,7 +45,7 @@ export const UsuarioInputs = ({usuariosForm = true}) => {
         />
         {errors?.nombre && (
           <span className="text-xs text-red-700">
-            Este campo es obligatorio
+            {errors?.nombre?.message || "Este campo es obligatorio"}
           </span>
         )}
       </div>
@@ -61,9 +61,9 @@ export const UsuarioInputs = ({usuariosForm = true}) => {
           name="apellido"
           {...register("apellido", { required: true })}
         />
-        {errors?.nombre && (
+        {errors?.apellido && (
           <span className="text-xs text-red-700">
-            Este campo es obligatorio
+            {errors?.apellido?.message || "Este campo es obligatorio"}
           </span>
         )}
       </div>
@@ -81,7 +81,7 @@ export const UsuarioInputs = ({usuariosForm = true}) => {
         />
         {errors?.username && (
           <span className="text-xs text-red-700">
-            Este campo es obligatorio
+            {errors?.username?.message || "Este campo es obligatorio"}
           </span>
         )}
       </div>
@@ -100,7 +100,7 @@ export const UsuarioInputs = ({usuariosForm = true}) => {
           />
           {errors?.password && (
             <span className="text-xs text-red-700">
-              Este campo es obligatorio
+              {errors?.password?.message || "Este campo es obligatorio"}
             </span>
           )}
         </div>
@@ -118,7 +118,11 @@ export const UsuarioInputs = ({usuariosForm = true}) => {
           name="dni"
           {...register("dni", { required: false })}
         />
-        {/* {errors?.password && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)} */}
+          {errors?.dni && (
+            <span className="text-xs text-red-700">
+              {errors?.dni?.message || "Este campo es obligatorio"}
+            </span>
+          )}
       </div>
       <div className="flex flex-col col-span-2 md:col-span-1">
         <label
@@ -135,7 +139,11 @@ export const UsuarioInputs = ({usuariosForm = true}) => {
           name="domicilio"
           {...register("domicilio", { required: false })}
         />
-        {/* {errors?.password && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)} */}
+          {errors?.domicilio && (
+            <span className="text-xs text-red-700">
+              {errors?.domicilio?.message || "Este campo es obligatorio"}
+            </span>
+          )}
       </div>
       <div className={`flex flex-col col-span-2  ${ modalTipo == "editarUsuario" || !usuariosForm  ? "md:col-span-1" : "" }`}>
         <label htmlFor="rol" className="text-sm font-medium text-gray-700 mb-1">
