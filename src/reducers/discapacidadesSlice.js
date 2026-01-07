@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { delDiscapacidad, getDiscapacidades, postDiscapacidad } from "../apis/discapacidadesApi";
+import { traerPorAlumnoId } from "./alumnosSlice";
 
 export const listarDiscapacidades = createAsyncThunk('discapacidad/listar', async () => {
     try {
@@ -58,6 +59,10 @@ const discapacidadesSlice = createSlice({
             })
             .addCase(eliminarDiscapacidad.rejected, (state) => {
                 state.loading = false;
+            })
+            .addCase(traerPorAlumnoId.fulfilled, (state, action) => {
+                const { discapacidades, ...resto } = action.payload;
+                state.discapacidades =  discapacidades;
             })
     }
 })

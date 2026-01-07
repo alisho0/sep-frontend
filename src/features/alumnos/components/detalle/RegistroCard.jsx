@@ -115,7 +115,7 @@ export const RegistroCard = () => {
                 {obs.nombreUsuario}
               </p>
             </div>
-            <div className="flex flex-col md:flex-row md:gap-2 gap-3">
+            <div className="flex flex-col md:flex-row md:gap-2 gap-3 justify-between">
               <p className="leading-relaxed line-clamp-3">{obs.contenido}</p>
               <div className="flex flex-col gap-2">
                 <BotonIcono
