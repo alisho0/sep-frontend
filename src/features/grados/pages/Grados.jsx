@@ -23,7 +23,7 @@ export const Grados = () => {
           <BotonIcono texto={"Nuevo Grado"} />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-          {grados.map((g, idx) => (
+          {grados.length > 0 ? grados.map((g, idx) => (
             <Link key={idx} to={`/grados/${g.id}`} className="border hover:border-gray-600 bg-white p-6 rounded-lg shadow-md hover:shadow-lg border-gray-300 transition">
               <div
               >
@@ -34,11 +34,11 @@ export const Grados = () => {
                     <div className="border-b border-gray-700 pb-4">
                       <p className="text-sm text-gray-700">Secciones</p>
                       <div className="flex gap-2">
-                        {g.secciones.map((s, idx) => (
+                        {Array.isArray(g.secciones) && g.secciones.length > 0 ? g.secciones.map((s, idx) => (
                           <span className="border border-gray-600 shadow-md rounded-lg px-2 py-0.5 text-sm h-fit" key={idx}>
                             {s}
                           </span>
-                        ))}
+                        )) : <span className="text-sm italic">No hay secciones disponibles</span>}
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
@@ -51,7 +51,7 @@ export const Grados = () => {
                 </div>
               </div>
             </Link>
-          ))}
+          )) : <span>No hay grados disponibles</span>}
         </div>
       </section>
     </>
