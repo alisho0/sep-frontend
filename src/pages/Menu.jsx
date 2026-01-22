@@ -4,6 +4,7 @@ import { UsersIcon } from '@heroicons/react/16/solid'
 import { useDispatch, useSelector } from 'react-redux'
 import { traerAlumnos } from '../reducers/alumnosSlice'
 import { traerMetricas, ultimasActividades } from '../reducers/metricasSlice'
+import { jwtDecode } from 'jwt-decode'
 
 export const Menu = () => {
 
@@ -13,6 +14,17 @@ export const Menu = () => {
     dispatch(traerMetricas());
     dispatch(ultimasActividades());
   }, [])
+
+  const token = localStorage.getItem("token");
+  let user = null;
+  if (token) {
+    try {
+      const claims = token ? jwtDecode(token) : null;
+      user = claims?.sub;
+    } catch (error) {
+      console.error("Error al decodificar el token:", error);
+    }
+  }
 
   const formatearFecha = (fechaRaw) => {
     const fecha = new Date(fechaRaw);
@@ -30,7 +42,7 @@ export const Menu = () => {
     <>
       <div className='container mx-auto px-28 pt-9'>
         <h2 className='text-3xl font-bold mb-2'>Panel de Control</h2>
-        <p className='text-sm mb-6'>Bienvenido, usuario</p>
+        <p className='text-sm mb-6'>Bienvenido, {user ? user : 'usuario'}</p>
         <div className='grid grid-cols-2 gap-4'>
           <div className='grid sm:grid-cols-2 md:grid-cols-3 gap-1.5 col-span-2'>
             {metricas.map((metrica, idx) => (
