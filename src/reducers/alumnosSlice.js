@@ -57,9 +57,8 @@ const alumnosSlice = createSlice({
                 state.loading = true;
             })
             .addCase(traerPorAlumnoId.fulfilled, (state, action) => {
-                const { discapacidades, ...resto } = action.payload;
                 state.loading = false;
-                state.alumno = resto;
+                state.alumno = action.payload;
             })
             .addCase(traerPorAlumnoId.rejected, (state) => {
                 state.loading = false;

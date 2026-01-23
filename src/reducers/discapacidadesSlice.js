@@ -60,11 +60,9 @@ const discapacidadesSlice = createSlice({
             .addCase(eliminarDiscapacidad.rejected, (state) => {
                 state.loading = false;
             })
-            .addCase(traerPorAlumnoId.fulfilled, (state, action) => {
-                const { discapacidades, ...resto } = action.payload;
-                state.discapacidades =  discapacidades;
-            })
+
+        // No modificar el catálogo global al traer un alumno
     }
-})
+});
 
 export default discapacidadesSlice.reducer;

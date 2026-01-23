@@ -1,11 +1,12 @@
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export const InfoPersonalCard = () => {
 
     const { alumno } = useSelector((state) => state.alumnos);
-    const { discapacidades } = useSelector((state) => state.discapacidades);
+    // Usar las discapacidades del alumno, no el catálogo global
+    const discapacidades = alumno?.discapacidades || [];
 
   return (
     <>
@@ -39,8 +40,8 @@ export const InfoPersonalCard = () => {
               <h3 className="font-semibold">Discapacidades Registradas</h3>
             </div>
             <div className="flex gap-1">
-              {discapacidades.length > 0 ? discapacidades.map((d) => (
-                <span className="px-2 py-0.5 font-semibold bg-amber-500/20 border-amber-500/40 text-amber-700 rounded-xl text-sm border">{d}</span>
+              {Array.isArray(discapacidades) && discapacidades.length > 0 ? discapacidades.map((d, idx) => (
+                  <span key={idx} className="px-2 py-0.5 font-semibold bg-amber-500/20 border-amber-500/40 text-amber-700 rounded-xl text-sm border">{d}</span>
               )) : <span className="italic  text-amber-700 text-sm">No hay discapacidades registradas</span>}
             </div>
             {alumno?.detalleDiscap && (
