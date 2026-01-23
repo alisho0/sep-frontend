@@ -3,6 +3,7 @@ import { FormLogin } from '../components/Login/FormLogin'
 import { login } from '../apis/authApi';
 import { useNavigate } from 'react-router-dom';
 import { showAlert } from '../utils/alert';
+import { jwtDecode } from 'jwt-decode';
 
 export const Login = () => {
 
@@ -24,7 +25,18 @@ export const Login = () => {
             const response = await login(formData.username, formData.password);
             localStorage.setItem('token', response.token);
             localStorage.setItem('refreshToken', response.refreshToken)
-            navigate('/menu')
+            
+            const token = localStorage.getItem("token");
+            let rol = null;
+              if (token) {
+                const claims = token ? jwtDecode(token) : null;
+                rol = claims.rol
+              }
+            if (rol === 'ADMIN' || rol === 'DIRECTOR') {
+              navigate('/menu');
+            } else {
+              navigate('/menu-maestro');
+            }
         } catch (error) {
             showAlert({ title: 'Error', text: 'Error al iniciar sesión', icon: 'error', confirmButtonText: 'Intentar de nuevo' })
         }

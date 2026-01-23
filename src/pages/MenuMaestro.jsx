@@ -1,9 +1,10 @@
 import { MagnifyingGlassIcon, PencilIcon, UserGroupIcon, UsersIcon } from '@heroicons/react/20/solid';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { traerAlumnosPorId, traerGradosPorId, traerObservacionesPorId } from '../reducers/metricasSlice';
+import { traerAlumnosPorId, traerGradosPorId, traerObservacionesPorId, ultimasActividades } from '../reducers/metricasSlice';
 import { jwtDecode } from 'jwt-decode';
 import { EyeIcon } from '@heroicons/react/24/outline';
+import { formatearFecha } from '../utils/formatearFecha';
 
 export const MenuMaestro = () => {
   const dispatch = useDispatch();
@@ -21,13 +22,14 @@ export const MenuMaestro = () => {
     }
   }
 
-  const { gradosPorId, alumnosPorId, observacionesPorId, loading, error } = useSelector(state => state.metricas);
+  const { gradosPorId, alumnosPorId, observacionesPorId, loading, error, observaciones } = useSelector(state => state.metricas);
 
   useEffect(() => {
     if (userId) {
       dispatch(traerGradosPorId(userId));
       dispatch(traerAlumnosPorId(userId));
       dispatch(traerObservacionesPorId(userId));
+      dispatch(ultimasActividades());
     }
   }, [userId]);
 
@@ -94,17 +96,23 @@ export const MenuMaestro = () => {
               <p className="text-sm text-gray-900">
                 Últimos eventos en el sistema
               </p>
+              {observaciones.map((obs, idx) => {
+                const fechaFormateada = formatearFecha(obs.fecha);
+                return (
                   <div
                     className="flex mt-4 justify-items-start gap-3 border-b border-gray-500 pb-4 last:border-0"
+                    key={idx}
                   >
                     <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5"></div>
                     <div>
-                      <p className="text-sm m-0">ejemplo</p>
+                      <p className="text-sm m-0">{obs.descripcion}</p>
                       <p className="text-xs mt-0.5 text-gray-800">
-                        20/10/2023
+                        {fechaFormateada}
                       </p>
                     </div>
                   </div>
+                );
+              })}
             </div>
           </div>
         </div>

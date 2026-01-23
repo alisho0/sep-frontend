@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { traerAlumnos } from '../reducers/alumnosSlice'
 import { traerMetricas, ultimasActividades } from '../reducers/metricasSlice'
 import { jwtDecode } from 'jwt-decode'
+import { formatearFecha } from '../utils/formatearFecha'
 
 export const Menu = () => {
 
@@ -24,18 +25,6 @@ export const Menu = () => {
     } catch (error) {
       console.error("Error al decodificar el token:", error);
     }
-  }
-
-  const formatearFecha = (fechaRaw) => {
-    const fecha = new Date(fechaRaw);
-    const fechaFormateada = fecha.toLocaleString("es-AR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-    return fechaFormateada;
   }
 
   return (
