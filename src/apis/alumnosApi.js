@@ -50,3 +50,14 @@ export const getAlumnosPorCSG = async (id) => {
         throw new Error(error.response?.data?.message || "Error al listar un alumno, intentalo de nuevo.")
     }
 }
+
+export const searchAlumnos = async (nombre) => {
+    try {
+        const res = await api.get(`${url}/buscar`, {
+            params: { nombre }
+        })
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al buscar alumnos, intentalo de nuevo.")
+    }
+}

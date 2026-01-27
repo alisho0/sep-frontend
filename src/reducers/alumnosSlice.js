@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { asignarTutorAlumno, getAlumnoById, getAlumnos, getAlumnosPorCSG, postAlumno } from "../apis/alumnosApi"
+import { asignarTutorAlumno, getAlumnoById, getAlumnos, getAlumnosPorCSG, postAlumno, searchAlumnos } from "../apis/alumnosApi"
 import { listarTutoresPorAlumno } from "./tutoresSlice";
 import { detalleCiclo } from "./gradosSlice";
+import { da, tr } from "zod/v4/locales";
 
 export const traerAlumnos = createAsyncThunk('alumnos/getAlumnos', async () => {
  const data = await getAlumnos();
@@ -27,6 +28,11 @@ export const crearAlumno = createAsyncThunk('alumno/crearAlumno', async ({alumno
 
 export const listarAlumnosPorCSG = createAsyncThunk('alumnos/listarPorCSG', async (id) => {
     const data = await getAlumnosPorCSG(id);
+    return data;
+})
+
+export const buscarAlumnos = createAsyncThunk('alumnos/buscar', async (query) => {
+    const data = await searchAlumnos(query);
     return data;
 })
 
@@ -102,6 +108,17 @@ const alumnosSlice = createSlice({
             // .addCase(detalleCiclo.rejected, (state) => {
             //     state.loading = false;
             // })
+            .addCase(buscarAlumnos.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(buscarAlumnos.fulfilled, (state, action) => {
+                state.loading = false;
+                state.alumnos = action.payload;
+                state.countAlumnos = action.payload.length;
+            })
+            .addCase(buscarAlumnos.rejected, (state) => {
+                state.loading = false;
+            })
     }
 })
 
