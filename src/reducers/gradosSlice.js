@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getGradoDetalle, getGrados, getGradosDisponibles, getSeccionesDisponibles } from "../apis/gradosApi";
-import { delCiclo, delDesvincularMaestro, getCiclosGradoDisponibles, getDetalleCiclo, postCiclo, postVincularMaestro } from "../apis/ciclosApi";
+import { delCiclo, delDesvincularMaestro, getCiclosGradoDisponibles, getCiclosGradosAsignados, getDetalleCiclo, postCiclo, postVincularMaestro } from "../apis/ciclosApi";
 import { eliminarMaestroAsignado, listarMaestros } from "./maestrosSlice";
 
 export const listarGradosDisponibles = createAsyncThunk('grados/listarDisponibles', async () => {
@@ -35,6 +35,11 @@ export const listarSeccionesDisponibles = createAsyncThunk('grados/seccionesDisp
 
 export const listarGrados = createAsyncThunk('grados/listar', async () => {
     const data = getGrados();
+    return data;
+})
+
+export const listarCiclosGradosAsignados = createAsyncThunk('grados/listar-asignados', async () => {
+    const data = getCiclosGradosAsignados();
     return data;
 })
 
@@ -191,6 +196,16 @@ const gradosSlice = createSlice({
                 state.loading = false;
             })
             .addCase(vincularMaestro.rejected, (state) => {
+                state.loading = false
+            })
+            .addCase(listarCiclosGradosAsignados.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(listarCiclosGradosAsignados.fulfilled, (state, action) => {
+                state.loading = false;
+                state.ciclosGrado = action.payload;
+            })
+            .addCase(listarCiclosGradosAsignados.rejected, (state) => {
                 state.loading = false
             })
     }

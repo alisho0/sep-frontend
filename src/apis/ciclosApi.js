@@ -11,6 +11,15 @@ export const getCiclosGradoDisponibles = async () => {
     }
 }
 
+export const getCiclosGradosAsignados = async () => {
+    try {
+        const res = await api.get(`${url}/listar-por-usuario`);
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al traer los ciclos grado disponibles.");
+    }
+}
+
 export const postCiclo = async (ciclo) => {
     try {
         const res = await api.post(`${url}/crearCiclo`, ciclo);

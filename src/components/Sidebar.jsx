@@ -31,7 +31,7 @@ export const Sidebar = ({ open, setOpen }) => {
   const navigation = [
     { name: "Inicio", href: rol == "ADMIN" || rol == "DIRECTOR" ? "/menu" : "/menu-maestro", icon: HomeIcon, show: true, id: 1 },
     { name: "Alumnos", href: "/alumnos", icon: UsersIcon, show: true, id: 2 },
-    { name: "Grados", href: "/grados", icon: AcademicCapIcon, show: true, id: 3 },
+    { name: "Grados", href: rol == "ADMIN" || rol == "DIRECTOR" ? "/grados" : "/grados-asignados", icon: AcademicCapIcon, show: true, id: 3 },
     { name: "Discapacidades", href: "/discapacidades", icon: ExclamationTriangleIcon, show: true, id: 4 },
     { name: "Usuarios", href: "/usuarios", icon: UserGroupIcon, show: true, id: 5 },
     { name: "Configuración", href: "/configuracion", icon: Cog8ToothIcon, show: true, id: 6 },

@@ -13,6 +13,7 @@ import { GradoCicloDetalle } from './features/grados/pages/GradoCicloDetalle'
 import { Usuarios } from './features/usuarios/pages/Usuarios'
 import { Configuracion } from './components/configuracion/Configuracion'
 import { MenuMaestro } from './pages/MenuMaestro'
+import { GradosAsignados } from './features/grados/pages/GradosAsignados'
 function SepApp() {
   return (
     <>
@@ -30,6 +31,7 @@ function SepApp() {
             <Route path='/usuarios' element={<Usuarios />} />
             <Route path='/configuracion' element={<Configuracion />} />
             <Route path='/menu-maestro' element={<MenuMaestro/>} />
+            <Route path='/grados-asignados' element={<GradosAsignados />} />
           </Route>
         </Routes>
       </BrowserRouter>
