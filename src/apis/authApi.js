@@ -20,6 +20,21 @@ export const register = async (usuario) => {
         throw new Error(error.response?.data?.message || "Error al crear el usuario.");
     }
 }
+export const refresh = async (token) => {
+    try {
+        const res = await api.post(`${url}/refresh`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('refreshToken', res.data.refreshToken);
+        return res.data;
+    
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Error al crear el usuario.");
+    }
+}
 
 export const logout = async () => {
     try {

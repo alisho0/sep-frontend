@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordSchema } from "../../validation/passwordSchema";
 import { useNavigate } from "react-router-dom";
 import { editarUsuarioSchema } from "../../validation/editarUsuarioSchema";
+import { refresh } from "../../apis/authApi";
 
 
 export const Configuracion = () => {
@@ -51,7 +52,6 @@ export const Configuracion = () => {
   }, [idUsuario]);
 
   const handleEditarUsuario = async (data) => {
-    console.log("Datos a editar:", data);
     const res = await confirmationAlert({
       title: "¿Estás seguro?",
       text: "¿Estás seguro de modificar tu información? Si cambiaste tu nombre de usuario, deberás usar el nuevo para iniciar sesión la próxima vez.",
@@ -68,6 +68,12 @@ export const Configuracion = () => {
             text: "El usuario se modificó correctamente. Si modificaste tu nombre de usuario, serás redirigido a iniciar sesión.",
             icon: "success",
           });
+          const claims = jwtDecode(localStorage.getItem("token"));
+          if (data.username && data.username !== claims.sub) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("refreshToken");
+            navigate("/");
+          }
         } else if (modificarUsuario.rejected.match(resultAction)) {
           throw new Error("El usuario no pudo ser editado. Intentalo de nuevo.");
         }
