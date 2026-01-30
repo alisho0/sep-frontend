@@ -1,8 +1,9 @@
 import { PlusIcon } from "@heroicons/react/16/solid";
 
-export const BotonIcono = ({ texto, Icono = PlusIcon, onClick, className = "" }) => {
+export const BotonIcono = ({ texto, Icono = PlusIcon, onClick, className = "", tipo = "button" }) => {
   return (
     <button
+      type={tipo}
       onClick={onClick}
       className={`flex items-center gap-2 transition-colors font-semibold rounded-lg py-2 px-3 cursor-pointer ${className}`}
     >

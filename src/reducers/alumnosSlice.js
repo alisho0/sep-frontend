@@ -3,6 +3,7 @@ import { asignarTutorAlumno, getAlumnoById, getAlumnos, getAlumnosPorCSG, postAl
 import { listarTutoresPorAlumno } from "./tutoresSlice";
 import { detalleCiclo } from "./gradosSlice";
 import { da, tr } from "zod/v4/locales";
+import { agregarAlumnoCiclo } from "../apis/ciclosApi";
 
 export const traerAlumnos = createAsyncThunk('alumnos/getAlumnos', async () => {
  const data = await getAlumnos();
@@ -33,6 +34,12 @@ export const listarAlumnosPorCSG = createAsyncThunk('alumnos/listarPorCSG', asyn
 
 export const buscarAlumnos = createAsyncThunk('alumnos/buscar', async (query) => {
     const data = await searchAlumnos(query);
+    return data;
+})
+
+export const asignarAlumnoCiclo = createAsyncThunk('alumnos/asignarAlumnoCiclo', async ({idCiclo, idAlumno}, {dispatch}) => {
+    const data = await agregarAlumnoCiclo(idCiclo, idAlumno);
+    // dispatch(listarAlumnosPorCSG(idCiclo));
     return data;
 })
 
@@ -117,6 +124,16 @@ const alumnosSlice = createSlice({
                 state.countAlumnos = action.payload.length;
             })
             .addCase(buscarAlumnos.rejected, (state) => {
+                state.loading = false;
+            })
+            .addCase(asignarAlumnoCiclo.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(asignarAlumnoCiclo.fulfilled, (state, action) => {
+                state.loading = false;
+                state.alumnosCSG.push(action.payload);
+            })
+            .addCase(asignarAlumnoCiclo.rejected, (state) => {
                 state.loading = false;
             })
     }

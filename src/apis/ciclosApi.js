@@ -64,3 +64,14 @@ export const delDesvincularMaestro = async (idCiclo, idMaestro) => {
         throw new Error(error.response?.data?.message || "Error al traer el ciclo");
     }
 }
+
+export const agregarAlumnoCiclo = async (idCiclo, idAlumno) => {
+    try {
+        const res = await api.post(`${url}/${idCiclo}/alumno`, {
+            alumnoId: idAlumno
+        })
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data || "Error al asignar alumno al ciclo");
+    }
+}

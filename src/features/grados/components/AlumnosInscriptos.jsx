@@ -4,10 +4,12 @@ import { useDispatch } from "react-redux";
 import { abrirModal } from "../../../reducers/uiSlice";
 import { EyeIcon, UserMinusIcon } from "@heroicons/react/24/outline";
 import { BotonIcono } from "../../../utils/components/BotonIcono";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export const AlumnosInscriptos = ({alumnosCSG}) => {
 
+    const { cicloId } = useParams();
+    const cicloIdParse = parseInt(cicloId);
     const dispatch = useDispatch();
 
   return (
@@ -18,15 +20,15 @@ export const AlumnosInscriptos = ({alumnosCSG}) => {
           <p>Alumnos Inscriptos</p>
         </div>
         <BotonIcono
-          texto={"Agregar observación"}
+          texto={"Agregar Alumno"}
           Icono={PlusIcon}
           className="bg-indigo-600 hover:bg-indigo-700 text-white justify-center"
           onClick={() =>
             dispatch(
               abrirModal({
                 modalAbierto: true,
-                tipo: "agregarObservacionGrado",
-                data: null,
+                tipo: "agregarAlumno",
+                data: { cicloId: cicloIdParse  },
               })
             )
           }
