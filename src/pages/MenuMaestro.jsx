@@ -5,6 +5,7 @@ import { traerAlumnosPorId, traerGradosPorId, traerObservacionesPorId, ultimasAc
 import { jwtDecode } from 'jwt-decode';
 import { EyeIcon } from '@heroicons/react/24/outline';
 import { formatearFecha } from '../utils/formatearFecha';
+import { abrirModal } from '../reducers/uiSlice'
 
 export const MenuMaestro = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ export const MenuMaestro = () => {
     <>
       <div className="container mx-auto px-28 pt-9">
         <h2 className="text-3xl font-bold mb-2">Panel de Control</h2>
-        <p className="text-sm mb-6">Bienvenido, {user ? user : "usuario"}</p>
+        <p className="text-sm mb-6">Bienvenido, {user ?? "usuario"}</p>
         <div className="grid grid-cols-2 gap-4">
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-1.5 col-span-2">
             <div className="bg-white p-6 rounded-lg shadow-md border-gray-300 border  px-4 py-4 grid ">
@@ -83,10 +84,15 @@ export const MenuMaestro = () => {
                   <EyeIcon className="w-5 h-5" />
                   <p className="font-semibold">Ver mis grados</p>
                 </div>
-                <div className="flex flex-col items-center gap-1 shadow-lg bg-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer text-white">
+                <button onClick={() => dispatch(abrirModal({
+                  modalAbierto: true,
+                  tipo: "buscarAlumno",
+                  data: { },
+                }))} 
+                className="flex flex-col items-center gap-1 shadow-lg bg-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer text-white">
                   <MagnifyingGlassIcon className="w-5 h-5" />
                   <p className="font-semibold">Buscar Alumno</p>
-                </div>
+                </button>
               </div>
             </div>
           </div>

@@ -14,7 +14,6 @@ export const ModalAgregarAlumno = () => {
   const { modalData } = useSelector((state) => state.ui);
 
     const handleAgregarAlumno = async (alumnoId) => {
-        console.log("Agregar alumno ID: ", alumnoId, " al ciclo ID: ", modalData.cicloId)
         try {
             const asignar = await dispatch(asignarAlumnoCiclo({idCiclo: modalData.cicloId, idAlumno: alumnoId}));
             if (asignarAlumnoCiclo.fulfilled.match(asignar)) {
