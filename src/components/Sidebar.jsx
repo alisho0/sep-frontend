@@ -32,8 +32,8 @@ export const Sidebar = ({ open, setOpen }) => {
     { name: "Inicio", href: rol == "ADMIN" || rol == "DIRECTOR" ? "/menu" : "/menu-maestro", icon: HomeIcon, show: true, id: 1 },
     { name: "Alumnos", href: "/alumnos", icon: UsersIcon, show: true, id: 2 },
     { name: "Grados", href: rol == "ADMIN" || rol == "DIRECTOR" ? "/grados" : "/grados-asignados", icon: AcademicCapIcon, show: true, id: 3 },
-    { name: "Discapacidades", href: "/discapacidades", icon: ExclamationTriangleIcon, show: true, id: 4 },
-    { name: "Usuarios", href: "/usuarios", icon: UserGroupIcon, show: true, id: 5 },
+    { name: "Discapacidades", href: "/discapacidades", icon: ExclamationTriangleIcon, show: rol == "ADMIN" || rol == "DIRECTOR" ? true : false, id: 4 },
+    { name: "Usuarios", href: "/usuarios", icon: UserGroupIcon, show: rol == "ADMIN" || rol == "DIRECTOR" ? true : false, id: 5 },
     { name: "Configuración", href: "/configuracion", icon: Cog8ToothIcon, show: true, id: 6 },
   ]
 
@@ -97,6 +97,7 @@ export const Sidebar = ({ open, setOpen }) => {
                 {navigation.map((item) => {
                   const isActive = location.pathname === item.href
                   const Icon = item.icon
+                  if (!item.show) return null;
                   return (
                     <li key={item.id}>
                       <Link to={item.href} className={`hover:text-indigo-400 rounded-lg transition-colors flex gap-3 px-3 py-2 font-medium items-center ${isActive ? "bg-zinc-800" : "hover:bg-gray-600/50"}`}>
