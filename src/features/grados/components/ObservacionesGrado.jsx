@@ -7,6 +7,7 @@ import { abrirModal } from "../../../reducers/uiSlice";
 import { EyeIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { confirmationAlert, showAlert } from "../../../utils/alert";
 import { useObservacion } from "../../../hooks/useObservacion";
+import { extractUsername, isAdmin } from "../../../utils/isAdmin";
 
 export const ObservacionesGrado = ({ cicloId }) => {
 
@@ -30,6 +31,8 @@ export const ObservacionesGrado = ({ cicloId }) => {
       setPaginaActual(numeroPagina);
     }
   };
+
+  const userLogueado = extractUsername(localStorage.getItem("token"));
   
   return (
     <div className="rounded-lg shadow-lg px-4 py-3 bg-white overflow-y-scroll">
@@ -49,6 +52,7 @@ export const ObservacionesGrado = ({ cicloId }) => {
             }))}
         />
       </div>
+              <p>El user logueado: {userLogueado}</p>
       {observacionesPaginadas.map((o, idx) => (
         <div className="border border-gray-400 p-4 rounded-lg bg-gray-100 hover:bg-gray-300 transition-colors mb-3" key={idx}>
           <div className="flex flex-col md:flex-row justify-between mb-4">
@@ -73,7 +77,9 @@ export const ObservacionesGrado = ({ cicloId }) => {
                 tipo: "mostrarObservacion",
                 data: o,
               }))}/>
-              <BotonIcono texto={""} Icono={TrashIcon} className="bg-red-600 text-white hover:bg-red-700 transition hover:shadow-md flex justify-center" onClick={() => handleDelete(o.id)}/>
+              { userLogueado == o.nombreUsuario && (
+                <BotonIcono texto={""} Icono={TrashIcon} className="bg-red-600 text-white hover:bg-red-700 transition hover:shadow-md flex justify-center" onClick={() => handleDelete(o.id)}/>
+              )}
             </div>
           </div>
         </div>

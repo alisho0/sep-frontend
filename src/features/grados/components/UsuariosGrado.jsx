@@ -12,6 +12,8 @@ import { abrirModal } from "../../../reducers/uiSlice";
 import { desvincularMaestro } from "../../../reducers/gradosSlice";
 import { confirmationAlert, showAlert } from "../../../utils/alert";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import { jwtDecode } from "jwt-decode";
+import { isAdmin } from "../../../utils/isAdmin";
 
 export const UsuariosGrado = ({ cicloId }) => {
   const dispatch = useDispatch();
@@ -55,6 +57,8 @@ export const UsuariosGrado = ({ cicloId }) => {
     });
   };
 
+  const esAdmin = isAdmin(localStorage.getItem("token"));
+
   return (
     <div className="rounded-lg px-4 py-3 bg-white shadow-lg">
       <div className="flex flex-col mb-3 md:flex-row md:justify-between">
@@ -62,20 +66,22 @@ export const UsuariosGrado = ({ cicloId }) => {
           <InformationCircleIcon className="h-5 w-5" />
           <h2 className="text-xl font-semibold">Maestros a cargo</h2>
         </div>
-        <BotonIcono
-          onClick={() =>
-            dispatch(
-              abrirModal({
-                modalAbierto: true,
-                tipo: "agregarMaestro",
-                data: {cicloId},
-              })
-            )
-          }
-          texto={"Agregar maestro"}
-          Icono={PlusIcon}
-          className="bg-indigo-600 hover:bg-indigo-700 transition-colors text-white justify-center"
-        />
+        { esAdmin && (
+          <BotonIcono
+            onClick={() =>
+              dispatch(
+                abrirModal({
+                  modalAbierto: true,
+                  tipo: "agregarMaestro",
+                  data: {cicloId},
+                })
+              )
+            }
+            texto={"Agregar maestro"}
+            Icono={PlusIcon}
+            className="bg-indigo-600 hover:bg-indigo-700 transition-colors text-white justify-center"
+          />
+        )}
       </div>
 
       {maestrosAsignados.length > 0 ? maestrosAsignados.map((m, idx) => (
@@ -87,12 +93,14 @@ export const UsuariosGrado = ({ cicloId }) => {
             <p className="font-semibold">{m.usuario}</p>
             <p className="text-sm text-gray-700">{m.correo}</p>
           </div>
-          <BotonIcono
-            Icono={TrashIcon}
-            className="bg-indigo-600 hover:bg-red-600 text-white transition-colors"
-            onClick={() => handleDesvincularMaestro(cicloId, m.id)
-            }
-          />
+          { esAdmin && (
+            <BotonIcono
+              Icono={TrashIcon}
+              className="bg-indigo-600 hover:bg-red-600 text-white transition-colors"
+              onClick={() => handleDesvincularMaestro(cicloId, m.id)
+              }
+            />
+          )}
         </div>
       )) : <p className="text-sm italic text-gray-700 mb-2">No hay maestros asignados</p>  }
       
