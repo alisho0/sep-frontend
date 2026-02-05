@@ -4,12 +4,17 @@ import api from '../utils/interceptor';
 
 const url = `${import.meta.env.VITE_BASE_URL}/alumnos`;
 
-export const getAlumnos = async () => {
+export const getAlumnos = async (page) => {
     try {
-        const response = await api.get(`${url}/listar`);
+        const response = await api.get(`${url}/listar`, {
+            params: {
+                page: page || 0,
+                size: 10
+            }
+        });
         return response.data;
     } catch (error) {
-        console.log(error);
+        throw new Error(error.response?.data || "Error al obtener los alumnos");
     }
 }
 
@@ -18,7 +23,7 @@ export const getAlumnoById = async (id) => {
         const response = await api.get(`${url}/detalle/${id}`);
         return response.data;
     } catch (error) {
-        console.log(error);
+        throw new Error(error.response?.data || "Error al obtener el alumno");
     }
 }
 
@@ -38,7 +43,7 @@ export const postAlumno = async (alumno) => {
         const res = await api.post(`${url}/crear`, alumno);
         return res.data;
     } catch (error) {
-        throw new Error(error.response?.data?.message || "Error al crear un alumno, intentalo de nuevo.")
+        throw new Error(error.response?.data || "Error al crear un alumno, intentalo de nuevo.")
     }
 }
 

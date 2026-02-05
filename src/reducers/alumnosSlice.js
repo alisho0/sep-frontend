@@ -5,8 +5,8 @@ import { detalleCiclo } from "./gradosSlice";
 import { da, tr } from "zod/v4/locales";
 import { agregarAlumnoCiclo } from "../apis/ciclosApi";
 
-export const traerAlumnos = createAsyncThunk('alumnos/getAlumnos', async () => {
- const data = await getAlumnos();
+export const traerAlumnos = createAsyncThunk('alumnos/getAlumnos', async (page = 0) => {
+ const data = await getAlumnos(page);
  return data;
 })
 
@@ -47,24 +47,46 @@ const alumnosSlice = createSlice({
     name: 'alumnos',
     initialState: {
         alumnos: [],
+        pagination: {
+            totalPages: 0,
+            pageNumber: 0,
+            pageSize: 10,
+            totalElements: 0,
+            first: true,
+            last: false,
+            offset: 0
+        },
         alumnosCSG: [],
         loading: false,
         alumno: null,
-        countAlumnos: 0
+        countAlumnos: 0,
+        error: null
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(traerAlumnos.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(traerAlumnos.fulfilled, (state, action) => {
                 state.loading = false;
-                state.alumnos = action.payload;
-                state.countAlumnos = action.payload.length;
+                state.alumnos = Array.isArray(action.payload.content) ? action.payload.content : [];
+                state.countAlumnos = action.payload.totalElements || 0;
+                state.pagination = {
+                    totalPages: action.payload.totalPages || 0,
+                    pageNumber: action.payload.pageable.pageNumber || 0,
+                    pageSize: action.payload.pageable.pageSize || 10,
+                    totalElements: action.payload.totalElements || 0,
+                    first: action.payload.first || false,
+                    last: action.payload.last || false,
+                    offset: action.payload.pageable.offset || 0
+                }
+                state.error = null;
             })
-            .addCase(traerAlumnos.rejected, (state) => {
+            .addCase(traerAlumnos.rejected, (state, action) => {
                 state.loading = false;
+                state.error = action.error.message;
             })
             .addCase(traerPorAlumnoId.pending, (state) => {
                 state.loading = true;
