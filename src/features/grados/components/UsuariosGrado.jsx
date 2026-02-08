@@ -20,6 +20,7 @@ export const UsuariosGrado = ({ cicloId }) => {
   const { maestrosAsignados, maestrosDisponibles } = useSelector(
     (state) => state.maestros
   );
+  const { cicloGradoActual } = useSelector((state) => state.grados);
 
   useEffect(() => {
     dispatch(listarMaestros(cicloId));
@@ -66,7 +67,7 @@ export const UsuariosGrado = ({ cicloId }) => {
           <InformationCircleIcon className="h-5 w-5" />
           <h2 className="text-xl font-semibold">Maestros a cargo</h2>
         </div>
-        { esAdmin && (
+        { esAdmin && cicloGradoActual.estado == "ACTIVO" && (
           <BotonIcono
             onClick={() =>
               dispatch(
@@ -93,7 +94,7 @@ export const UsuariosGrado = ({ cicloId }) => {
             <p className="font-semibold">{m.usuario}</p>
             <p className="text-sm text-gray-700">{m.correo}</p>
           </div>
-          { esAdmin && (
+          { esAdmin && cicloGradoActual.estado == "ACTIVO" && (
             <BotonIcono
               Icono={TrashIcon}
               className="bg-indigo-600 hover:bg-red-600 text-white transition-colors"

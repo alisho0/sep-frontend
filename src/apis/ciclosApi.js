@@ -40,7 +40,7 @@ export const delCiclo = async (id) => {
 
 export const getDetalleCiclo = async (id) => {
     try {
-        const res = await api.get(`${url}/detalleCiclo/${id}`)
+        const res = await api.get(`${url}/detalle-ciclo/${id}`)
         return res.data;
     } catch (error) {
         throw new Error(error.response?.data?.message || "Error al traer el ciclo");
@@ -73,5 +73,14 @@ export const agregarAlumnoCiclo = async (idCiclo, idAlumno) => {
         return res.data;
     } catch (error) {
         throw new Error(error.response?.data || "Error al asignar alumno al ciclo");
+    }
+}
+
+export const cerrarCiclo = async (idCiclo) => {
+    try {
+        const res = await api.put(`${url}/${idCiclo}/cerrar`);
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data || "Error al cerrar el ciclo");
     }
 }

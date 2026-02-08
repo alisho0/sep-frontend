@@ -129,10 +129,15 @@ export const GradoDetalle = () => {
                       className="border rounded-lg bg-gray-100 p-3 mb-4 flex md:justify-between md:items-center md:flex-row flex-col shadow-md"
                     >
                       <div>
-                        <h4 className="font-semibold text-lg">
-                          Ciclo {ciclo.anio}
-                        </h4>
-                        <p className="text-gray-700">
+                        <div className="flex md:gap-4 md:flex-row items-center flex-col">
+                          <h4 className="font-semibold text-lg">
+                            Ciclo {ciclo.anio}
+                          </h4>
+                          <span className={`px-2 py-1 rounded-xl text-xs text-white font-semibold ${ciclo.estado === "ACTIVO" ? "bg-green-600" : "bg-red-600"}`}>
+                            {ciclo.estado}
+                          </span>
+                        </div>
+                        <p className="text-gray-700 md:text-start text-center">
                           {ciclo.cantAlumnos} alumnos
                         </p>
                       </div>

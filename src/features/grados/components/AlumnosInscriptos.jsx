@@ -1,6 +1,6 @@
 import { PlusIcon, UsersIcon } from "@heroicons/react/16/solid";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { abrirModal } from "../../../reducers/uiSlice";
 import { EyeIcon, UserMinusIcon } from "@heroicons/react/24/outline";
 import { BotonIcono } from "../../../utils/components/BotonIcono";
@@ -8,6 +8,7 @@ import { Link, useParams } from "react-router-dom";
 
 export const AlumnosInscriptos = ({alumnosCSG}) => {
 
+    const { cicloGradoActual } = useSelector((state) => state.grados);
     const { cicloId } = useParams();
     const cicloIdParse = parseInt(cicloId);
     const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export const AlumnosInscriptos = ({alumnosCSG}) => {
           <UsersIcon className="h-5 w-5" />
           <p>Alumnos Inscriptos</p>
         </div>
+        { cicloGradoActual.estado == "ACTIVO" && (
         <BotonIcono
           texto={"Agregar Alumno"}
           Icono={PlusIcon}
@@ -33,6 +35,7 @@ export const AlumnosInscriptos = ({alumnosCSG}) => {
             )
           }
         />
+        )}
       </div>
       <div>
         {alumnosCSG.length > 0 ? (
@@ -55,11 +58,13 @@ export const AlumnosInscriptos = ({alumnosCSG}) => {
                     className="w-full justify-center"
                   />
                 </Link>
+                {cicloGradoActual.estado == "ACTIVO" && (
                 <BotonIcono
                   onClick={() => desvincularAlumno(a.idRegistro, a.id)}
                   Icono={UserMinusIcon}
                   className="bg-indigo-600 text-white hover:bg-red-700 justify-center"
                 />
+                )}
               </div>
             </div>
           ))

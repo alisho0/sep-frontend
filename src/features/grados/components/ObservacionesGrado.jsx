@@ -12,6 +12,7 @@ import { extractUsername, isAdmin } from "../../../utils/isAdmin";
 export const ObservacionesGrado = ({ cicloId }) => {
 
   const { observacion } = useSelector((state) => state.observaciones);
+  const { cicloGradoActual } = useSelector((state) => state.grados);
   const dispatch = useDispatch();
   const { handleDelete } = useObservacion();
   const [paginaActual, setPaginaActual] = useState(1);
@@ -41,6 +42,7 @@ export const ObservacionesGrado = ({ cicloId }) => {
           <ChatBubbleBottomCenterIcon className="h-5 w-5" />
           <h2 className="text-xl font-semibold">Observaciones realizadas</h2>
         </div>
+        {cicloGradoActual.estado == "ACTIVO" && (
         <BotonIcono
           texto={"Agregar observación"}
           Icono={PlusIcon}
@@ -51,8 +53,8 @@ export const ObservacionesGrado = ({ cicloId }) => {
               data: null
             }))}
         />
+        )}
       </div>
-              <p>El user logueado: {userLogueado}</p>
       {observacionesPaginadas.map((o, idx) => (
         <div className="border border-gray-400 p-4 rounded-lg bg-gray-100 hover:bg-gray-300 transition-colors mb-3" key={idx}>
           <div className="flex flex-col md:flex-row justify-between mb-4">
@@ -77,7 +79,7 @@ export const ObservacionesGrado = ({ cicloId }) => {
                 tipo: "mostrarObservacion",
                 data: o,
               }))}/>
-              { userLogueado == o.nombreUsuario && (
+              { userLogueado == o.nombreUsuario && cicloGradoActual.estado == "ACTIVO" && (
                 <BotonIcono texto={""} Icono={TrashIcon} className="bg-red-600 text-white hover:bg-red-700 transition hover:shadow-md flex justify-center" onClick={() => handleDelete(o.id)}/>
               )}
             </div>
