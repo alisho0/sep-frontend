@@ -41,7 +41,7 @@ export const ModalAgregarObservacion = () => {
         } catch (error) {
             showAlert({
                 title: 'Error',
-                text: 'Ocurrió un error al crear la observación',
+                text: error.message || 'Ocurrió un error al crear la observación',
                 icon: 'error'
             });
         }

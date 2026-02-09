@@ -13,10 +13,10 @@ export const useObservacion = () => {
       icon: "warning",
       confirmButtonText: "Eliminar",
       cancelButtonText: "Cancelar",
-    }).then((res) => {
+    }).then(async (res) => {
       if (res.isConfirmed) {
         try {
-          const eliminar = dispatch(eliminarObservacion(id));
+          const eliminar = await dispatch(eliminarObservacion(id));
           if (eliminarObservacion.fulfilled.match(eliminar)) {
             showAlert({
               title: "Observación eliminada",
@@ -25,7 +25,7 @@ export const useObservacion = () => {
             });
           } else if (eliminarObservacion.rejected.match(eliminar)) {
             throw new Error(
-              "La observación no pudo ser eliminado. Intentalo de nuevo."
+              eliminar.error.message
             );
           }
         } catch (error) {

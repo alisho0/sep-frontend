@@ -18,8 +18,8 @@ export const agregarObservacion = async (observacion) => {
         });
         return response.data;
     } catch (error) {
-        console.error('Error en agregarObservacion:', error);
-        throw error; // Propagamos el error para que pueda ser manejado por el slice
+        console.error("Error en agregar observación:", error.response.data);
+        throw new Error(error.response?.data || "Error en agregar observación.");
     }
 }
 
@@ -28,7 +28,7 @@ export const getObservacionesGrado = async (id) => {
         const response = await api.get(`${url}/listar/${id}`);
         return response.data;
     } catch (error) {
-        throw new Error(error.response?.data?.message || "Error en listar las observaciones por grado.");
+        throw new Error(error.response?.data || "Error en listar las observaciones por grado.");
     }
 }
 
@@ -37,6 +37,6 @@ export const delObservacion = async (id) => {
         const response = await api.delete(`${url}/eliminar/${id}`);
         return response.data;
     } catch (error) {
-        throw new Error(error.response?.data?.message || "Error en listar las observaciones por grado.");
+        throw new Error(error.response?.data || "Error en eliminar la observación.");
     }
 }
