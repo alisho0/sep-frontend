@@ -1,20 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getMetricasCSG, getObsRecientes, getTotalAlumnos, getAlumnosAsignadosById, getGradosAsignadosById, getObservacionesRealizadasById } from "../apis/metricasApi";
+import { getMetricasCSG, getObsRecientes, getTotalAlumnos, getAlumnosAsignadosById, getGradosAsignadosById, getObservacionesRealizadasById, getDiscapacidadesTotales } from "../apis/metricasApi";
 import { actividadReciente } from "../apis/actividadesApi";
 
 export const traerMetricas = createAsyncThunk('metricas/traerMetricas', async () => {
     try {
-        const [alumnosTotales, observacionesRecientes] = await Promise.all([
+        const [alumnosTotales, observacionesRecientes, discapacidadesTotales] = await Promise.all([
             getTotalAlumnos(),
-            getObsRecientes()
+            getObsRecientes(),
+            getDiscapacidadesTotales()
         ]);
         return {
             alumnosTotales,
-            observacionesRecientes
+            observacionesRecientes,
+            discapacidadesTotales
         };
     } catch (error) {
         console.error("Error al traer métricas", error);
-        throw new Error("Error al traer métricas");
+        throw new Error(error.message || "Error al traer métricas");
     }
 });
 
@@ -75,9 +77,10 @@ const metricasSlice = createSlice({
                 state.loading = true;
             })
             .addCase(traerMetricas.fulfilled, (state, action) => {
-                const { alumnosTotales, observacionesRecientes } = action.payload;
+                const { alumnosTotales, observacionesRecientes, discapacidadesTotales } = action.payload;
                 state.metricas[0].valor = alumnosTotales;
                 state.metricas[1].valor = observacionesRecientes;
+                state.metricas[2].valor = discapacidadesTotales;
                 state.loading = false;
             })
             .addCase(traerMetricas.rejected, (state) => {

@@ -35,7 +35,7 @@ export const DetalleAlumno = () => {
 
   return (
     <>
-      <div className="container mx-auto px-4 pt-9 grid md:grid-cols-3 grid-cols-1 gap-6">
+      <div className="container mx-auto px-4 pt-9 pb-14 grid md:grid-cols-3 grid-cols-1 gap-6">
         {loading ? (
           <p>Cargando...</p>
         ) : (

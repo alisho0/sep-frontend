@@ -26,6 +26,12 @@ export const RegistroDatos = ({registro}) => {
           </label>
           <p className="font-medium">{`${registro.fechaInicio || "-"}`}</p>
         </div>
+        <div>
+          <label className="text-sm font-medium text-gray-600 py-1">
+            Fecha de finalización
+          </label>
+          <p className="font-medium">{`${registro.fechaFin || "-"}`}</p>
+        </div>
       </div>
     </>
   )

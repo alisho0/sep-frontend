@@ -65,3 +65,13 @@ export const getObservacionesRealizadasById = async (id) => {
         throw new Error(error.response?.data?.message || "Error al obtener las observaciones realizadas. Por favor, intente nuevamente");
     }
 }
+
+export const getDiscapacidadesTotales = async () => {
+    try {
+        const response = await api.get(`${url}/discapacidades-totales`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener las discapacidades totales", error.response?.data || error);
+        throw new Error(error.response?.data || "Error al obtener las discapacidades totales. Por favor, intente nuevamente");
+    }
+}
