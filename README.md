@@ -1,8 +1,28 @@
-# React + Vite
+# Sistema Escolar Privado (SEP) | Frontend
+## 🖥️ Descripción
+Frontend desarrollado con React para interactuar con el backend del sistema escolar.
+Permite la gestión de alumnos, grados y usuarios mediante una interfaz dinámica y desacoplada del servidor.
+La aplicación consume una API REST desarrollada en Spring Boot.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🛠️ Stack Tecnológico
+- React
+- Vite
+- Axios (consumo de API)
+- Redux
+- Tailwind CSS
+- React Router
+- React Hook Form
+- Zod
 
-Currently, two official plugins are available:
+## 🔐 Autenticación y manejo de sesión
+- Login contra API REST
+- Persistencia de token JWT en almacenamiento local
+- Protección de rutas privadas
+- Renderizado condicional según rol de usuario
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 Funcionalidades
+- Alta y edición de alumnos
+- Visualización de grados y ciclos
+- Formularios validados en frontend
+- Manejo de errores provenientes del backend
+- Interfaz adaptada a distintos tipos de usuario
