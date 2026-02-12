@@ -8,10 +8,14 @@ import { traerAlumnos } from "../../../reducers/alumnosSlice";
 import { Link } from "react-router-dom";
 import { ChevronLeftIcon, ChevronRightIcon, UserPlusIcon } from "@heroicons/react/16/solid";
 import { abrirModal } from "../../../reducers/uiSlice";
+import { traerMetricasAlumnos } from "../../../reducers/metricasSlice";
+import { CardMetrica } from "../../../utils/components/CardMetrica";
+import { UsersIcon } from "@heroicons/react/24/outline";
 
 export const Alumnos = () => {
   const dispatch = useDispatch();
   const { alumnos, loading, error, pagination } = useSelector((state) => state.alumnos);
+  const { alumnos: alumnosMetrica } = useSelector((state) => state.metricas);
 
   // Estado para los filtros
   const [gradoSelect, setGradoSelect] = useState("");
@@ -19,6 +23,7 @@ export const Alumnos = () => {
 
   useEffect(() => {
     dispatch(traerAlumnos());
+    dispatch(traerMetricasAlumnos())
   }, []);
 
   // Filtrado frontend
@@ -37,9 +42,16 @@ const alumnosFiltrados = Array.isArray(alumnos)
 
   return (
     <>
-      <div className="container mx-auto md:px-28 px-4 pt-9 pb-16">
+      <div className="container mx-auto md:px-14 px-4 pt-9 pb-16">
+        <h2 className="text-3xl font-bold">Alumnos</h2>
+        <p className="mb-4 italic text-gray-800 text-sm">Gestiona y visualiza todos los alumnos del sistema</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+          {Array.isArray(alumnosMetrica) && alumnosMetrica.length > 0 ? alumnosMetrica.map((a, idx) => (
+            <CardMetrica key={idx} Icono={UsersIcon} texto={a.nombre} data={a.valor} />
+          )) : null}
+        </div>
         <div className="bg-white p-6 rounded-lg shadow-md border-gray-300">
-          <h4 className="font-semibold text-2xl">Listado de Alumnos</h4>
+          <h4 className="font-semibold text-xl">Listado de Alumnos</h4>
           <FiltrosAlumnos
             gradoSelect={gradoSelect}
             setGradoSelect={setGradoSelect}

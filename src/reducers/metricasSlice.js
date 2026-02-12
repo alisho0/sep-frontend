@@ -1,16 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getMetricasCSG, getObsRecientes, getTotalAlumnos, getAlumnosAsignadosById, getGradosAsignadosById, getObservacionesRealizadasById, getDiscapacidadesTotales } from "../apis/metricasApi";
+import { getMetricasCSG, getObsRecientes, getTotalAlumnos, getAlumnosAsignadosById, getGradosAsignadosById, getObservacionesRealizadasById, getDiscapacidadesTotales, getTotalInscriptosLastCiclo } from "../apis/metricasApi";
 import { actividadReciente } from "../apis/actividadesApi";
 
 export const traerMetricas = createAsyncThunk('metricas/traerMetricas', async () => {
     try {
-        const [alumnosTotales, observacionesRecientes, discapacidadesTotales] = await Promise.all([
-            getTotalAlumnos(),
+        const [alumnosInscriptos, observacionesRecientes, discapacidadesTotales] = await Promise.all([
+            getTotalInscriptosLastCiclo(),
             getObsRecientes(),
             getDiscapacidadesTotales()
         ]);
         return {
-            alumnosTotales,
+            alumnosInscriptos,
             observacionesRecientes,
             discapacidadesTotales
         };
@@ -51,17 +51,37 @@ export const traerObservacionesPorId = createAsyncThunk('metricas/traerObservaci
     return data;
 });
 
+export const traerMetricasAlumnos = createAsyncThunk('metricas/alumnos', async () => {
+    try {
+        const [totalAlumnos, alumnosConDiscapacidad] = await Promise.all([
+            getTotalAlumnos(),
+            getDiscapacidadesTotales()
+        ]);
+        return {
+            totalAlumnos,
+            alumnosConDiscapacidad
+        };
+    } catch (error) {
+        console.error("Error al traer métricas de alumnos", error);
+        throw new Error(error.message || "Error al traer métricas de alumnos");
+    }
+})
+
 const metricasSlice = createSlice({
     name: 'metricas',
     initialState: {
-        metricas: [
-            { nombre: 'Total de Alumnos', valor: 0 },
-            { nombre: 'Observaciones recientes', valor: 0 },
-            { nombre: 'Discapacidades registradas', valor: 0 }
+        dashboard: [
+            { nombre: 'Alumnos inscriptos este año', valor: 0 },
+            { nombre: 'Observaciones recientes (7 días)', valor: 0 },
+            { nombre: 'Discapacidades registradas este año', valor: 0 }
         ],
         metricasCicloDetalle: [
             { nombre: 'Alumnos inscriptos', valor: 0 },
             { nombre: 'Discapacidades registradas', valor: 0 },
+        ],
+        alumnos: [
+            {nombre: 'Total de alumnos inscriptos', valor: 0},
+            {nombre: 'Alumnos con discapacidad', valor: 0},
         ],
         observaciones: [],
         alumnosPorId: null,
@@ -77,10 +97,10 @@ const metricasSlice = createSlice({
                 state.loading = true;
             })
             .addCase(traerMetricas.fulfilled, (state, action) => {
-                const { alumnosTotales, observacionesRecientes, discapacidadesTotales } = action.payload;
-                state.metricas[0].valor = alumnosTotales;
-                state.metricas[1].valor = observacionesRecientes;
-                state.metricas[2].valor = discapacidadesTotales;
+                const { alumnosInscriptos, observacionesRecientes, discapacidadesTotales } = action.payload;
+                state.dashboard[0].valor = alumnosInscriptos;
+                state.dashboard[1].valor = observacionesRecientes;
+                state.dashboard[2].valor = discapacidadesTotales;
                 state.loading = false;
             })
             .addCase(traerMetricas.rejected, (state) => {
@@ -146,6 +166,19 @@ const metricasSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             })
+            .addCase(traerMetricasAlumnos.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(traerMetricasAlumnos.fulfilled, (state, action) => {
+                state.loading = false;
+                state.alumnos[0].valor = action.payload.totalAlumnos;
+                state.alumnos[1].valor = action.payload.alumnosConDiscapacidad;
+             })
+             .addCase(traerMetricasAlumnos.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+             })
     }
 })
 

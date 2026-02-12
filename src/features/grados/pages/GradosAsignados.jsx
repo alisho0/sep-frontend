@@ -69,7 +69,7 @@ export const GradosAsignados = () => {
               </div>
             ))
           ) : (
-            <span>No hay grados disponibles</span>
+            <span className="text-sm mt-4 text-gray-800 italic">No hay grados disponibles</span>
           )}
         </div>
       </div>

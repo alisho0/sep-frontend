@@ -10,7 +10,7 @@ import { formatearFecha } from '../utils/formatearFecha'
 export const Menu = () => {
 
   const dispatch = useDispatch();
-  const { metricas, observaciones } = useSelector((state) => state.metricas);
+  const { dashboard, observaciones } = useSelector((state) => state.metricas);
   useEffect(() => {
     dispatch(traerMetricas());
     dispatch(ultimasActividades());
@@ -34,7 +34,7 @@ export const Menu = () => {
         <p className='text-sm mb-6'>Bienvenido, {user ? user : 'usuario'}</p>
         <div className='grid grid-cols-2 gap-4'>
           <div className='grid sm:grid-cols-2 md:grid-cols-3 gap-1.5 col-span-2'>
-            {metricas.map((metrica, idx) => (
+            {dashboard.map((metrica, idx) => (
               <div className='bg-white p-6 rounded-lg shadow-md border-gray-300 border  px-4 py-4 grid ' key={idx}>
                 <div className='flex justify-between self-center items-center'>
                   <span className='text-sm'>{metrica.nombre}</span>

@@ -145,6 +145,7 @@ export const Configuracion = () => {
             <BotonIcono
               texto={"Guardar Cambios"}
               Icono={FolderIcon}
+              tipo="submit"
               className="bg-indigo-600 text-white hover:bg-indigo-700 transition shadow-md col-span-2 w-full justify-center md:col-span-1 md:w-fit"
             />
           </form>
@@ -193,7 +194,7 @@ export const Configuracion = () => {
                 </span>
               )}
             </div>
-            <BotonIcono className="bg-indigo-600 text-white hover:bg-indigo-700 transition shadow-md col-span-2 w-full justify-center md:col-span-1 md:w-fit" texto={"Actualizar Contraseña"} Icono={LockClosedIcon} />
+            <BotonIcono tipo="submit" className="bg-indigo-600 text-white hover:bg-indigo-700 transition shadow-md col-span-2 w-full justify-center md:col-span-1 md:w-fit" texto={"Actualizar Contraseña"} Icono={LockClosedIcon} />
           </form>
         </FormProvider>
       </div>

@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 import { EyeIcon } from '@heroicons/react/24/outline';
 import { formatearFecha } from '../utils/formatearFecha';
 import { abrirModal } from '../reducers/uiSlice'
+import { Link } from 'react-router-dom';
 
 export const MenuMaestro = () => {
   const dispatch = useDispatch();
@@ -80,10 +81,10 @@ export const MenuMaestro = () => {
                   <PlusIcon className='w-5 h-5'/>
                   <p className='font-semibold'>Nueva Observación</p>
                 </div> */}
-                <div className="flex flex-col items-center gap-1 shadow-lg bg-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer text-white">
+                <Link to={'/grados-asignados'} className="flex flex-col items-center gap-1 shadow-lg bg-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer text-white">
                   <EyeIcon className="w-5 h-5" />
                   <p className="font-semibold">Ver mis grados</p>
-                </div>
+                </Link>
                 <button onClick={() => dispatch(abrirModal({
                   modalAbierto: true,
                   tipo: "buscarAlumno",
@@ -102,7 +103,7 @@ export const MenuMaestro = () => {
               <p className="text-sm text-gray-900">
                 Últimos eventos en el sistema
               </p>
-              {observaciones.map((obs, idx) => {
+              {Array.isArray(observaciones) && observaciones.length > 0 ? ( observaciones.map((obs, idx) => {
                 const fechaFormateada = formatearFecha(obs.fecha);
                 return (
                   <div
@@ -118,7 +119,7 @@ export const MenuMaestro = () => {
                     </div>
                   </div>
                 );
-              })}
+              })) : <p className="text-sm mt-4 text-gray-800 italic">No hay actividad reciente para mostrar.</p>}
             </div>
           </div>
         </div>

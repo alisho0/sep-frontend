@@ -3,7 +3,7 @@ import { UsuarioInputs } from "../components/UsuarioInputs";
 import { FormProvider, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { listarUsuarios, modificarUsuario } from "../../../reducers/usuariosSlice";
-import { showAlert } from "../../../utils/alert";
+import { showAlert, confirmationAlert } from "../../../utils/alert";
 import { cerrarModal } from "../../../reducers/uiSlice";
 
 export const ModalEditarUsuario = () => {
@@ -22,10 +22,17 @@ export const ModalEditarUsuario = () => {
   } = methods;
 
   const onSubmit = async (data) => {
+    console.log("Datos a editar:", data);
+    const res = await confirmationAlert({
+      title: "¿Estás seguro?",
+      text: "¿Estás seguro de modificar este usuario?",
+      icon: "warning",
+      confirmButtonText: "Editar",
+      cancelButtonText: "Cancelar",
+    });
+    if (res.isConfirmed) {
       try {
-        // id, usuario
-        // console.log("Data del form:", data)
-        const editar = await dispatch(modificarUsuario({id: modalData.id, usuario: data}));
+        const editar = await dispatch(modificarUsuario({ id: modalData.id, usuario: data }));
         if (modificarUsuario.fulfilled.match(editar)) {
           showAlert({
             title: "Usuario editado",
@@ -39,14 +46,13 @@ export const ModalEditarUsuario = () => {
         }
       } catch (error) {
         showAlert({
-          title: "Creación fallida",
-          text:
-            error.message ||
-            "El usuario no pudo ser eliminado. Intentalo nuevamente.",
+          title: "Error al editar",
+          text: error.message || "El usuario no pudo ser editado. Intentalo nuevamente.",
           icon: "error",
         });
       }
-  }
+    }
+  } 
 
   return (
     <>
