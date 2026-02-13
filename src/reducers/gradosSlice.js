@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getGradoDetalle, getGrados, getGradosDisponibles, getSeccionesDisponibles } from "../apis/gradosApi";
-import { cerrarCiclo, delCiclo, delDesvincularMaestro, getCiclosGradoDisponibles, getCiclosGradosAsignados, getDetalleCiclo, postCiclo, postVincularMaestro } from "../apis/ciclosApi";
+import { cerrarCiclo, delCiclo, delDesvincularAlumno, delDesvincularMaestro, getCiclosGradoDisponibles, getCiclosGradosAsignados, getDetalleCiclo, postCiclo, postVincularMaestro } from "../apis/ciclosApi";
 import { eliminarMaestroAsignado, listarMaestros } from "./maestrosSlice";
 
 export const listarGradosDisponibles = createAsyncThunk('grados/listarDisponibles', async () => {

@@ -84,3 +84,12 @@ export const cerrarCiclo = async (idCiclo) => {
         throw new Error(error.response?.data || "Error al cerrar el ciclo");
     }
 }
+
+export const delDesvincularAlumno = async (idCiclo, idAlumno) => {
+    try {
+        const res = await api.delete(`${url}/${idCiclo}/alumno/${idAlumno}`);
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data || "Error al desvincular alumno del ciclo");
+    }
+}

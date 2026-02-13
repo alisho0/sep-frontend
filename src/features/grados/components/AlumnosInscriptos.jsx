@@ -5,6 +5,8 @@ import { abrirModal } from "../../../reducers/uiSlice";
 import { EyeIcon, UserMinusIcon } from "@heroicons/react/24/outline";
 import { BotonIcono } from "../../../utils/components/BotonIcono";
 import { Link, useParams } from "react-router-dom";
+import { desvincularAlumno } from "../../../reducers/alumnosSlice";
+import { confirmationAlert, showAlert } from "../../../utils/alert";
 
 export const AlumnosInscriptos = ({alumnosCSG}) => {
 
@@ -12,6 +14,32 @@ export const AlumnosInscriptos = ({alumnosCSG}) => {
     const { cicloId } = useParams();
     const cicloIdParse = parseInt(cicloId);
     const dispatch = useDispatch();
+
+    const handleDesvincularAlumno = async (idAlumno) => {
+      await confirmationAlert({
+        title: '¿Estás seguro?',
+        text: 'Se desvinculará al alumno del grado y se eliminarán todas sus observaciones.',
+        confirmButtonText: 'Desvincular',
+        cancelButtonText: 'Cancelar',
+      }).then( async (res) => {
+        if (res.isConfirmed) {
+          try {
+            const desvincular = await dispatch(desvincularAlumno({idCiclo: cicloIdParse, idAlumno: idAlumno})).unwrap();
+            showAlert({
+              title: "Alumno desvinculado",
+              text: "El alumno fue desvinculado del grado correctamente.",
+              icon: "success",
+            })
+          } catch (error) {
+            showAlert({
+              title: "Error al desvincular",
+              text: error.message || "El alumno no pudo ser desvinculado. Intentalo de nuevo.",
+              icon: "error",
+            })
+          }
+        }
+      })
+    }
 
   return (
     <div className="rounded-lg shadow-lg px-4 py-3 bg-white">
@@ -60,7 +88,7 @@ export const AlumnosInscriptos = ({alumnosCSG}) => {
                 </Link>
                 {cicloGradoActual.estado == "ACTIVO" && (
                 <BotonIcono
-                  onClick={() => desvincularAlumno(a.idRegistro, a.id)}
+                  onClick={() => handleDesvincularAlumno(a.id)}
                   Icono={UserMinusIcon}
                   className="bg-indigo-600 text-white hover:bg-red-700 justify-center"
                 />

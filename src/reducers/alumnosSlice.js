@@ -3,7 +3,7 @@ import { asignarTutorAlumno, getAlumnoById, getAlumnos, getAlumnosPorCSG, postAl
 import { listarTutoresPorAlumno } from "./tutoresSlice";
 import { detalleCiclo } from "./gradosSlice";
 import { da, tr } from "zod/v4/locales";
-import { agregarAlumnoCiclo } from "../apis/ciclosApi";
+import { agregarAlumnoCiclo, delDesvincularAlumno } from "../apis/ciclosApi";
 
 export const traerAlumnos = createAsyncThunk('alumnos/getAlumnos', async (page = 0) => {
  const data = await getAlumnos(page);
@@ -42,6 +42,11 @@ export const asignarAlumnoCiclo = createAsyncThunk('alumnos/asignarAlumnoCiclo',
     // dispatch(listarAlumnosPorCSG(idCiclo));
     return data;
 })
+
+export const desvincularAlumno = createAsyncThunk('grado/desvincularAlumno', async ({idCiclo, idAlumno}) => {
+    const data = await delDesvincularAlumno(idCiclo, idAlumno);
+    return idAlumno;
+});
 
 const alumnosSlice = createSlice({
     name: 'alumnos',
@@ -157,6 +162,18 @@ const alumnosSlice = createSlice({
             })
             .addCase(asignarAlumnoCiclo.rejected, (state) => {
                 state.loading = false;
+            })
+            .addCase(desvincularAlumno.pending, (state) => {
+                state.loading = true
+                state.error = null;
+            })
+            .addCase(desvincularAlumno.fulfilled, (state, action) => {
+                state.loading = false;
+                state.alumnosCSG = state.alumnosCSG.filter(a => a.id != action.payload);
+            })
+            .addCase(desvincularAlumno.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
             })
     }
 })

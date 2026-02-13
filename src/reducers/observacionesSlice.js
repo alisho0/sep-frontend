@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { agregarObservacion, delObservacion, getObservacionesGrado } from "../apis/observacionesApi";
 import { detalleRegistro } from "./registrosSlice";
+import { desvincularAlumno } from "./alumnosSlice";
 
 export const crearObservacion = createAsyncThunk('observaciones/crear', async ({obs, registroId}, {dispatch}) => {
     const data = await agregarObservacion(obs);
@@ -69,6 +70,9 @@ const observacionesSlice = createSlice({
             .addCase(eliminarObservacion.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message; 
+            })
+            .addCase(desvincularAlumno.fulfilled, (state, action) => {
+                state.observacion = state.observacion.filter(o => o.idAlumno != action.payload);
             })
     }
 })
