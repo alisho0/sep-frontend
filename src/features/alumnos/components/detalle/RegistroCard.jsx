@@ -15,7 +15,6 @@ export const RegistroCard = () => {
   const { aniosDisponibles, registro } = useSelector(
     (state) => state.registros
   );
-  const { observacion } = useSelector((state) => state.observaciones);
   const { alumno } = useSelector((state) => state.alumnos);
   const [selected, setSelected] = useState();
   const dispatch = useDispatch();
@@ -25,6 +24,7 @@ export const RegistroCard = () => {
   const startIndex = page * itemsPorPage;
   const endIndex = startIndex + itemsPorPage;
 
+  const observacion = registro.observaciones || [];
   const observacionesPaginadas = observacion.slice(startIndex, endIndex);
 
   const handleChangeRegistro = async (anio) => {
@@ -72,7 +72,7 @@ export const RegistroCard = () => {
 
       <div className="flex justify-between items-center mt-6">
         <div className="flex bg-indigo-600 w-fit rounded-lg p-1">
-          {aniosDisponibles.map((anio) => {
+          {Array.isArray(aniosDisponibles) && aniosDisponibles.length > 0 ? aniosDisponibles.map((anio) => {
             const isSelected = anio.anio == registro.anioCiclo;
             return (
               <button
@@ -85,7 +85,7 @@ export const RegistroCard = () => {
                 {anio.anio}
               </button>
             );
-          })}
+          }) : <span className="text-gray-300 italic px-2 py-0.5">No hay registros</span>}
         </div>
 
         <button

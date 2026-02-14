@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { ChevronLeftIcon, ChevronRightIcon, UserPlusIcon } from "@heroicons/react/16/solid";
 import { abrirModal } from "../../../reducers/uiSlice";
 import { traerMetricasAlumnos } from "../../../reducers/metricasSlice";
+import { limpiarAnios, limpiarRegistro } from "../../../reducers/registrosSlice";
 import { CardMetrica } from "../../../utils/components/CardMetrica";
 import { UsersIcon } from "@heroicons/react/24/outline";
 
@@ -22,9 +23,11 @@ export const Alumnos = () => {
   const [turnoSelect, setTurnoSelect] = useState("");
 
   useEffect(() => {
+    dispatch(limpiarRegistro());
+    dispatch(limpiarAnios());
     dispatch(traerAlumnos());
     dispatch(traerMetricasAlumnos())
-  }, []);
+  }, [dispatch]);
 
   // Filtrado frontend
 const alumnosFiltrados = Array.isArray(alumnos)

@@ -30,7 +30,14 @@ const registrosSlice = createSlice({
         loading: false,
         aniosDisponibles: [],
     },
-    reducers: {},
+    reducers: {
+        limpiarRegistro: (state) => {
+            state.registro = {};
+        },
+        limpiarAnios: (state) => {
+            state.aniosDisponibles = [];
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(aniosRegistros.pending, (state) => {
@@ -47,9 +54,8 @@ const registrosSlice = createSlice({
                 state.loading = true;
             })
             .addCase(detalleRegistro.fulfilled, (state, action) => {
-                const { observaciones, ...resto } = action.payload;
                 state.loading = false;
-                state.registro = resto;
+                state.registro = action.payload;
             })
             .addCase(detalleRegistro.rejected, (state) => {
                 state.loading = false;
@@ -77,4 +83,5 @@ const registrosSlice = createSlice({
     }
 })
 
+export const { limpiarRegistro, limpiarAnios } = registrosSlice.actions;
 export default registrosSlice.reducer;

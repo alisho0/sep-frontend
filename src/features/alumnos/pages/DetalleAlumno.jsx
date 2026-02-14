@@ -3,7 +3,7 @@ import { TutoresCard } from "../components/detalle/TutoresCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { traerPorAlumnoId } from "../../../reducers/alumnosSlice";
-import { aniosRegistros, detalleRegistro } from "../../../reducers/registrosSlice";
+import { aniosRegistros, detalleRegistro, limpiarRegistro } from "../../../reducers/registrosSlice";
 import { InfoPersonalCard } from "../components/detalle/InfoPersonalCard";
 import { RegistroCard } from "../components/detalle/RegistroCard";
 import { ArrowLeftIcon, UserPlusIcon } from "@heroicons/react/16/solid";
@@ -21,17 +21,20 @@ export const DetalleAlumno = () => {
   );
 
   useEffect(() => {
+    dispatch(limpiarRegistro());
     dispatch(traerPorAlumnoId({ id }));
     dispatch(aniosRegistros({ id }));
     dispatch(listarTutores());
     dispatch(listarTutoresPorAlumno({id}));
-  }, []);
+  }, [id, dispatch]);
 
   useEffect(() => {
     if (aniosDisponibles && aniosDisponibles.length > 0) {
       dispatch(detalleRegistro({ id: aniosDisponibles[0].id }));
+    } else {
+      dispatch(limpiarRegistro());
     }
-  }, [aniosDisponibles]);
+  }, [aniosDisponibles, dispatch]);
 
   return (
     <>

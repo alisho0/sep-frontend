@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { agregarObservacion, delObservacion, getObservacionesGrado } from "../apis/observacionesApi";
-import { detalleRegistro } from "./registrosSlice";
 import { desvincularAlumno } from "./alumnosSlice";
 
 export const crearObservacion = createAsyncThunk('observaciones/crear', async ({obs, registroId}, {dispatch}) => {
@@ -29,7 +28,11 @@ const observacionesSlice = createSlice({
         loading: false,
         error: null
     },
-    reducers: {},
+    reducers: {
+        limpiarObservaciones: (state) => {
+            state.observacion = [];
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(crearObservacion.pending, (state) => {
@@ -54,12 +57,6 @@ const observacionesSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message; 
             })
-            .addCase(detalleRegistro.pending, (state) => {
-                state.loading = true; 
-            })
-            .addCase(detalleRegistro.fulfilled, (state, action) => {
-                state.observacion = action.payload.observaciones;
-            })
             .addCase(eliminarObservacion.pending, (state) => {
                 state.loading = true; 
             })
@@ -77,4 +74,5 @@ const observacionesSlice = createSlice({
     }
 })
 
+export const { limpiarObservaciones } = observacionesSlice.actions;
 export default observacionesSlice.reducer;
