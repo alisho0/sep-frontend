@@ -51,6 +51,16 @@ export const nuevoTutorVacio = async (tutor) => {
         return res.data;
     } catch (error) {
         console.error("Error al eliminar el tutor", error.response?.data || error)
-        throw new Error(error.response?.data?.message || 'Error al crear el tutor. Por favor, intente nuevamente');
+        throw new Error(error.response?.data || 'Error al crear el tutor. Por favor, intente nuevamente');
+    }
+}
+
+export const getTutorPorId = async (id) => {
+    try {
+        const res = await api.get(`${url}/detalle/${id}`);
+        return res.data;
+    } catch (error) {
+        console.error("Error al traer el tutor por ID", error.response?.data || error)
+        throw new Error(error.response?.data || 'Error al traer el tutor. Por favor, intente nuevamente');
     }
 }

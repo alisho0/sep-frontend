@@ -47,7 +47,7 @@ export const DetalleAlumno = () => {
               <ArrowLeftIcon className="w-5 h-5"/>
               <span className="font-semibold">Volver a Alumnos</span>
             </button>
-            <InfoPersonalCard />
+            <InfoPersonalCard persona={alumno} isAlumno={true} />
             <div className="bg-white p-6 rounded-lg shadow-md border-gray-300">
               <div>
                 <div className="flex justify-between">

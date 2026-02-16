@@ -15,6 +15,7 @@ import { Configuracion } from './components/configuracion/Configuracion'
 import { MenuMaestro } from './pages/MenuMaestro'
 import { GradosAsignados } from './features/grados/pages/GradosAsignados'
 import { PrivateRoute } from './routes/PrivateRoute'
+import { DetalleTutor } from './features/tutores/pages/DetalleTutor'
 function SepApp() {
   return (
     <BrowserRouter>
@@ -28,6 +29,7 @@ function SepApp() {
             <Route path='/configuracion' element={<Configuracion />} />
             <Route path='/menu-maestro' element={<MenuMaestro/>} />
             <Route path='/grados-asignados' element={<GradosAsignados />} />
+            <Route path='/tutor/:id' element={<DetalleTutor />} />
           </Route>
         </Route>
 

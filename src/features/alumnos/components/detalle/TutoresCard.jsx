@@ -2,6 +2,7 @@ import { MagnifyingGlassIcon, MinusIcon } from '@heroicons/react/16/solid';
 import { useDispatch, useSelector } from 'react-redux';
 import { confirmationAlert, showAlert } from '../../../../utils/alert';
 import { desvincularTutorDeAlumno } from '../../../../reducers/tutoresSlice';
+import { Link } from 'react-router-dom';
 
 export const TutoresCard = ({id}) => {
 
@@ -37,9 +38,9 @@ export const TutoresCard = ({id}) => {
             <button className='hover:bg-indigo-700 w-full flex items-center justify-center px-2 py-1 rounded-l-lg hover:cursor-pointer transition-colors' onClick={() => onEliminar(tutor.id)}>
               <MinusIcon className='w-5 h-5 text-white'/>
             </button>
-            <button className='hover:bg-indigo-700 w-full flex items-center justify-center px-2 py-1 rounded-r-lg hover:cursor-pointer transition-colors'>
+            <Link to={`/tutor/${tutor.id}`} className='hover:bg-indigo-700 w-full flex items-center justify-center px-2 py-1 rounded-r-lg hover:cursor-pointer transition-colors'>
               <MagnifyingGlassIcon className='w-5 h-5 text-white'/>
-            </button>
+            </Link>
           </div>
         </div>
 
