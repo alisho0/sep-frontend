@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
+import { useSelector } from "react-redux";
 
 export const AlumnoInputs = () => {
-    const { register, formState: { errors } } = useFormContext();
+    const { register, setValue, formState: { errors } } = useFormContext();
+    const { modalData } = useSelector((state) => state.ui);
+
+    useEffect(() => {
+      if (modalData) {
+        Object.keys(modalData).forEach(key => {
+          setValue(key, modalData[key]);
+        });
+      }
+    }, [modalData, setValue])
   return (
     <>
       <div className="flex flex-col col-span-2 md:col-span-1">
@@ -17,7 +27,7 @@ export const AlumnoInputs = () => {
           name="nombre"
           {...register("nombre", { required: true })}
         />
-        {errors?.nombre && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)}
+        {errors?.nombre && (<span className="text-xs text-red-700 mt-1">{errors.nombre.message}</span>)}
       </div>
       <div className="flex flex-col col-span-2 md:col-span-1">
         <label htmlFor="apellido" className="text-sm font-medium text-gray-700">
@@ -31,7 +41,7 @@ export const AlumnoInputs = () => {
           name="apellido"
           {...register("apellido", { required: true })}
         />
-        {errors?.apellido && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)}
+        {errors?.apellido && (<span className="text-xs text-red-700 mt-1">{errors.apellido.message}</span>)}
       </div>
       <div className="flex flex-col col-span-2 md:col-span-1">
         <label htmlFor="dni" className="text-sm font-medium text-gray-700">
@@ -45,7 +55,7 @@ export const AlumnoInputs = () => {
           name="dni"
           {...register("dni", { required: true })}
         />
-        {errors?.dni && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)}
+        {errors?.dni && (<span className="text-xs text-red-700 mt-1">{errors.dni.message}</span>)}
       </div>
       <div className="flex flex-col col-span-2 md:col-span-1">
         <label
@@ -60,9 +70,9 @@ export const AlumnoInputs = () => {
           placeholder="Escribe el domicilio..."
           id="domicilio"
           name="domicilio"
-          {...register("domicilio", { required: true })}
+          {...register("domicilio")}
         />
-        {errors?.domicilio && (<span className="text-xs text-red-700">Este campo es obligatorio</span>)}
+        {errors?.domicilio && (<span className="text-xs text-red-700 mt-1">{errors.domicilio.message}</span>)}
       </div>
     </>
   );

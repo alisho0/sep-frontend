@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { asignarTutorAlumno, getAlumnoById, getAlumnos, getAlumnosPorCSG, postAlumno, searchAlumnos } from "../apis/alumnosApi"
+import { asignarTutorAlumno, getAlumnoById, getAlumnos, getAlumnosPorCSG, postAlumno, putAlumno, searchAlumnos } from "../apis/alumnosApi"
 import { listarTutoresPorAlumno } from "./tutoresSlice";
 import { detalleCiclo } from "./gradosSlice";
 import { da, tr } from "zod/v4/locales";
@@ -47,6 +47,11 @@ export const desvincularAlumno = createAsyncThunk('grado/desvincularAlumno', asy
     const data = await delDesvincularAlumno(idCiclo, idAlumno);
     return idAlumno;
 });
+
+export const editarAlumno = createAsyncThunk('alumnos/editar', async ({id, alumno}, {dispatch}) => {
+    const data = await putAlumno(id, alumno);
+    return data;
+})
 
 const alumnosSlice = createSlice({
     name: 'alumnos',
@@ -172,6 +177,21 @@ const alumnosSlice = createSlice({
                 state.alumnosCSG = state.alumnosCSG.filter(a => a.id != action.payload);
             })
             .addCase(desvincularAlumno.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(editarAlumno.pending, (state) => {
+                state.loading = true
+                state.error = null;
+            })
+            .addCase(editarAlumno.fulfilled, (state, action) => {
+                state.loading = false;
+                state.alumno = {
+                    ...state.alumno,
+                    ...action.payload
+                }
+            })
+            .addCase(editarAlumno.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             })

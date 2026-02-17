@@ -1,11 +1,9 @@
 import z from "zod";
+import { personaSchema } from "./personaSchema";
 
-export const editarUsuarioSchema = z.object({
-    nombre: z.string().min(4, "El nombre debe tener al menos 4 caracteres."),
-    apellido: z.string().min(2, "El apellido debe tener al menos 2 caracteres."),
-    username: z.email(),
-    dni: z.string().min(7, "El documento debe tener al menos 7 dígitos."),
-    domicilio: z.string().optional(),
+export const editarUsuarioSchema = personaSchema.extend({
+    username: z.email("El correo electrónico no es válido").min(5, "El correo electrónico debe tener al menos 5 caracteres."),
+    rol: z.enum(["ADMIN", "MAESTRO", "DIRECTOR"], "El rol debe ser ADMIN, MAESTRO o DIRECTOR.")
 })
 
 /* 

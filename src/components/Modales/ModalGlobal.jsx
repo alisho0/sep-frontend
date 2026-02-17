@@ -16,6 +16,7 @@ import { ModalEditarUsuario } from '../../features/usuarios/modales/ModalEditarU
 import { ModalDetalleUsuario } from '../../features/usuarios/modales/ModalDetalleUsuario';
 import { ModalAgregarAlumno } from '../../features/grados/modales/ModalAgregarAlumno';
 import { ModalBuscarAlumno } from './ModalBuscarAlumno';
+import { ModalEditarAlumno } from '../../features/alumnos/components/modales/ModalEditarAlumno';
  
 export const ModalGlobal = () => {
     const dispatch = useDispatch();
@@ -73,6 +74,7 @@ export const ModalGlobal = () => {
               {modalTipo === "detalleUsuario" && <ModalDetalleUsuario />}
               {modalTipo === "agregarAlumno" && <ModalAgregarAlumno />}
               {modalTipo === "buscarAlumno" && <ModalBuscarAlumno />}
+              {modalTipo === "editarAlumno" && <ModalEditarAlumno />}
             </div>
           </div>
         </div>

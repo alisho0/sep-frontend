@@ -1,18 +1,29 @@
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import { ExclamationCircleIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { BotonIcono } from "../../../../utils/components/BotonIcono";
+import { useDispatch } from "react-redux";
+import { abrirModal } from "../../../../reducers/uiSlice";
 
 export const InfoPersonalCard = ({ persona, isAlumno }) => {
 
+    const dispatch = useDispatch();
     // Usar las discapacidades del alumno, no el catálogo global
     const discapacidades = persona?.discapacidades || [];
 
   return (
     <>
       <div className="bg-white p-6 rounded-lg shadow-md border-gray-300 md:col-span-2">
-        <div>
-          <h3 className="text-md font-semibold">Información Personal</h3>
-          <p className="text-gray-600 text-sm">
-            Datos del {isAlumno ? "alumno" : "tutor"}
-          </p>
+        <div className="flex flex-row justify-between items-center">
+          <div>
+            <h3 className="text-md font-semibold">Información Personal</h3>
+            <p className="text-gray-600 text-sm">
+              Datos del {isAlumno ? "alumno" : "tutor"}
+            </p>
+          </div>
+          {isAlumno && <BotonIcono Icono={PencilIcon} onClick={() => dispatch(abrirModal({
+            modalAbierto: true,
+            tipo: 'editarAlumno',
+            data: persona
+          }))} className="bg-indigo-600 text-white hover:bg-indigo-700" />}
         </div>
         <div className={`grid md:grid-cols-2 gap-6 mt-6 ${!isAlumno ? "md:grid-cols-3" : ""}`}>
           <div>
@@ -31,7 +42,7 @@ export const InfoPersonalCard = ({ persona, isAlumno }) => {
             <label className="text-sm font-medium text-gray-600">
               Domicilio
             </label>
-            <p className="font-medium">{persona?.domicilio || ""}</p>
+            <p className="font-medium">{persona?.domicilio || "S/D"}</p>
           </div>
 
           {isAlumno ? (
@@ -47,7 +58,7 @@ export const InfoPersonalCard = ({ persona, isAlumno }) => {
                       key={idx}
                       className="px-2 py-0.5 font-semibold bg-amber-500/20 border-amber-500/40 text-amber-700 rounded-xl text-sm border"
                     >
-                      {d}
+                      {d.nombre}
                     </span>
                   ))
                 ) : (

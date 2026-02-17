@@ -52,7 +52,7 @@ export const getAlumnosPorCSG = async (id) => {
         const res = await api.get(`${url}/listarPorCSG/${id}`)
         return res.data;
     } catch (error) {
-        throw new Error(error.response?.data?.message || "Error al listar un alumno, intentalo de nuevo.")
+        throw new Error(error.response?.data || "Error al listar un alumno, intentalo de nuevo.")
     }
 }
 
@@ -63,6 +63,15 @@ export const searchAlumnos = async (nombre) => {
         })
         return res.data;
     } catch (error) {
-        throw new Error(error.response?.data?.message || "Error al buscar alumnos, intentalo de nuevo.")
+        throw new Error(error.response?.data|| "Error al buscar alumnos, intentalo de nuevo.")
+    }
+}
+
+export const putAlumno = async (id, alumno) => {
+    try {
+        const res = await api.put(`${url}/actualizar/${id}`, alumno)
+        return res.data;
+    } catch (error) {
+        throw new Error(error.response?.data|| "Error al actualizar el alumno, intentalo de nuevo.")
     }
 }
