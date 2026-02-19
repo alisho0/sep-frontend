@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { aniosConRegistros, delRegistro, postRegistro, traerRegistro } from "../apis/registrosApi";
 import { detalleCiclo } from "./gradosSlice";
+import { crearObservacion } from "./observacionesSlice";
 
 export const aniosRegistros = createAsyncThunk('registros/aniosDisponibles', async ({id}) => {
     const data = await aniosConRegistros(id);
@@ -40,46 +41,50 @@ const registrosSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(aniosRegistros.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(aniosRegistros.fulfilled, (state, action) => {
-                state.loading = false;
-                state.aniosDisponibles = action.payload;
-            })
-            .addCase(aniosRegistros.rejected, (state) => {
-                state.loading = false;
-            })
-            .addCase(detalleRegistro.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(detalleRegistro.fulfilled, (state, action) => {
-                state.loading = false;
-                state.registro = action.payload;
-            })
-            .addCase(detalleRegistro.rejected, (state) => {
-                state.loading = false;
-            })
-            .addCase(eliminarRegistro.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(eliminarRegistro.fulfilled, (state, action) => {
-                state.loading = false;
-                state.registro = state.registro.filter(r => r == action.payload);
-            })
-            .addCase(eliminarRegistro.rejected, (state) => {
-                state.loading = false;
-            })
-            .addCase(crearRegistro.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(crearRegistro.fulfilled, (state, action) => {
-                state.loading = false;
-                state.aniosDisponibles.push(action.payload);
-            })
-            .addCase(crearRegistro.rejected, (state) => {
-                state.loading = false;
-            })
+          .addCase(aniosRegistros.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(aniosRegistros.fulfilled, (state, action) => {
+            state.loading = false;
+            state.aniosDisponibles = action.payload;
+          })
+          .addCase(aniosRegistros.rejected, (state) => {
+            state.loading = false;
+          })
+          .addCase(detalleRegistro.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(detalleRegistro.fulfilled, (state, action) => {
+            state.loading = false;
+            state.registro = action.payload;
+          })
+          .addCase(detalleRegistro.rejected, (state) => {
+            state.loading = false;
+          })
+          .addCase(eliminarRegistro.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(eliminarRegistro.fulfilled, (state, action) => {
+            state.loading = false;
+            state.registro = state.registro.filter((r) => r == action.payload);
+          })
+          .addCase(eliminarRegistro.rejected, (state) => {
+            state.loading = false;
+          })
+          .addCase(crearRegistro.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(crearRegistro.fulfilled, (state, action) => {
+            state.loading = false;
+            state.aniosDisponibles.push(action.payload);
+          })
+          .addCase(crearRegistro.rejected, (state) => {
+            state.loading = false;
+          })
+          .addCase(crearObservacion.fulfilled, (state, action) => {
+            state.loading = false;
+            state.registro.observaciones.push(action.payload);
+          });
     }
 })
 

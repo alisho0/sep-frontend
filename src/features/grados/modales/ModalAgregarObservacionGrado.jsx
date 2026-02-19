@@ -2,11 +2,13 @@ import { Autocomplete, TextField } from "@mui/material";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from "react-redux";
 import { crearObservacion } from "../../../reducers/observacionesSlice";
 import { useParams } from "react-router-dom";
 import { showAlert } from "../../../utils/alert";
 import { cerrarModal } from "../../../reducers/uiSlice";
+import { observacionSchema } from "../../../validation/observacionSchema";
 
 export const ModalAgregarObservacionGrado = () => {
   const { cicloGradoActual, loading } = useSelector((state) => state.grados);
@@ -17,7 +19,9 @@ export const ModalAgregarObservacionGrado = () => {
     formState: { errors },
     handleSubmit,
     control,
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(observacionSchema)
+  });
 
   const alumnosArray = alumnosCSG.map((alumno) => ({
     label: alumno.nombre + " | DNI: " + alumno.dni,
@@ -32,8 +36,8 @@ export const ModalAgregarObservacionGrado = () => {
     .padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`;
 
   const onSubmit = async (data) => {
+    console.log(data)
     try {
-      console.log(data)
       const resultAction = await dispatch(
         crearObservacion({ obs: data, registroId: null })
       );
@@ -94,10 +98,32 @@ export const ModalAgregarObservacionGrado = () => {
             {...register("contenido", { required: true })}
           />
           {errors.contenido && (
-            <span className="text-xs text-red-700">
-              Este campo es obligatorio
+            <span className="text-xs text-red-700 mb-2">
+              {errors.contenido.message}
             </span>
           )}
+          <label htmlFor="motivo">Motivo</label>
+          <select
+            className="border border-gray-300 rounded-md p-2"
+            id="motivo"
+            {...register("motivo", { required: true })}
+            defaultValue={""}
+          >
+            <option value="" disabled>
+              Selecciona un motivo
+            </option>
+            <option value="SOCIAL">Social</option>
+            <option value="CONDUCTA">Conducta</option>
+            <option value="PEDAGOGICO">Pedagógico</option>
+            <option value="DERIVACION">Derivación</option>
+            <option value="OTRO">Otro</option>
+          </select>
+          {errors.motivo && (
+            <span className="text-xs text-red-700">
+              {errors.motivo.message}
+            </span>
+          )}
+
           <input type="hidden" value={formattedDate} {...register("fecha")} />
           <input
             type="hidden"

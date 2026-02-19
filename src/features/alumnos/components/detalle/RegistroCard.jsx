@@ -113,11 +113,14 @@ export const RegistroCard = () => {
               key={idx}
             >
               <div className="flex justify-between mb-4">
-                <div className="flex items-center gap-1">
-                  <CalendarIcon className="h-4 w-4 text-gray-600 " />
-                  <h3 className="text-sm text-gray-600 font-medium">
-                    {obs.fecha}
-                  </h3>
+                <div className="flex gap-3">
+                  <div className="flex items-center gap-1">
+                    <CalendarIcon className="h-4 w-4 text-gray-600 " />
+                    <h3 className="text-sm text-gray-600 font-medium">
+                      {obs.fecha}
+                    </h3>
+                  </div>
+                  <span className="bg-indigo-600 text-sm text-white px-2 py-0.5 rounded-lg font-semibold shadow-lg">{obs.motivo}</span>
                 </div>
                 <p className="text-xs font-medium text-white border bg-gray-600 px-2 py-0.5 rounded-lg ">
                   {obs.nombreUsuario}

@@ -38,10 +38,6 @@ const observacionesSlice = createSlice({
             .addCase(crearObservacion.pending, (state) => {
                 state.loading = true; 
             })
-            .addCase(crearObservacion.fulfilled, (state, action) => {
-                state.loading = false;
-                state.observacion.push(action.payload);
-            })
             .addCase(crearObservacion.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message; 

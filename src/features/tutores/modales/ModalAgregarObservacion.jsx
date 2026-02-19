@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { crearObservacion } from '../../../reducers/observacionesSlice';
 import { showAlert } from '../../../utils/alert';
 import { cerrarModal } from '../../../reducers/uiSlice';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { observacionSchema } from '../../../validation/observacionSchema';
 
 export const ModalAgregarObservacion = () => {
 
@@ -17,7 +19,9 @@ export const ModalAgregarObservacion = () => {
         handleSubmit,
         watch,
         formState: {errors},
-    } = useForm();
+    } = useForm({
+        resolver: zodResolver(observacionSchema)
+    });
 
     const token = localStorage.getItem('token');
     const payload = jwtDecode(token); 
@@ -26,6 +30,7 @@ export const ModalAgregarObservacion = () => {
     const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
 
     const onSubmit = async (data) => {
+        console.log(data);
         try {
             const resultAction = await dispatch(crearObservacion({obs: data, registroId: registro.id}));
             if (crearObservacion.fulfilled.match(resultAction)) {
@@ -58,7 +63,19 @@ export const ModalAgregarObservacion = () => {
                 <div className='flex flex-col gap-1 my-4'>
                     <label htmlFor="observacion">Descripción:</label>
                     <textarea className='border border-gray-300 rounded-md p-2' id="observacion" rows="4" {...register("contenido", {required: true})} />
-                    {errors.contenido && <span className='text-xs text-red-700'>Este campo es obligatorio</span> }
+                    {errors.contenido && <span className='text-xs text-red-700 mb-2'>{errors.contenido.message}</span> }
+
+                    <label htmlFor="motivo">Motivo</label>
+                    <select className='border border-gray-300 rounded-md p-2' id="motivo" {...register("motivo", {required: true})} defaultValue={""}>
+                        <option value="" disabled>Selecciona un motivo</option>
+                        <option value="SOCIAL">Social</option>
+                        <option value="CONDUCTA">Conducta</option>
+                        <option value="PEDAGOGICO">Pedagógico</option>
+                        <option value="DERIVACION">Derivación</option>
+                        <option value="OTRO">Otro</option>
+                    </select>
+                    {errors.motivo && <span className='text-xs text-red-700'>{errors.motivo.message}</span> }
+
                     <input
                         type="hidden"
                         value={formattedDate}
@@ -72,7 +89,7 @@ export const ModalAgregarObservacion = () => {
                     <input
                         type="hidden"
                         value={registro.id}
-                        {...register("idRegistro")}
+                        {...register("idRegistro", {valueAsNumber: true})}
                     />
                 </div>
                 <div>

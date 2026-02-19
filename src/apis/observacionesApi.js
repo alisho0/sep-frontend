@@ -14,7 +14,8 @@ export const agregarObservacion = async (observacion) => {
         const response = await api.post(`${url}/crear`, {
             contenido: observacion.contenido,
             fecha: observacion.fecha,
-            idRegistro: observacion.idRegistro
+            idRegistro: observacion.idRegistro,
+            motivo: observacion.motivo
         });
         return response.data;
     } catch (error) {
