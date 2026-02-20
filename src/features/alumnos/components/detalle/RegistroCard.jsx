@@ -9,6 +9,7 @@ import { detalleRegistro } from "../../../../reducers/registrosSlice";
 import { BotonIcono } from "../../../../utils/components/BotonIcono";
 import { EyeIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useObservacion } from "../../../../hooks/useObservacion";
+import { formatearFecha } from "../../../../utils/formatearFecha";
 
 export const RegistroCard = () => {
   const { handleDelete } = useObservacion();
@@ -16,6 +17,7 @@ export const RegistroCard = () => {
     (state) => state.registros
   );
   const { alumno } = useSelector((state) => state.alumnos);
+  const { observacion } = useSelector((state) => state.observaciones);
   const [selected, setSelected] = useState();
   const dispatch = useDispatch();
 
@@ -24,8 +26,8 @@ export const RegistroCard = () => {
   const startIndex = page * itemsPorPage;
   const endIndex = startIndex + itemsPorPage;
 
-  const observacion = registro.observaciones || [];
-  const observacionesPaginadas = observacion.slice(startIndex, endIndex);
+  const observaciones = observacion || [];
+  const observacionesPaginadas = observaciones.slice(startIndex, endIndex);
 
   const handleChangeRegistro = async (anio) => {
     try {
@@ -117,7 +119,7 @@ export const RegistroCard = () => {
                   <div className="flex items-center gap-1">
                     <CalendarIcon className="h-4 w-4 text-gray-600 " />
                     <h3 className="text-sm text-gray-600 font-medium">
-                      {obs.fecha}
+                      {formatearFecha(obs.fecha)}
                     </h3>
                   </div>
                   <span className="bg-indigo-600 text-sm text-white px-2 py-0.5 rounded-lg font-semibold shadow-lg">{obs.motivo}</span>

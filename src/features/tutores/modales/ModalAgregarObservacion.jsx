@@ -7,6 +7,7 @@ import { showAlert } from '../../../utils/alert';
 import { cerrarModal } from '../../../reducers/uiSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { observacionSchema } from '../../../validation/observacionSchema';
+import { getFechaLocal } from '../../../utils/getFechaLocal';
 
 export const ModalAgregarObservacion = () => {
 
@@ -26,8 +27,8 @@ export const ModalAgregarObservacion = () => {
     const token = localStorage.getItem('token');
     const payload = jwtDecode(token); 
 
-    const today = new Date();
-    const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+    // Obtener fecha y hora en zona horaria de Argentina
+    const fechaArg = getFechaLocal(new Date())
 
     const onSubmit = async (data) => {
         console.log(data);
@@ -78,7 +79,7 @@ export const ModalAgregarObservacion = () => {
 
                     <input
                         type="hidden"
-                        value={formattedDate}
+                        value={fechaArg}
                         {...register("fecha")}
                     />
                     <input

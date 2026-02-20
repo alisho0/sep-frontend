@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { showAlert } from "../../../utils/alert";
 import { cerrarModal } from "../../../reducers/uiSlice";
 import { observacionSchema } from "../../../validation/observacionSchema";
+import { getFechaLocal } from "../../../utils/getFechaLocal";
 
 export const ModalAgregarObservacionGrado = () => {
   const { cicloGradoActual, loading } = useSelector((state) => state.grados);
@@ -30,13 +31,9 @@ export const ModalAgregarObservacionGrado = () => {
 
   const token = localStorage.getItem("token");
   const payload = jwtDecode(token);
-  const today = new Date();
-  const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1)
-    .toString()
-    .padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`;
+  const fechaArg = getFechaLocal(new Date())
 
   const onSubmit = async (data) => {
-    console.log(data)
     try {
       const resultAction = await dispatch(
         crearObservacion({ obs: data, registroId: null })
@@ -54,7 +51,7 @@ export const ModalAgregarObservacionGrado = () => {
     } catch (error) {
       showAlert({
         title: "Error",
-        text: "Ocurrió un error al crear la observación",
+        text: error.message || "Ocurrió un error al crear la observación",
         icon: "error",
       });
     }
@@ -124,7 +121,7 @@ export const ModalAgregarObservacionGrado = () => {
             </span>
           )}
 
-          <input type="hidden" value={formattedDate} {...register("fecha")} />
+          <input type="hidden" value={fechaArg} {...register("fecha")} />
           <input
             type="hidden"
             value={payload.sub}

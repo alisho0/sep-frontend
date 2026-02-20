@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { eliminarObservacion, listarObservaciones } from "../../../reducers/observacionesSlice";
 import { abrirModal } from "../../../reducers/uiSlice";
 import { EyeIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { confirmationAlert, showAlert } from "../../../utils/alert";
 import { useObservacion } from "../../../hooks/useObservacion";
 import { extractUsername, isAdmin } from "../../../utils/isAdmin";
+import { formatearFecha } from "../../../utils/formatearFecha";
 
 export const ObservacionesGrado = ({ cicloId }) => {
 
@@ -62,7 +62,7 @@ export const ObservacionesGrado = ({ cicloId }) => {
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 <CalendarIcon className="h-4 w-4 text-gray-600 " />
-                <h3 className="text-sm text-gray-600 font-medium">{o.fecha}</h3>
+                <h3 className="text-sm text-gray-600 font-medium">{formatearFecha(o.fecha)}</h3>
               </div>
               <p className="text-xs font-medium text-white border bg-gray-600 px-2 py-0.5 rounded-lg">
                 {o.nombreUsuario}
