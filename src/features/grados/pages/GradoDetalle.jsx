@@ -12,6 +12,7 @@ import { detalleGrado, eliminarCiclo } from "../../../reducers/gradosSlice";
 import { CardMetrica } from "../../../utils/components/CardMetrica";
 import { confirmationAlert, showAlert } from "../../../utils/alert";
 import { abrirModal } from "../../../reducers/uiSlice";
+import { limpiarAlumnosCSG } from "../../../reducers/alumnosSlice";
 export const GradoDetalle = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -22,7 +23,8 @@ export const GradoDetalle = () => {
 
   useEffect(() => {
     dispatch(detalleGrado(id));
-  }, []);
+    dispatch(limpiarAlumnosCSG())
+  }, [id]);
 
   const handleDeleteCiclo = async (id) => {
     const res = await confirmationAlert({

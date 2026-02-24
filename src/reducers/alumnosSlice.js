@@ -72,7 +72,11 @@ const alumnosSlice = createSlice({
         countAlumnos: 0,
         error: null
     },
-    reducers: {},
+    reducers: {
+        limpiarAlumnosCSG: (state) => {
+            state.alumnosCSG = [];
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(traerAlumnos.pending, (state) => {
@@ -198,4 +202,5 @@ const alumnosSlice = createSlice({
     }
 })
 
+export const { limpiarAlumnosCSG } = alumnosSlice.actions;
 export default alumnosSlice.reducer;
